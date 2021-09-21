@@ -5,4 +5,11 @@
     <RootNamespace>SNHU_Search</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="JavaScriptEngineSwitcher.Extensions.MsDependencyInjection" Version="3.3.0" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8" Version="3.12.5" />
+    <PackageReference Include="JavaScriptEngineSwitcher.V8.Native.win-x86" Version="3.12.5" />
+    <PackageReference Include="React.AspNet" Version="5.2.11" />
+  </ItemGroup>
+
 </Project>
