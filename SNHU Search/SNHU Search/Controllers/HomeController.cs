@@ -18,7 +18,7 @@ namespace SNHU_Search.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(HomeModel homeMod)
         {
             return View();
         }
