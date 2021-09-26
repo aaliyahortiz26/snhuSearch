@@ -1,8 +1,17 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+﻿@{ Layout = Layout;
+  }
+<html>
+<head>
+    <title>SNHU Search</title>
+</head>
+<div style="text-align:center">
+    <p>Welcome to SNHU Search! A search engine that allows you to customize your search to fit your needs!</p>
+    <input form="search" name="searchBar" placeholder="Enter your search here" style="width:700px" />
+    <button type="submit" name="searchButton">Search</button>
 </div>
+
+
+
+<body>
+    <div id="content"></div>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/16.13.0/umd/react.development.js"></script>
