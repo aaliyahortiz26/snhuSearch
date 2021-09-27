@@ -24,6 +24,7 @@ namespace SNHU_Search.Controllers
         }
         public IActionResult Home(HomeModel homeMod)
         {
+            //add connection string for the database 
             return View();
         }
         public IActionResult Login()
