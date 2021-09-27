@@ -11,6 +11,6 @@ namespace SNHU_Search.Models
 {
     public class HomeModel
     {
-        public string keywordSearch { get; set; }
+        public string keywordSearchBar { get; set; }
     }
 }
