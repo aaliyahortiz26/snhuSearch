@@ -24,8 +24,6 @@ namespace SNHU_Search.Controllers
         }
         public IActionResult Home(HomeModel homeMod)
         {
-            
-
             return View();
         }
         public IActionResult Login()
