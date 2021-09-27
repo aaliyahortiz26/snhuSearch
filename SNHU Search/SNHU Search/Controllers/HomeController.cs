@@ -18,8 +18,14 @@ namespace SNHU_Search.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(HomeModel homeMod)
+        public IActionResult Index()
         {
+            return View("Home");
+        }
+        public IActionResult Home(HomeModel homeMod)
+        {
+            
+
             return View();
         }
         public IActionResult Login()
