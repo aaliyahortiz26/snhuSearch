@@ -17,23 +17,17 @@ namespace SNHU_Search.Controllers
         {
             _logger = logger;
         }
-
         public IActionResult Index()
         {
             return View("Home");
         }
         public IActionResult Home(HomeModel homeMod)
         {
-            //add connection string for the database once Jesse gives us the database info.
             return View();
         }
-        public IActionResult Login()
+        public IActionResult Home()
         {
-            return View();
-        }
-        public IActionResult SignUp()
-        {
-            return View();
+            return View(); 
         }
         public IActionResult Privacy()
         {

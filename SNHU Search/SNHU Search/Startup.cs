@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SNHU_Search.Models;
 
 namespace SNHU_Search
 {
@@ -24,6 +25,9 @@ namespace SNHU_Search
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddRazorPages();
+            services.Add(new ServiceDescriptor(typeof(DBManager), new DBManager(Configuration.GetConnectionString("DefaultConnection"))));
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +47,7 @@ namespace SNHU_Search
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 
