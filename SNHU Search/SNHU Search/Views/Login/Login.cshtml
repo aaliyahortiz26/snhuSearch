@@ -1,0 +1,27 @@
+﻿@model SNHU_Search.Models.LoginModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div style="text-align:center">
+    <form asp-action="Login" method="post">
+        <h1>Login</h1>
+        <label for="username">Username</label>
+        <input type="text" id="username" asp-for="UserName" placeholder="Enter Username" required autocomplete="off" />
+        <label for="password">Password</label>
+        <input type="password" id="password" asp-for="Password" placeholder="Enter Password" required autocomplete="off" /><br />
+        <button type="submit">Login</button><br />
+        <button type="button" onclick=" location.href = '@Url.Action("SignUp", "Login")'">Sign Up</button>
+    </form>
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+    window.onload = function () {
+        alert("@ViewBag.Message");
+    };
+    </script>
+}

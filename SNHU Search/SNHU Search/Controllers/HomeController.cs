@@ -22,15 +22,7 @@ namespace SNHU_Search.Controllers
         {
             return View();
         }
-        public IActionResult Login()
-        {
-            return View();
-        }
-        public IActionResult SignUp()
-        {
-            return View();
-        }
-
+     
         public IActionResult Privacy()
         {
             return View();
