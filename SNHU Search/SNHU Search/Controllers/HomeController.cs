@@ -21,7 +21,10 @@ namespace SNHU_Search.Controllers
         {
             return View("Home");
         }
-       
+        public IActionResult Home(HomeModel homeMod)
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
