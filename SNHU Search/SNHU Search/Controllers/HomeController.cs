@@ -23,7 +23,7 @@ namespace SNHU_Search.Controllers
         }
         public IActionResult Home()
         {
-            return View();
+            return View(); 
         }
         public IActionResult Privacy()
         {
