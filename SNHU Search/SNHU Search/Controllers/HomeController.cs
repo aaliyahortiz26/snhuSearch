@@ -19,9 +19,9 @@ namespace SNHU_Search.Controllers
         }
         public IActionResult Index()
         {
-            return View("Home");
+            return View();
         }
-        public IActionResult Home(HomeModel homeMod)
+        public IActionResult Home()
         {
             return View();
         }
