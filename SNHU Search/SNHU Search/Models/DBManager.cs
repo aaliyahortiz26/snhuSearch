@@ -50,13 +50,13 @@ namespace SNHU_Search.Models
 
 					// Inserting data into fields of database
 					MySqlCommand Query = conn.CreateCommand();
-					Query.CommandText = "insert into SNHUSearch.Accounts_tbl (firstname, lastname, username, email, password, confirmpassword) VALUES (@firstname,@lastname, @username, @email, @password, @confirmpassword)";
+					Query.CommandText = "insert into SNHUSearch.Accounts_tbl (firstname, lastname, username, email, password) VALUES (@firstname,@lastname, @username, @email, @password)";
 					Query.Parameters.AddWithValue("@firstname", SignUpM.FirstName);
 					Query.Parameters.AddWithValue("@lastname", SignUpM.LastName);
 					Query.Parameters.AddWithValue("@username", SignUpM.UserName);
 					Query.Parameters.AddWithValue("@email", SignUpM.Email);
 					Query.Parameters.AddWithValue("@password", SignUpM.Password);
-					Query.Parameters.AddWithValue("@confirmpassword", SignUpM.ConfirmPassword);
+					//Query.Parameters.AddWithValue("@confirmpassword", SignUpM.ConfirmPassword);
 
 					Query.ExecuteNonQuery();
 				}

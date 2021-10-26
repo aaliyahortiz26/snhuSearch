@@ -1,0 +1,49 @@
+﻿body,html {
+    background-image:url(../Images/ceta.jpg);
+    height: 100%;
+    margin: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.input {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    padding: 15px;
+    width: 200px;
+    height: 40px;
+    opacity: 15;
+    margin-top: 15px;
+    border-color: white;
+}
+
+.button {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    background-color: #001E60;
+    margin-top: 15px;
+    width: 120px;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border-color: #001E60;
+}
+
+img{
+    height: 250px;
+    width: 250px;
+    margin: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transform:scale(.8, .8);
+}
+
+.loginCenter {
+    margin: auto;
+    width: 50%;
+    padding: -35px;
+    margin-top: -25px;
+}
