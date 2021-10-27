@@ -34,22 +34,22 @@
     cursor: pointer;
 }
 
-    .button:hover {
-        background-color: #003e85;
-    }
+.button:hover {
+    background-color: #003e85;
+}
 
 .button:active {
     background-color: #001E40;
 }
 
 img{
-    height: 250px;
-    width: 250px;
-    margin: 0;
+    position:center;
+    margin:0;
+    width: 450px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    transform:scale(.8, .8);
+    margin-bottom: 25px;
 }
 
 .loginCenter {
