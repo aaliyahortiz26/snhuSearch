@@ -10,12 +10,12 @@
 .input {
     font-family: 'Segoe UI';
     border-radius: 15px;
-    padding: 15px;
     width: 200px;
     height: 40px;
     opacity: 15;
     margin-top: 15px;
     border-color: white;
+    padding-left: 8px;
 }
 
 .button {
@@ -23,7 +23,7 @@
     border-radius: 15px;
     background-color: #001E60;
     margin-top: 15px;
-    width: 120px;
+    width: 180px;
     height: 40px;
     color: white;
     font-size: 16px;
@@ -42,6 +42,13 @@ img{
 }
 
 .loginCenter {
+    margin: auto;
+    width: 50%;
+    padding: -35px;
+    margin-top: -25px;
+}
+
+.signUpCenter {
     margin: auto;
     width: 50%;
     padding: -35px;
