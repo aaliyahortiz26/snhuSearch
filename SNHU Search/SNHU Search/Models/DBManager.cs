@@ -168,6 +168,50 @@ namespace SNHU_Search.Models
 			return bRet;
 		}
 
+		public bool SaveWebsite(string websiteURL, string currentUser)
+        {
+			using (MySqlConnection conn = GetConnection())
+            {
+				conn.Open();
+				MySqlCommand term = conn.CreateCommand();
+				int currentSession = GetUserID(currentUser);
+
+				// Let's make sure the website doesn't already exist first
+				term.Parameters.AddWithValue("websiteURL", websiteURL);
+				term.CommandText = "select count(*) from SNHUSearch.websites where url = websiteURL";
+				int alreadyExists = Convert.ToInt32(term.ExecuteScalar());
+
+				if (alreadyExists > 0)
+                {
+					// Already is on list
+					return true;
+                } 
+				else
+                {
+					// Get current highest ID of website
+					term.CommandText = "SELECT MAX(urlID) FROM websites";
+					int newCount = Convert.ToInt32(term.ExecuteScalar());
+					newCount++;
+
+					// Add the website to the list with a new ID
+					term.Parameters.AddWithValue("newCount", newCount);
+					term.CommandText = "INSERT INTO SNHUSearch.websites (url, urlID) VALUES ('websiteURL', 'newCount')";
+
+					MySqlDataReader reader = term.ExecuteReader();
+					if (reader.Read()) // Successful insert into column
+					{
+						reader.Close();
+						return true;
+					}
+					else
+					{
+						// Operand failed
+						reader.Close();
+						return false;
+					}
+				}
+			}
+        }
 		#endregion
 	}
 }
