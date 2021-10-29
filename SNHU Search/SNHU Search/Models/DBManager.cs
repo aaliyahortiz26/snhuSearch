@@ -213,7 +213,7 @@ namespace SNHU_Search.Models
         }
 
 		public void RetrieveWebsites()
-        {
+		{
 			using (MySqlConnection conn = GetConnection())
 			{
 				conn.Open();
@@ -223,6 +223,7 @@ namespace SNHU_Search.Models
 				 */
 
 			}
+		}
 		#endregion
 	}
 }
