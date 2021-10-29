@@ -168,13 +168,12 @@ namespace SNHU_Search.Models
 			return bRet;
 		}
 
-		public bool SaveWebsite(string websiteURL, string currentUser)
+		public bool SaveWebsite(string websiteURL)
         {
 			using (MySqlConnection conn = GetConnection())
             {
 				conn.Open();
 				MySqlCommand term = conn.CreateCommand();
-				int currentSession = GetUserID(currentUser);
 
 				// Let's make sure the website doesn't already exist first
 				term.Parameters.AddWithValue("websiteURL", websiteURL);
@@ -212,6 +211,18 @@ namespace SNHU_Search.Models
 				}
 			}
         }
+
+		public void RetrieveWebsites()
+        {
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				MySqlCommand term = conn.CreateCommand();
+				/*
+				 * Required: A list of numbers for the ID's for the websites to pull per user
+				 */
+
+			}
 		#endregion
 	}
 }
