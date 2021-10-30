@@ -176,8 +176,8 @@ namespace SNHU_Search.Models
 				MySqlCommand term = conn.CreateCommand();
 
 				// Let's make sure the website doesn't already exist first
-				term.Parameters.AddWithValue("websiteURL", websiteURL);
-				term.CommandText = "select count(*) from SNHUSearch.websites where url = websiteURL";
+				term.Parameters.AddWithValue("@websiteURL", websiteURL);
+				term.CommandText = "SELECT EXISTS(SELECT * FROM SNHUSearch.websites WHERE url = @websiteURL)";
 				int alreadyExists = Convert.ToInt32(term.ExecuteScalar());
 
 				if (alreadyExists > 0)
@@ -193,8 +193,8 @@ namespace SNHU_Search.Models
 					newCount++;
 
 					// Add the website to the list with a new ID
-					term.Parameters.AddWithValue("newCount", newCount);
-					term.CommandText = "INSERT INTO SNHUSearch.websites (url, urlID) VALUES ('websiteURL', 'newCount')";
+					term.Parameters.AddWithValue("@newCount", newCount);
+					term.CommandText = "INSERT INTO SNHUSearch.websites (url, urlID) VALUES (@websiteURL, @newCount)";
 
 					MySqlDataReader reader = term.ExecuteReader();
 					if (reader.Read()) // Successful insert into column
