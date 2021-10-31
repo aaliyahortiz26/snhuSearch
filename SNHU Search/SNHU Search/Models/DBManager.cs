@@ -168,7 +168,7 @@ namespace SNHU_Search.Models
 			return bRet;
 		}
 
-		public bool SaveWebsite(string websiteURL)
+		public bool SaveWebsite(string websiteURL, string userEmail)
         {
 			using (MySqlConnection conn = GetConnection())
             {
@@ -204,7 +204,17 @@ namespace SNHU_Search.Models
 					}
 					else
 					{
-						// Operand failed
+						// Now add to the personal users table
+						/*
+						 * [Jesse: 30-Oct-2021]: I don't have the current knowledge capabilities to pull this correctly from MySQL 
+						 * But in theory at this stage the function will loop the table and make sure the currently logged in user email
+						 * matches the email in the SNHUSearch.UserWebsites table, then pull the string from the 'websiteIds' column and
+						 * appropriately assign it a string
+						 */
+
+						string savedWebsitesList = "this will be replaced when the above comment is ammended.";
+						savedWebsitesList += Convert.ToString(newCount);
+
 						reader.Close();
 						return false;
 					}
@@ -212,7 +222,8 @@ namespace SNHU_Search.Models
 			}
         }
 
-		public void RetrieveWebsites()
+		// Retrieves users saved websites via ID
+		public void RetrieveWebsites(string userEmail) // User website ID's are stored in a string 
 		{
 			using (MySqlConnection conn = GetConnection())
 			{
