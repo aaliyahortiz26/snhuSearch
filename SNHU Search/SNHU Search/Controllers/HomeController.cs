@@ -11,8 +11,8 @@ namespace SNHU_Search.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ElasticManager _Manager = new ElasticManager();
         private readonly ILogger<HomeController> _logger;
-
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
