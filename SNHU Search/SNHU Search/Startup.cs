@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SNHU_Search.Models;
-using Elasticsearch.Net;
-using Nest;
 
 namespace SNHU_Search
 {
@@ -27,12 +25,6 @@ namespace SNHU_Search
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var pool = new SingleNodeConnectionPool(new Uri("http://localhost:9200"));
-            var settings = new ConnectionSettings(pool)
-                .DefaultIndex("Website");
-            var client = new ElasticClient(settings);
-            services.AddSingleton(client);
-
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.Add(new ServiceDescriptor(typeof(DBManager), new DBManager(Configuration.GetConnectionString("DefaultConnection"))));
