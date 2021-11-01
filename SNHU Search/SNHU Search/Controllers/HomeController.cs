@@ -22,7 +22,13 @@ namespace SNHU_Search.Controllers
         {
             return View();
         }
-     
+        public IActionResult SearchElastic(SearchModel Sm)
+        {
+            List<string> elastiSearchKeywordsList = new List<string>();
+            elastiSearchKeywordsList = _Manager.search(Sm.Keywords);
+            ViewData["elastiSearchKeywordsList"] = elastiSearchKeywordsList;
+            return View("Index");
+        }
         public IActionResult Privacy()
         {
             return View();

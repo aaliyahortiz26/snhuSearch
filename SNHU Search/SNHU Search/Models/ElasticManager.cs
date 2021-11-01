@@ -28,7 +28,7 @@ namespace SNHU_Search.Models
                 }
             }", System.Text.Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = client.PostAsync("http://20.115.112.182:9200/index1/_doc", content).Result;
+            HttpResponseMessage response = client.PostAsync("http://20.115.112.182:9200/test_index1/_doc", content).Result;
             if (response.IsSuccessStatusCode)
             {
                 Console.WriteLine("Got response");                
@@ -40,14 +40,16 @@ namespace SNHU_Search.Models
             client.Dispose();
         }
 
-        public void search(string sKeywords)
+        public List<string> search(string sKeywords)
         {
+            List<string> UrlKeywordsList = new List<string>();
+
             HttpClient client = new HttpClient();
 
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri(String.Format("http://20.115.112.182:9200/index1/_search?q={0}", sKeywords)),
+                RequestUri = new Uri(String.Format("http://20.115.112.182:9200/test_index1/_search?q={0}", sKeywords)),
                 Content = new StringContent(@"{
                     ""query"": {
                         ""match_all"": { }
@@ -70,6 +72,8 @@ namespace SNHU_Search.Models
                         var esTags = hitsList[i]["_source"]["mappings"]["properties"]["tags"];
                         var Url = esTags["url"];
                         var Keywords = esTags["keywords"];
+                        UrlKeywordsList.Add(Url.ToString());
+                        UrlKeywordsList.Add(Keywords.ToString());
                     }
                 }
             }
@@ -79,6 +83,7 @@ namespace SNHU_Search.Models
             }
            
             client.Dispose();
+            return UrlKeywordsList;
         }
     }
 }
