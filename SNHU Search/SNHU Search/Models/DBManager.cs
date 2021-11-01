@@ -168,7 +168,7 @@ namespace SNHU_Search.Models
 			return bRet;
 		}
 
-		public bool SaveWebsite(string websiteURL, string userEmail)
+		public bool SaveWebsite(string websiteURL, LoginModel currentSession)
         {
 			using (MySqlConnection conn = GetConnection())
             {
@@ -204,16 +204,17 @@ namespace SNHU_Search.Models
 					}
 					else
 					{
-						// Now add to the personal users table
-						/*
-						 * [Jesse: 30-Oct-2021]: I don't have the current knowledge capabilities to pull this correctly from MySQL 
-						 * But in theory at this stage the function will loop the table and make sure the currently logged in user email
-						 * matches the email in the SNHUSearch.UserWebsites table, then pull the string from the 'websiteIds' column and
-						 * appropriately assign it a string
-						 */
-
-						string savedWebsitesList = "this will be replaced when the above comment is ammended.";
-						savedWebsitesList += Convert.ToString(newCount);
+						// First item being added
+						if (currentSession.SavedWebsites == null)
+                        {
+							string savedWebsiteList = "";
+							savedWebsitesList += Convert.ToString(newCount);
+						} 
+						else
+                        {
+							string savedWebsitesList = currentSession.SavedWebsites;
+							savedWebsitesList += "/" + Convert.ToString(newCount);
+                        }
 
 						reader.Close();
 						return false;
@@ -223,7 +224,7 @@ namespace SNHU_Search.Models
         }
 
 		// Retrieves users saved websites via ID
-		public void RetrieveWebsites(string userEmail) // User website ID's are stored in a string 
+		public List<string> RetrieveWebsites(/*LoginModel currentSession*/) // User website ID's are stored in a string 
 		{
 			using (MySqlConnection conn = GetConnection())
 			{
@@ -233,7 +234,48 @@ namespace SNHU_Search.Models
 				 * Required: A list of numbers for the ID's for the websites to pull per user
 				 */
 
+				if (currentSession.SavedWebsites == null)
+                {
+					return (List<string>)Enumerable.Empty<string>();
+				}
+				else
+                {
+					string unformattedWebList = currentSession.SavedWebsites;
+					List<string> formattedWebList = new List<string>();
+					term.Parameters.AddWithValue("@urlID", websiteId);
+					Object[] values = new object[2];
+
+					for (int i = 0; i < unformattedWebList.Length; i++)
+                    {
+						string currentIdValue;
+						if (unformattedWebList[i + 1] == '/')
+                        {
+							// find matching ID in global web list:
+							term.CommandText = "SELECT url FROM SNHUSearch.websites WHERE urlID = @urlID";
+							MySqlDataReader reader = term.ExecuteReader();
+							if (reader.Read())
+                            {
+								values[0] = null;
+								reader.GetValues(values);
+								formattedWebList.Add(Convert.ToString(values[0]));
+                            } 
+							else
+                            {
+								// Operand failed
+								return (List<string>)Enumerable.Empty<string>();
+							}
+							currentIdValue = string.Empty;
+                        } 
+						else
+                        {
+							currentIdValue += currentSession.SavedWebsites[i];
+                        }
+                    }
+
+
+                }
 			}
+			return (List<string>)Enumerable.Empty<string>();
 		}
 		#endregion
 	}
