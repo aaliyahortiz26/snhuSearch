@@ -194,7 +194,7 @@ namespace SNHU_Search.Models
 
 					// Add the website to the list with a new ID
 					term.Parameters.AddWithValue("@newCount", newCount);
-					term.CommandText = "INSERT INTO SNHUSearch.websites (url, urlID) VALUES (@websiteURL, @newCount)";
+					term.CommandText = "INSERT INTO SNHUSearch.websites (url, urlID) VALUES (@websiteURL, @newCount)"; // Adds to global list
 
 					MySqlDataReader reader = term.ExecuteReader();
 					if (reader.Read()) // Successful insert into column
@@ -204,17 +204,12 @@ namespace SNHU_Search.Models
 					}
 					else
 					{
-						// First item being added
-						if (currentSession.SavedWebsites == null)
-                        {
-							string savedWebsiteList = "";
-							savedWebsitesList += Convert.ToString(newCount);
-						} 
-						else
-                        {
-							string savedWebsitesList = currentSession.SavedWebsites;
-							savedWebsitesList += "/" + Convert.ToString(newCount);
-                        }
+						string SavedWebsites = term.CommandText = "selected SavedWebsites FROM Accounts_tbl WHERE username='esseJ'";
+						reader = term.ExecuteReader(); // Should fetch the string 
+						SavedWebsites += Convert.ToString(newCount) + "/"; // Adds the new ID
+
+						term.Parameters.AddWithValue("@SavedWebsites", SavedWebsites);
+						term.CommandText = "UPDATE Accounts_tbl SET SavedWebsites = @SavedWebsites WHERE username='esseJ'";
 
 						reader.Close();
 						return false;
@@ -233,24 +228,27 @@ namespace SNHU_Search.Models
 				/*
 				 * Required: A list of numbers for the ID's for the websites to pull per user
 				 */
+				string SavedWebsites = term.CommandText = "selected SavedWebsites FROM Accounts_tbl WHERE username='esseJ'";
 
-				if (currentSession.SavedWebsites == null)
+
+				if (/*currentSession.*/SavedWebsites == string.Empty || SavedWebsites == null)
                 {
 					return (List<string>)Enumerable.Empty<string>();
 				}
 				else
                 {
-					string unformattedWebList = currentSession.SavedWebsites;
+					string unformattedWebList = /*currentSession.*/SavedWebsites;
 					List<string> formattedWebList = new List<string>();
-					term.Parameters.AddWithValue("@urlID", websiteId);
+					
 					Object[] values = new object[2];
+					string currentIdValue = "";
 
 					for (int i = 0; i < unformattedWebList.Length; i++)
                     {
-						string currentIdValue;
 						if (unformattedWebList[i + 1] == '/')
                         {
 							// find matching ID in global web list:
+							term.Parameters.AddWithValue("@urlID", currentIdValue);
 							term.CommandText = "SELECT url FROM SNHUSearch.websites WHERE urlID = @urlID";
 							MySqlDataReader reader = term.ExecuteReader();
 							if (reader.Read())
@@ -268,7 +266,7 @@ namespace SNHU_Search.Models
                         } 
 						else
                         {
-							currentIdValue += currentSession.SavedWebsites[i];
+							currentIdValue += /*currentSession.*/SavedWebsites[i];
                         }
                     }
 
