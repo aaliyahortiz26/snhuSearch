@@ -3,13 +3,17 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
+@{
+    Layout = Layout;
+}
+
 <head>
     <title>Login</title>
     <link href='~/css/style.css' rel='stylesheet'>
 </head>
 
 <div style="text-align:center">
-    <img src="~/Images/snhu logoo.png"/>
+    <img class="logo" src="~/Images/snhusearchlogo.png" />
     <form asp-action="Login" method="post">
         <div class="loginCenter">
             <input class="input" type="text" id="username" asp-for="UserName" placeholder="Username" required autocomplete="off" /><br />

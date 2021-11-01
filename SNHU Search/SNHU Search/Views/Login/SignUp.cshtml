@@ -3,6 +3,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    Layout = Layout;
 }
 <head>
     <title>Sign Up</title>
@@ -10,16 +11,18 @@
 </head>
 
 <form asp-action="AddUser" method="post" autocomplete="off">
-    <div style="text-align:center" class="signUpCenter">
-        <img src="~/Images/snhu logoo.png" /><br/>
-        <input class="input" type="text" id="userFName" asp-for="FirstName" placeholder="First Name" required />
-        <input class="input"type="text" id="userLName" asp-for="LastName" placeholder="Last Name" required /><br />
-        <input class="input"type="text" id="username" asp-for="UserName" placeholder="Username" required autocomplete="off" />
-        <input class="input"type="password" id="password" asp-for="Password" placeholder="Password" required autocomplete="off" /><br />
-        <input class="input"type="email" id="userEmail" asp-for="Email" placeholder="Email" required />
-        <input class="input"type="password" id="confirmpassword" asp-for="ConfirmPassword" placeholder="Confirm Password" required autocomplete="off" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span><br />
-        <button class="button" type="submit">Submit</button>
+    <div style="text-align:center">
+        <img class="logo" src="~/Images/snhusearchlogo.png" />
+        <div style="text-align:center" class="signUpCenter">
+            <input class="input" type="text" id="userFName" asp-for="FirstName" placeholder="First Name" required />
+            <input class="input" type="text" id="userLName" asp-for="LastName" placeholder="Last Name" required /><br />
+            <input class="input" type="text" id="username" asp-for="UserName" placeholder="Username" required autocomplete="off" />
+            <input class="input" type="password" id="password" asp-for="Password" placeholder="Password" required autocomplete="off" /><br />
+            <input class="input" type="email" id="userEmail" asp-for="Email" placeholder="Email" required />
+            <input class="input" type="password" id="confirmpassword" asp-for="ConfirmPassword" placeholder="Confirm Password" required autocomplete="off" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span><br />
+            <button class="button" type="submit">Submit</button>
+        </div>
     </div>
 </form>
 @if (ViewBag.Message != null)

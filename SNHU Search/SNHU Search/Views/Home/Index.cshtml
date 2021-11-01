@@ -4,12 +4,13 @@
 <html>
 <head>
     <title>SNHU Search</title>
+    <link href='~/css/MainPage.css' rel='stylesheet'>
 </head>
-<div style="text-align:center">   
+<div class="searchDiv">
+    <button class="webConfigButton" type="button" name="configButton" onclick=" location.href = '@Url.Action("ConfigPage", "Home")'">Configure Websites</button>
     <p>Welcome to SNHU Search! A search engine that allows you to customize your search to fit your needs!</p>
-    <input form="search" name="searchBar" placeholder="Enter your search here" style="width:700px" />
-    <button type="submit" name="searchButton">Search</button>
-    <button type="button" name="configButton" onclick=" location.href = '@Url.Action("ConfigPage", "Home")'">Configure Websites</button>
+    <input class="input" form="search" name="searchBar" placeholder="Enter your search here"/>
+    <button class="button" type="submit" name="searchButton">Search</button>
 </div>
 
 
