@@ -9,6 +9,8 @@ namespace SNHU_Search.Models
 {
     public class ElasticManager
     {
+        private string elasticConnectionPost = "http://20.115.112.182:9200/test_index1/_doc";
+        private string elasticConnectionRequest = "http://20.115.112.182:9200/test_index1/_search?q={0}";
         public void addData(string keywords, string url)
         {
             HttpClient client = new HttpClient();
@@ -28,7 +30,7 @@ namespace SNHU_Search.Models
                 }
             }", System.Text.Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = client.PostAsync("http://20.115.112.182:9200/test_index1/_doc", content).Result;
+            HttpResponseMessage response = client.PostAsync(elasticConnectionPost, content).Result;
             if (response.IsSuccessStatusCode)
             {
                 Console.WriteLine("Got response");                
@@ -49,7 +51,7 @@ namespace SNHU_Search.Models
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri(String.Format("http://20.115.112.182:9200/test_index1/_search?q={0}", sKeywords)),
+                RequestUri = new Uri(String.Format(elasticConnectionRequest, sKeywords)),
                 Content = new StringContent(@"{
                     ""query"": {
                         ""match_all"": { }
