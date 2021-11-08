@@ -47,6 +47,14 @@ p{
     margin-left: 84%;
 }
 
+.webConfigButton:hover {
+    background-color: #003e85;
+}
+
+.webConfigButton:active {
+    background-color: #001E40;
+}
+
 .input {
     font-family: 'Segoe UI';
     border-radius: 16px;
