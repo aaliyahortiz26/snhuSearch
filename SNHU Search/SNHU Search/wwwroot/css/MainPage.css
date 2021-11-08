@@ -10,7 +10,7 @@ p{
     color:white;
 }
 
-.button {
+.searchButton {
     font-family: 'Segoe UI';
     border-radius: 15px;
     background-color: #607da2;
@@ -24,11 +24,11 @@ p{
     cursor: pointer;
 }
 
-.button:hover {
+.searchButton:hover {
     background-color: #003e85;
 }
 
-.button:active {
+.searchButton:active {
     background-color: #001E40;
 }
 
@@ -55,7 +55,7 @@ p{
     background-color: #001E40;
 }
 
-.input {
+.searchBarInput {
     font-family: 'Segoe UI';
     border-radius: 16px;
     width: 600px;
@@ -64,7 +64,7 @@ p{
     margin-top: 10px;
     padding-left: 15px;
     border: none;
-    margin-bottom:15px;
+    margin-bottom: 15px;
     margin-right: 5px;
 }
 
@@ -77,4 +77,3 @@ p{
     margin-right: -200px;
     margin-top: -17px;
 }
-
