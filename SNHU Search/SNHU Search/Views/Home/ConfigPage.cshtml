@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width" />
 </head>
 <body>
-    <form method="post" class="centered websiteInputContainer" enctype="multipart/form-data">
+    <form method="post" class="centered websiteInputContainer" enctype="multipart/form-data" asp-controller="Home" asp-action="UploadWebsites">
         <div class="fields">
             <br>
             <input asp-for="inputWebsite" id="websiteInput" type="text" placeholder="Enter website">
