@@ -11,10 +11,9 @@ namespace SNHU_Search.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ElasticManager _Manager = new ElasticManager();
         private readonly ILogger<HomeController> _logger;
-
-        private readonly DBManager _manager;
-        public HomeController(DBManager manager)
+        public HomeController(ILogger<HomeController> logger)
         {
             _manager = manager;
         }
@@ -23,7 +22,13 @@ namespace SNHU_Search.Controllers
         {
             return View();
         }
-     
+        public IActionResult SearchElastic(SearchModel Sm)
+        {
+            List<string> elastiSearchKeywordsList = new List<string>();
+            elastiSearchKeywordsList = _Manager.search(Sm.Keywords);
+            ViewData["elastiSearchKeywordsList"] = elastiSearchKeywordsList;
+            return View("Index");
+        }
         public IActionResult Privacy()
         {
             return View();
