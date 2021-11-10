@@ -1,32 +1,62 @@
-﻿body {
+﻿body, html {
     font: 18px;
     margin: 0;
+    background-color: #d8e0ee;
+}
+
+p {
+    margin-top: 2%;
+    text-align: center;
+    font-size: 24px;
+    font: bold;
+    color: black;
 }
 
 .centered {
     width: 100%;
-    display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-#websiteInput {
-    width: 50%;
-    text-align: left;
-    justify-content: center;
-    margin-left: 25%
+.websiteInput {
+    font-family: 'Segoe UI';
+    border-radius: 16px;
+    width: 60%;
+    height: 40px;
+    margin-top: 1%;
+    padding-left: 15px;
+    border: none;
+    margin-right: 1%;
 }
 
-.fields {
-    height: 10%;
-}
-
-#addWebsite {
-    margin-left: 43%;
-}
-
-p {
+.addWebsitesInputDiv {
     text-align: center;
+    height: 40%;
+    width: 115.67%;
+    margin-top: 4%;
+    margin-left: -8%
+}
+
+.addWebsiteButton {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    background-color: #607da2;
+    margin-top: 1%;
+    width: 180px;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+
+.addWebsiteButton:hover {
+    background-color: #003e85;
+}
+
+.addWebsiteButton:active {
+    background-color: #001E40;
 }
 
 .ListWebsites {
@@ -34,4 +64,5 @@ p {
     display: block;
     margin-left: auto;
     margin-right: auto;
+    margin-top: -2.5%;
 }
