@@ -18,8 +18,8 @@
         <div class="loginCenter">
             <input class="userLoginInputs" type="text" id="username" asp-for="UserName" placeholder="Username" required autocomplete="off" /><br />
             <input class="userLoginInputs" type="password" id="password" asp-for="Password" placeholder="Password" required autocomplete="off" /><br />
-            <button class="loginSignUpButton" type="submit">Login</button><br />
-            <button class="loginSignUpButton" type="button" onclick=" location.href = '@Url.Action("SignUp", "Login")'">Sign Up</button>
+            <button class="loginSignUpButton leftButton" type="submit">Login</button>
+            <button class="loginSignUpButton rightButton" type="button" onclick=" location.href = '@Url.Action("SignUp", "Login")'">Sign Up</button>
         </div>
     </form>
 </div>
