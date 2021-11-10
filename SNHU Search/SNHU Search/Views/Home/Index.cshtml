@@ -8,10 +8,12 @@
     <link href='~/css/MainPage.css' rel='stylesheet'>
 </head>
 <div class="searchDiv">
-    <button class="webConfigButton" type="button" name="configButton" onclick=" location.href = '@Url.Action("ConfigPage", "Home")'">Configure Websites</button>
-    <p>Welcome to SNHU Search! A search engine that allows you to customize your search to fit your needs!</p>
-    <input class="searchBarInput" form="search" name="searchBar" placeholder="Enter your search here"/>
-    <button class="searchButton" type="submit" name="searchButton">Search</button>
+    <form method="post" asp-controller="Home" asp-action="SearchElastic" enctype="multipart/form-data">
+        <button class="webConfigButton" type="button" name="configButton" onclick=" location.href = '@Url.Action("ConfigPage", "Home")'">Configure Websites</button>
+        <p>Welcome to SNHU Search! A search engine that allows you to customize your search to fit your needs!</p>
+        <input class="searchBarInput" asp-for="Keywords" placeholder="Enter your search here" />
+        <button class="searchButton" type="submit" name="searchButton">Search</button>
+    </form>
 </div>
 
 <div>
