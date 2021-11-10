@@ -66,8 +66,8 @@
 .snhuSearchLogo{
     position:center;
     margin:0;
-    width: 50%;
-    margin-top: 10%;
+    width: 30%;
+    margin-top: 5%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -89,9 +89,9 @@
 }
 
 .leftColumn {
-    width: 50%;
+    width: 60%;
     float: left;
 }
 .rightColumn {
-    width: 50%;
+    width: 60%;
 }

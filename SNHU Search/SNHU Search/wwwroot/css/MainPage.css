@@ -44,7 +44,7 @@ p{
     text-align: center;
     border: none;
     cursor: pointer;
-    margin-left: 84%;
+    margin-left: 80%;
 }
 
 .webConfigButton:hover {
@@ -60,7 +60,6 @@ p{
     border-radius: 16px;
     width: 600px;
     height: 40px;
-    opacity: 15;
     margin-top: 10px;
     padding-left: 15px;
     border: none;
@@ -72,8 +71,11 @@ p{
     text-align: center;
     background-color: #313740;
     height: 21%;
-    width: 173.5%;
-    margin-left: -37%;
-    margin-right: 300%;
+    width: 115.67%;
     margin-top: -17px;
+    margin-left:-8%
+}
+
+.formStyle {
+    width: 100%;
 }
