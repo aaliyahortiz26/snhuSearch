@@ -11,11 +11,12 @@ namespace SNHU_Search.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly DBManager _DBManager;
         private readonly ElasticManager _Manager = new ElasticManager();
         private readonly ILogger<HomeController> _logger;
         public HomeController(ILogger<HomeController> logger)
         {
-            _manager = manager;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -48,7 +49,7 @@ namespace SNHU_Search.Controllers
         [HttpPost]
         public IActionResult UploadWebsites(ConfigPageModel cm)
         {
-            _manager.SaveWebsite(cm.inputWebsite);
+            _DBManager.SaveWebsite(cm.inputWebsite);
             return RedirectToAction("ConfigPage");
         }
     }
