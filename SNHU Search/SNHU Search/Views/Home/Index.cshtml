@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SNHU_Search.Models.SearchModel
+@{
     Layout = Layout;
 }
 <html>
@@ -7,12 +8,31 @@
     <link href='~/css/MainPage.css' rel='stylesheet'>
 </head>
 <div class="searchDiv">
-    <button class="webConfigButton" type="button" name="configButton" onclick=" location.href = '@Url.Action("ConfigPage", "Home")'">Configure Websites</button>
-    <p>Welcome to SNHU Search! A search engine that allows you to customize your search to fit your needs!</p>
-    <input class="input" form="search" name="searchBar" placeholder="Enter your search here"/>
-    <button class="button" type="submit" name="searchButton">Search</button>
+    <form method="post" asp-controller="Home" asp-action="SearchElastic" enctype="multipart/form-data" class="formStyle">
+        <button class="webConfigButton" type="button" name="configButton" onclick=" location.href = '@Url.Action("ConfigPage", "Home")'">Configure Websites</button>
+        <p>Welcome to SNHU Search! A search engine that allows you to customize your search to fit your needs!</p>
+        <input class="searchBarInput" asp-for="Keywords" placeholder="Enter your search here" />
+        <button class="searchButton" type="submit" name="searchButton">Search</button>
+    </form>
 </div>
 
+<div>
+    @{
+        List<string> list = new List<string>();
+        list = ViewData["elastiSearchKeywordsList"] as List<string>;
+        @if (list != null)
+        {
+            for (int i = 0; i < list.Count(); i++)
+            {
+                <label style="font-size: 17px;">@list[i]</label>
+                @if (i % 1 == 0)
+                 {
+                      <br>   
+                 }
+            }
+        }
+    }
+</div>
 
 
 <body>

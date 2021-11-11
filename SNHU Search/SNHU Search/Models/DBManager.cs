@@ -48,7 +48,6 @@ namespace SNHU_Search.Models
 					SignUpM.Password = BCrypt.Net.BCrypt.HashPassword(SignUpM.Password);
 					SignUpM.ConfirmPassword = BCrypt.Net.BCrypt.HashPassword(SignUpM.ConfirmPassword);
 
-					// Inserting data into fields of database
 					MySqlCommand Query = conn.CreateCommand();
 					Query.CommandText = "insert into SNHUSearch.Accounts_tbl (firstname, lastname, username, email, password) VALUES (@firstname,@lastname, @username, @email, @password)";
 					Query.Parameters.AddWithValue("@firstname", SignUpM.FirstName);
@@ -56,7 +55,6 @@ namespace SNHU_Search.Models
 					Query.Parameters.AddWithValue("@username", SignUpM.UserName);
 					Query.Parameters.AddWithValue("@email", SignUpM.Email);
 					Query.Parameters.AddWithValue("@password", SignUpM.Password);
-					//Query.Parameters.AddWithValue("@confirmpassword", SignUpM.ConfirmPassword);
 
 					Query.ExecuteNonQuery();
 				}
@@ -116,7 +114,7 @@ namespace SNHU_Search.Models
 					// Read the DB values:
 					Object[] values = new object[2];
 					int fieldCount = reader.GetValues(values);
-					if (2 == fieldCount) // Asked for 2 values, so expecting 2 values!
+					if (2 == fieldCount) 
 					{
 						// Successfully retrieved the user from the DB:
 						userid = Convert.ToInt32(values[0]);
@@ -124,6 +122,11 @@ namespace SNHU_Search.Models
 
 						bRet = true;
 					}
+					else
+                    {
+						// User does not exist
+						bRet = false;
+                    }
 				}
 				reader.Close();
 			}
@@ -161,6 +164,10 @@ namespace SNHU_Search.Models
 						{
 							bRet = true;
 						}
+					}
+					else
+                    {
+						bRet = false;
 					}
 				}
 				reader.Close();
