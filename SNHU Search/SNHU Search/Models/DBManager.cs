@@ -168,7 +168,7 @@ namespace SNHU_Search.Models
 			return bRet;
 		}
 
-		public bool SaveWebsite(string websiteURL)
+		public bool SaveWebsite(string websiteURL, string username)
         {
 			using (MySqlConnection conn = GetConnection())
             {
@@ -210,7 +210,7 @@ namespace SNHU_Search.Models
 
 						term.Parameters.AddWithValue("@SavedWebsites", SavedWebsites);
 						term.CommandText = "UPDATE Accounts_tbl SET SavedWebsites = @SavedWebsites WHERE username='esseJ'";
-
+						SaveToUser(newCount, username);
 
 						reader.Close();
 						return false;
@@ -219,8 +219,21 @@ namespace SNHU_Search.Models
 			}
         }
 
-		public bool SaveToUser()
+		private bool SaveToUser(int newWebId, string username)
         {
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				MySqlCommand term = conn.CreateCommand();
+
+				// Pull current websites, and then add
+				term.Parameters.AddWithValue("@username", username);
+				term.CommandText = "select SavedWebsites FROM Accounts_tbl WHERE username='@username'";
+
+				MySqlDataReader reader = term.ExecuteReader();
+				Object[] values = new object[2];
+				reader.GetValues(values);
+			}
 
 			return false;
         }
