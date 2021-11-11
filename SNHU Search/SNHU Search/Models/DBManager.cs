@@ -253,22 +253,27 @@ namespace SNHU_Search.Models
 				term.CommandText = "select SavedWebsites FROM Accounts_tbl WHERE username=@username";
 				string savedWebsites = term.ExecuteScalar().ToString();
 
-				List<string> unformattedList = new List<string>();
+				List<string> formattedList = new List<string>();
 				string currentWebId = "";
-				for (int i = 0; i < savedWebsites.Length; i++)
+				for (int i = 0; i < savedWebsites.Length - 1; i++)
                 {
 					if (savedWebsites[i + 1] == '/')
                     {
 						// Add number to be converted
-						unformattedList.Add(ConvertIdToName(currentWebId));
+						currentWebId += savedWebsites[i];
+						formattedList.Add(ConvertIdToName(currentWebId));
+						currentWebId = "";
                     }
 					else
                     {
 						// Keep going, not done
-						currentWebId += savedWebsites[i];
+						if (savedWebsites[i] == '/')
+							continue;
+						else
+							currentWebId += savedWebsites[i];
                     }
                 }
-				return unformattedList;
+				return formattedList;
 			}
 		}
 
