@@ -11,22 +11,26 @@ namespace SNHU_Search.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly DBManager _DBManager;
-        private readonly ElasticManager _Manager = new ElasticManager();
-        private readonly ILogger<HomeController> _logger;
-        public HomeController(ILogger<HomeController> logger)
+        private readonly DBManager _manager;
+        private readonly ElasticManager _ManagerElastic = new ElasticManager();
+        public HomeController(DBManager manager)
         {
-            _logger = logger;
+            _manager = manager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string? name)
         {
+            if (_manager.Username == null)
+            {
+                _manager.Username = name;
+            }
+            ViewData["username"] = _manager.Username;
             return View();
         }
         public IActionResult SearchElastic(SearchModel Sm)
         {
             List<string> elastiSearchKeywordsList = new List<string>();
-            elastiSearchKeywordsList = _Manager.search(Sm.Keywords);
+            elastiSearchKeywordsList = _ManagerElastic.search(Sm.Keywords);
             ViewData["elastiSearchKeywordsList"] = elastiSearchKeywordsList;
             return View("Index");
         }
@@ -37,6 +41,10 @@ namespace SNHU_Search.Controllers
 
         public IActionResult ConfigPage()
         {
+            List<string> userWebsitesList = new List<string>();
+
+            userWebsitesList = _manager.RetrieveUserWebsites(_manager.Username);
+            ViewData["userWebsitesList"] = userWebsitesList;
             return View();
         }
 
@@ -49,7 +57,7 @@ namespace SNHU_Search.Controllers
         [HttpPost]
         public IActionResult UploadWebsites(ConfigPageModel cm)
         {
-            _manager.SaveWebsite(cm.inputWebsite, "esseJ");
+            _manager.SaveWebsite(cm.inputWebsite, _manager.Username);
             return RedirectToAction("ConfigPage");
         }
     }

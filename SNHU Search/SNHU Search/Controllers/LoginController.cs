@@ -37,7 +37,7 @@ namespace SNHU_Search.Controllers
                 {
                     HttpContext.Session.SetString("userid", nUserID.ToString());
                     _manager.LoadUser(loginUser, ref nUserID, loginUser.UserName);
-                    return View("~/Views/Home/Index.cshtml");
+                    return RedirectToAction("Index", "Home", new { name = _manager.Username });
                 }
                 else
                 {
