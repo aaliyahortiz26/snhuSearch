@@ -49,7 +49,7 @@ namespace SNHU_Search.Controllers
         [HttpPost]
         public IActionResult UploadWebsites(ConfigPageModel cm)
         {
-            _DBManager.SaveWebsite(cm.inputWebsite);
+            _manager.SaveWebsite(cm.inputWebsite, "esseJ");
             return RedirectToAction("ConfigPage");
         }
     }
