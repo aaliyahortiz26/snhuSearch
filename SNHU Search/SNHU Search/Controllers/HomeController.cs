@@ -11,22 +11,24 @@ namespace SNHU_Search.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly DBManager _DBManager;
-        private readonly ElasticManager _Manager = new ElasticManager();
-        private readonly ILogger<HomeController> _logger;
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
+        private readonly DBManager _manager;
+        private readonly ElasticManager _ManagerElastic = new ElasticManager();
+        public HomeController(DBManager manager)
+        {        
+            _manager = manager;
         }
 
         public IActionResult Index()
         {
+            string key = "LoginUserName";
+            var CookieValue = Request.Cookies[key];
+            ViewData["username"] = CookieValue;
             return View();
         }
         public IActionResult SearchElastic(SearchModel Sm)
         {
             List<string> elastiSearchKeywordsList = new List<string>();
-            elastiSearchKeywordsList = _Manager.search(Sm.Keywords);
+            elastiSearchKeywordsList = _ManagerElastic.search(Sm.Keywords);
             ViewData["elastiSearchKeywordsList"] = elastiSearchKeywordsList;
             return View("Index");
         }
@@ -37,6 +39,12 @@ namespace SNHU_Search.Controllers
 
         public IActionResult ConfigPage()
         {
+            List<string> userWebsitesList = new List<string>();
+            string key = "LoginUserName";
+            var CookieValue = Request.Cookies[key];
+
+            userWebsitesList = _manager.RetrieveUserWebsites(CookieValue);
+            ViewData["userWebsitesList"] = userWebsitesList;
             return View();
         }
 
@@ -49,7 +57,9 @@ namespace SNHU_Search.Controllers
         [HttpPost]
         public IActionResult UploadWebsites(ConfigPageModel cm)
         {
-            _manager.SaveWebsite(cm.inputWebsite, "esseJ");
+            string key = "LoginUserName";
+            var CookieValue = Request.Cookies[key];
+            _manager.SaveWebsite(cm.inputWebsite, CookieValue);
             return RedirectToAction("ConfigPage");
         }
     }

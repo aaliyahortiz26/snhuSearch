@@ -37,7 +37,15 @@ namespace SNHU_Search.Controllers
                 {
                     HttpContext.Session.SetString("userid", nUserID.ToString());
                     _manager.LoadUser(loginUser, ref nUserID, loginUser.UserName);
-                    return View("~/Views/Home/Index.cshtml");
+                                       
+                    string key = "LoginUserName";
+                    string value = loginUser.UserName;
+
+                    CookieOptions options = new CookieOptions();
+                    options.Expires = DateTime.Now.AddDays(7);
+                    Response.Cookies.Append(key, value, options);
+
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -52,7 +60,8 @@ namespace SNHU_Search.Controllers
         public IActionResult SignUp()
         {
             return View();
-        }
+        }       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddUser(SignupModel SignUpM)
