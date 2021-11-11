@@ -10,7 +10,7 @@ p{
     color:white;
 }
 
-.button {
+.searchButton {
     font-family: 'Segoe UI';
     border-radius: 15px;
     background-color: #607da2;
@@ -24,11 +24,11 @@ p{
     cursor: pointer;
 }
 
-.button:hover {
+.searchButton:hover {
     background-color: #003e85;
 }
 
-.button:active {
+.searchButton:active {
     background-color: #001E40;
 }
 
@@ -44,29 +44,38 @@ p{
     text-align: center;
     border: none;
     cursor: pointer;
-    margin-left: 84%;
+    margin-left: 80%;
 }
 
-.input {
+.webConfigButton:hover {
+    background-color: #003e85;
+}
+
+.webConfigButton:active {
+    background-color: #001E40;
+}
+
+.searchBarInput {
     font-family: 'Segoe UI';
     border-radius: 16px;
     width: 600px;
     height: 40px;
-    opacity: 15;
     margin-top: 10px;
     padding-left: 15px;
     border: none;
-    margin-bottom:15px;
+    margin-bottom: 15px;
     margin-right: 5px;
 }
 
 .searchDiv {
     text-align: center;
     background-color: #313740;
-    height: 200px;
-    width: 115.33%;
-    margin-left: -85px;
-    margin-right: -200px;
+    height: 21%;
+    width: 115.67%;
     margin-top: -17px;
+    margin-left:-8%
 }
 
+.formStyle {
+    width: 100%;
+}

@@ -175,6 +175,62 @@ namespace SNHU_Search.Models
 			return bRet;
 		}
 
+		public bool SaveWebsite(string websiteURL)
+        {
+			using (MySqlConnection conn = GetConnection())
+            {
+				conn.Open();
+				MySqlCommand term = conn.CreateCommand();
+
+				// Let's make sure the website doesn't already exist first
+				term.Parameters.AddWithValue("@websiteURL", websiteURL);
+				term.CommandText = "SELECT EXISTS(SELECT * FROM SNHUSearch.websites WHERE url = @websiteURL)";
+				int alreadyExists = Convert.ToInt32(term.ExecuteScalar());
+
+				if (alreadyExists > 0)
+                {
+					// Already is on list
+					return true;
+                } 
+				else
+                {
+					// Get current highest ID of website
+					term.CommandText = "SELECT MAX(urlID) FROM websites";
+					int newCount = Convert.ToInt32(term.ExecuteScalar());
+					newCount++;
+
+					// Add the website to the list with a new ID
+					term.Parameters.AddWithValue("@newCount", newCount);
+					term.CommandText = "INSERT INTO SNHUSearch.websites (url, urlID) VALUES (@websiteURL, @newCount)";
+
+					MySqlDataReader reader = term.ExecuteReader();
+					if (reader.Read()) // Successful insert into column
+					{
+						reader.Close();
+						return true;
+					}
+					else
+					{
+						// Operand failed
+						reader.Close();
+						return false;
+					}
+				}
+			}
+        }
+
+		public void RetrieveWebsites()
+		{
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				MySqlCommand term = conn.CreateCommand();
+				/*
+				 * Required: A list of numbers for the ID's for the websites to pull per user
+				 */
+
+			}
+		}
 		#endregion
 	}
 }

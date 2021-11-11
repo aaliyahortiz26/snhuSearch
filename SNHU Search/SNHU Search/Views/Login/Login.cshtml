@@ -13,13 +13,13 @@
 </head>
 
 <div style="text-align:center">
-    <img class="logo" src="~/Images/snhusearchlogo.png" />
+    <img class="snhuSearchLogo" src="~/Images/snhusearchlogo.png" />
     <form asp-action="Login" method="post">
         <div class="loginCenter">
-            <input class="input" type="text" id="username" asp-for="UserName" placeholder="Username" required autocomplete="off" /><br />
-            <input class="input" type="password" id="password" asp-for="Password" placeholder="Password" required autocomplete="off" /><br />
-            <button class="button" type="submit">Login</button><br />
-            <button class="button" type="button" onclick=" location.href = '@Url.Action("SignUp", "Login")'">Sign Up</button>
+            <input class="userLoginInputs" type="text" id="username" asp-for="UserName" placeholder="Username" required autocomplete="off" /><br />
+            <input class="userLoginInputs" type="password" id="password" asp-for="Password" placeholder="Password" required autocomplete="off" /><br />
+            <button class="loginSignUpButton leftButton" type="submit">Login</button>
+            <button class="loginSignUpButton rightButton" type="button" onclick=" location.href = '@Url.Action("SignUp", "Login")'">Sign Up</button>
         </div>
     </form>
 </div>

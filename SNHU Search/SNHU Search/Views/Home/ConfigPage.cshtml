@@ -11,18 +11,16 @@
     <meta name="viewport" content="width=device-width" />
 </head>
 <body>
-    <form method="post" class="centered websiteInputContainer" enctype="multipart/form-data">
-        <div class="fields">
-            <br>
-            <input asp-for="inputWebsite" id="websiteInput" type="text" placeholder="Enter website">
-            <br />
-            <button id="addWebsite" type="submit">Add Website</button>
-            <button class="HomeButton" type="button" onclick="location.href='@Url.Action("Index", "Home")'">Home</button>
+    <form method="post" class="centered" enctype="multipart/form-data" asp-controller="Home" asp-action="UploadWebsites">
+        <div class="addWebsitesInputDiv">
+            <p>Add your favorite websites here for easy accessibilty</p>
+            <input asp-for="inputWebsite" class="websiteInput" type="text" placeholder="Enter website here">
+            <button class="addWebsiteButton" type="submit">Add Website</button>
         </div>
     </form>
     <div class="centered">
         <div class="ListWebsites">
-            <br />
+            <br/>
             <p>
                 <label id="exampleWebsite">List of websites</label>
             </p>

@@ -11,6 +11,7 @@ namespace SNHU_Search.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly DBManager _DBManager;
         private readonly ElasticManager _Manager = new ElasticManager();
         private readonly ILogger<HomeController> _logger;
         public HomeController(ILogger<HomeController> logger)
@@ -34,15 +35,22 @@ namespace SNHU_Search.Controllers
             return View();
         }
 
+        public IActionResult ConfigPage()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult ConfigPage()
+        [HttpPost]
+        public IActionResult UploadWebsites(ConfigPageModel cm)
         {
-            return View();
+            _DBManager.SaveWebsite(cm.inputWebsite);
+            return RedirectToAction("ConfigPage");
         }
     }
 }
