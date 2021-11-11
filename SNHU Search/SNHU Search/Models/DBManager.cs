@@ -204,16 +204,9 @@ namespace SNHU_Search.Models
 					}
 					else
 					{
-						string SavedWebsites = term.CommandText = "selected SavedWebsites FROM Accounts_tbl WHERE username='esseJ'";
-						reader = term.ExecuteReader(); // Should fetch the string 
-						SavedWebsites += Convert.ToString(newCount) + "/"; // Adds the new ID
-
-						term.Parameters.AddWithValue("@SavedWebsites", SavedWebsites);
-						term.CommandText = "UPDATE Accounts_tbl SET SavedWebsites = @SavedWebsites WHERE username='esseJ'";
-						SaveToUser(newCount, username);
-
 						reader.Close();
-						return false;
+						SaveToUser(newCount, username);
+						return true;
 					}
 				}
 			}
@@ -228,14 +221,26 @@ namespace SNHU_Search.Models
 
 				// Pull current websites, and then add
 				term.Parameters.AddWithValue("@username", username);
-				term.CommandText = "select SavedWebsites FROM Accounts_tbl WHERE username='@username'";
-
+				term.CommandText = "select SavedWebsites FROM SNHUSearch.Accounts_tbl WHERE username=@username";
 				MySqlDataReader reader = term.ExecuteReader();
+				
 				Object[] values = new object[2];
-				reader.GetValues(values);
-			}
+				if (reader.Read()) // Will not run if there is a null user
+                {
+					reader.GetValues(values);
+				}
 
-			return false;
+
+				string savedWebsites = values[0].ToString();
+				savedWebsites += (Convert.ToString(newWebId) + "/");
+				reader.Close();
+
+				term.Parameters.AddWithValue("@SavedWebsites", savedWebsites);
+				term.CommandText = "UPDATE SNHUSearch.Accounts_tbl SET SavedWebsites = @SavedWebsites WHERE username=@username";
+				term.ExecuteReader();
+
+				return true;
+			}
         }
 
 		public List<string> RetrieveUserWebsites(string username)
