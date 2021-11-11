@@ -12,7 +12,6 @@ namespace SNHU_Search.Models
     public class DBManager
     {
         public string ConnectionString { get; set; }
-		public string Username;
         public DBManager(string connectionString)
         {
             this.ConnectionString = connectionString;
@@ -119,7 +118,6 @@ namespace SNHU_Search.Models
 						// Successfully retrieved the user from the DB:
 						userid = Convert.ToInt32(values[0]);
 						dbUser.Password = values[1].ToString();
-						Username = sUsername;
 						bRet = true;
 					}
 					else

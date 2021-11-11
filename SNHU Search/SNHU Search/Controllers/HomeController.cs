@@ -14,17 +14,15 @@ namespace SNHU_Search.Controllers
         private readonly DBManager _manager;
         private readonly ElasticManager _ManagerElastic = new ElasticManager();
         public HomeController(DBManager manager)
-        {
+        {        
             _manager = manager;
         }
 
-        public IActionResult Index(string? name)
+        public IActionResult Index()
         {
-            if (_manager.Username == null)
-            {
-                _manager.Username = name;
-            }
-            ViewData["username"] = _manager.Username;
+            string key = "LoginUserName";
+            var CookieValue = Request.Cookies[key];
+            ViewData["username"] = CookieValue;
             return View();
         }
         public IActionResult SearchElastic(SearchModel Sm)
@@ -42,8 +40,10 @@ namespace SNHU_Search.Controllers
         public IActionResult ConfigPage()
         {
             List<string> userWebsitesList = new List<string>();
+            string key = "LoginUserName";
+            var CookieValue = Request.Cookies[key];
 
-            userWebsitesList = _manager.RetrieveUserWebsites(_manager.Username);
+            userWebsitesList = _manager.RetrieveUserWebsites(CookieValue);
             ViewData["userWebsitesList"] = userWebsitesList;
             return View();
         }
@@ -57,7 +57,9 @@ namespace SNHU_Search.Controllers
         [HttpPost]
         public IActionResult UploadWebsites(ConfigPageModel cm)
         {
-            _manager.SaveWebsite(cm.inputWebsite, _manager.Username);
+            string key = "LoginUserName";
+            var CookieValue = Request.Cookies[key];
+            _manager.SaveWebsite(cm.inputWebsite, CookieValue);
             return RedirectToAction("ConfigPage");
         }
     }
