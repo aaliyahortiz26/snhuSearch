@@ -211,10 +211,6 @@ namespace SNHU_Search.Models
 						term.Parameters.AddWithValue("@SavedWebsites", SavedWebsites);
 						term.CommandText = "UPDATE Accounts_tbl SET SavedWebsites = @SavedWebsites WHERE username='esseJ'";
 
-						/* TEMP CODE UNTIL FRONT END FOR RETRIEVE ADDED */
-						List<String> temp = RetrieveWebsites();
-
-						/* END TEMP CODE */
 
 						reader.Close();
 						return false;
@@ -246,7 +242,7 @@ namespace SNHU_Search.Models
 					if (savedWebsites[i + 1] == '/')
                     {
 						// Add number to be converted
-
+						unformattedList.Add(ConvertIdToName(currentWebId));
                     }
 					else
                     {
@@ -254,14 +250,14 @@ namespace SNHU_Search.Models
 						currentWebId += savedWebsites[i];
                     }
                 }
-
+				return unformattedList;
 			}
-			return (List<string>)Enumerable.Empty<string>();
 		}
 
 		// Internal class to convert ID value to matching value on website table list and extract weblist name
 		private string ConvertIdToName(string IdValue)
 		{
+			// ID value will be something like '100' leading to the 100th index in the websites table, and we will return that value
 			using (MySqlConnection conn = GetConnection())
 			{
 				conn.Open();
@@ -269,67 +265,10 @@ namespace SNHU_Search.Models
 				// find matching ID in global web list:
 				term.Parameters.AddWithValue("@urlID", IdValue);
 				term.CommandText = "SELECT url FROM SNHUSearch.websites WHERE urlID = @urlID";
-				MySqlDataReader reader = term.ExecuteScalar();
+				string fetchedWebsite = term.ExecuteScalar().ToString();
 
+				return fetchedWebsite;
 			}
-
-			return string.Empty;
-		}
-
-		// Retrieves users saved websites via ID
-		public List<string> RetrieveWebsites() // User website ID's are stored in a string 
-		{
-			using (MySqlConnection conn = GetConnection())
-			{
-				conn.Open();
-				MySqlCommand term = conn.CreateCommand();
-				/*
-				 * Required: A list of numbers for the ID's for the websites to pull per user
-				 */
-				string SavedWebsites = term.CommandText = "selected SavedWebsites FROM Accounts_tbl WHERE username='esseJ'";
-
-
-				if (SavedWebsites == string.Empty || SavedWebsites == null)
-                {
-					return (List<string>)Enumerable.Empty<string>();
-				}
-				else
-                {
-					string unformattedWebList = SavedWebsites;
-					List<string> formattedWebList = new List<string>();
-					
-					Object[] values = new object[2];
-					string currentIdValue = "";
-
-					for (int i = 0; i < unformattedWebList.Length; i++)
-                    {
-						if (unformattedWebList[i + 1] == '/')
-                        {
-							// find matching ID in global web list:
-							term.Parameters.AddWithValue("@urlID", currentIdValue);
-							term.CommandText = "SELECT url FROM SNHUSearch.websites WHERE urlID = @urlID";
-							MySqlDataReader reader = term.ExecuteReader();
-							if (reader.Read())
-                            {
-								values[0] = null;
-								reader.GetValues(values);
-								formattedWebList.Add(Convert.ToString(values[0]));
-                            } 
-							else
-                            {
-								// Operand failed
-								return (List<string>)Enumerable.Empty<string>();
-							}
-							currentIdValue = string.Empty;
-                        } 
-						else
-                        {
-							currentIdValue += SavedWebsites[i];
-                        }
-                    }
-                }
-			}
-			return (List<string>)Enumerable.Empty<string>();
 		}
 		#endregion
 	}
