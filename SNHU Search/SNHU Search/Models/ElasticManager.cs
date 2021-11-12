@@ -9,9 +9,11 @@ namespace SNHU_Search.Models
 {
     public class ElasticManager
     {
-        private string elasticConnectionPost = "http://20.115.112.182:9200/test_index1/_doc";
+        //private string elasticConnectionPost = "http://20.115.112.182:9200/test_index1/_doc";
+        private string elasticConnectionPost = "http://20.115.112.182:9200/";
+
         private string elasticConnectionRequest = "http://20.115.112.182:9200/test_index1/_search?q={0}";
-        public void addData(string keywords, string url)
+        public void addData(string username, string keywords, string url)
         {
             HttpClient client = new HttpClient();
             
@@ -30,7 +32,7 @@ namespace SNHU_Search.Models
                 }
             }", System.Text.Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = client.PostAsync(elasticConnectionPost, content).Result;
+            HttpResponseMessage response = client.PostAsync(elasticConnectionPost + username + "/_doc", content).Result;
             if (response.IsSuccessStatusCode)
             {
                 Console.WriteLine("Got response");                

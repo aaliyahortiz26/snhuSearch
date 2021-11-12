@@ -60,6 +60,7 @@ namespace SNHU_Search.Controllers
             string key = "LoginUserName";
             var CookieValue = Request.Cookies[key];
             _manager.SaveWebsite(cm.inputWebsite, CookieValue);
+            _ManagerElastic.addData(CookieValue.ToLower(), "test", cm.inputWebsite);
             return RedirectToAction("ConfigPage");
         }
     }
