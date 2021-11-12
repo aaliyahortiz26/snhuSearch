@@ -2,19 +2,23 @@
 @{
     Layout = Layout;
 }
-<html>
+
 <head>
     <title>SNHU Search</title>
     <link href='~/css/MainPage.css' rel='stylesheet'>
 </head>
 <div class="searchDiv">
-    <form method="post" asp-controller="Home" asp-action="SearchElastic" enctype="multipart/form-data" class="formStyle">
+    <form method="post" asp-controller="Home" asp-action="SearchElastic" enctype="multipart/form-data">
         @{
             string username;
             username = ViewData["userName"] as string;
             if (username != null)
             {
                 <button class="webConfigButton" type="button" name="configButton" onclick=" location.href = '@Url.Action("ConfigPage", "Home")'">Configure Websites</button>
+            }
+            else
+            {
+                <button class="webConfigButtonDisabled" type="button" name="configButtonDisabled" onclick=" location.href = '@Url.Action("ConfigPage", "Home")'"disabled>Configure Websites</button>
             }
         }
 
@@ -50,4 +54,3 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
     <script src="@Url.Content("~/js/Tutorial.jsx")"></script>
 </body>
-</html>
