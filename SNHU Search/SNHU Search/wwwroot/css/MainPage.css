@@ -54,6 +54,19 @@ p{
 .webConfigButton:active {
     background-color: #001E40;
 }
+.webConfigButtonDisabled {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    background-color: dimgray;
+    margin-top: 20px;
+    width: 180px;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    margin-left: 80%;
+}
 
 .searchBarInput {
     font-family: 'Segoe UI';
@@ -71,11 +84,7 @@ p{
     text-align: center;
     background-color: #313740;
     height: 21%;
-    width: 115.67%;
+    width: 175.67%;
     margin-top: -17px;
-    margin-left:-8%
-}
-
-.formStyle {
-    width: 100%;
+    margin-left:-37%
 }

@@ -5,7 +5,8 @@ a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
-  margin-left: -4%;
+  margin-left: -31%;
+  margin-right: 2%;
 }
 
 /* Provide sufficient contrast against white background */
