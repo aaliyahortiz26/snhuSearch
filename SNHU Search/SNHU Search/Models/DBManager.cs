@@ -172,7 +172,9 @@ namespace SNHU_Search.Models
 			}
 			return bRet;
 		}
+		#endregion
 
+		#region Save/ Retrieve User's Websites
 		public bool SaveWebsite(string websiteURL, string username)
         {
 			using (MySqlConnection conn = GetConnection())
