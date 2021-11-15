@@ -16,10 +16,21 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between buttonFormat">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
+                            @{
+                                string username;
+                                username = ViewData["userName"] as string;
+                                if (username != null)
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Signout" asp-action="Index">Logout</a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Login</a> 
+                                }
+                            }
                         </li>
                     </ul>
                 </div>
