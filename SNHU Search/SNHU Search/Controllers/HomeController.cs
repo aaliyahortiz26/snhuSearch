@@ -13,6 +13,7 @@ namespace SNHU_Search.Controllers
     {
         private readonly DBManager _manager;
         private readonly ElasticManager _ManagerElastic = new ElasticManager();
+        private string cookieKey = "LoginUserName";
         public HomeController(DBManager manager)
         {        
             _manager = manager;
@@ -20,15 +21,15 @@ namespace SNHU_Search.Controllers
 
         public IActionResult Index()
         {
-            string key = "LoginUserName";
-            var CookieValue = Request.Cookies[key];
+            var CookieValue = Request.Cookies[cookieKey];
             ViewData["username"] = CookieValue;
             return View();
         }
         public IActionResult SearchElastic(SearchModel Sm)
-        {
+        {            
             List<string> elastiSearchKeywordsList = new List<string>();
-            elastiSearchKeywordsList = _ManagerElastic.search(Sm.Keywords);
+            var CookieValue = Request.Cookies[cookieKey];
+            elastiSearchKeywordsList = _ManagerElastic.search(CookieValue.ToLower(), Sm.Keywords);
             ViewData["elastiSearchKeywordsList"] = elastiSearchKeywordsList;
             return View("Index");
         }
@@ -40,8 +41,7 @@ namespace SNHU_Search.Controllers
         public IActionResult ConfigPage()
         {
             List<string> userWebsitesList = new List<string>();
-            string key = "LoginUserName";
-            var CookieValue = Request.Cookies[key];
+            var CookieValue = Request.Cookies[cookieKey];
 
             userWebsitesList = _manager.RetrieveUserWebsites(CookieValue);
             ViewData["userWebsitesList"] = userWebsitesList;
@@ -57,8 +57,7 @@ namespace SNHU_Search.Controllers
         [HttpPost]
         public IActionResult UploadWebsites(ConfigPageModel cm)
         {
-            string key = "LoginUserName";
-            var CookieValue = Request.Cookies[key];
+            var CookieValue = Request.Cookies[cookieKey];
             _manager.SaveWebsite(cm.inputWebsite, CookieValue);
             _ManagerElastic.addData(CookieValue.ToLower(), "test", cm.inputWebsite);
             return RedirectToAction("ConfigPage");
