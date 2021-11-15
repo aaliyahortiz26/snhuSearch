@@ -44,7 +44,8 @@ p{
     text-align: center;
     border: none;
     cursor: pointer;
-    margin-left: 80%;
+    float: right;
+    margin-right: 2%;
 }
 
 .webConfigButton:hover {
@@ -65,7 +66,8 @@ p{
     font-size: 16px;
     text-align: center;
     border: none;
-    margin-left: 80%;
+    float: right;
+    margin-right: 2%;
 }
 
 .searchBarInput {
@@ -84,7 +86,10 @@ p{
     text-align: center;
     background-color: #313740;
     height: 21%;
-    width: 175.67%;
+    width: 100%;
     margin-top: -17px;
-    margin-left:-37%
+}
+
+form {
+    width: 100%;
 }
