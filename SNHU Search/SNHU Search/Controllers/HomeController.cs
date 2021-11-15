@@ -26,10 +26,11 @@ namespace SNHU_Search.Controllers
             return View();
         }
         public IActionResult SearchElastic(SearchModel Sm)
-        {            
+        {
             List<string> elastiSearchKeywordsList = new List<string>();
             var CookieValue = Request.Cookies[cookieKey];
             elastiSearchKeywordsList = _ManagerElastic.search(CookieValue.ToLower(), Sm.Keywords);
+            ViewData["username"] = CookieValue;
             ViewData["elastiSearchKeywordsList"] = elastiSearchKeywordsList;
             return View("Index");
         }
@@ -45,6 +46,8 @@ namespace SNHU_Search.Controllers
 
             userWebsitesList = _manager.RetrieveUserWebsites(CookieValue);
             ViewData["userWebsitesList"] = userWebsitesList;
+            // display logout button on config page
+            ViewData["username"] = CookieValue;
             return View();
         }
 
