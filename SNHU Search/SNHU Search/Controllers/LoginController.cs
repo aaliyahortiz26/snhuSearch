@@ -11,6 +11,7 @@ namespace SNHU_Search.Controllers
     public class LoginController : Controller
     {
         private readonly DBManager _manager;
+        private string Cookiekey = "LoginUserName";
         public LoginController(DBManager manager)
         {
             _manager = manager;
@@ -89,6 +90,15 @@ namespace SNHU_Search.Controllers
                 }
             }
             return View("~/Views/Login/SignUp.cshtml");
+        }
+        public IActionResult Logout()
+        {
+
+            CookieOptions options = new CookieOptions();
+            options.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Append(Cookiekey, "ExpireCookie", options);
+
+            return View("~/Views/Home/Index.cshtml");
         }
     }
 }
