@@ -28,8 +28,17 @@ namespace SNHU_Search.Controllers
         public IActionResult SearchElastic(SearchModel Sm)
         {
             List<string> elastiSearchKeywordsList = new List<string>();
+            string username;
             var CookieValue = Request.Cookies[cookieKey];
-            elastiSearchKeywordsList = _ManagerElastic.search(CookieValue.ToLower(), Sm.Keywords);
+            if (CookieValue == null)
+            {
+                username = "";  
+            }
+            else
+            {
+                username = CookieValue.ToLower();
+            }    
+            elastiSearchKeywordsList = _ManagerElastic.search(username, Sm.Keywords);
             ViewData["username"] = CookieValue;
             ViewData["elastiSearchKeywordsList"] = elastiSearchKeywordsList;
             return View("Index");
