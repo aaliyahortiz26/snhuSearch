@@ -14,7 +14,7 @@ namespace SNHU_Search.Models
         public void addData(string username, string keywords, string url)
         {
             HttpClient client = new HttpClient();
-            
+
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
             var content = new StringContent(@"{
@@ -33,7 +33,7 @@ namespace SNHU_Search.Models
             HttpResponseMessage response = client.PostAsync(elasticConnection + username + "/_doc", content).Result;
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Got response");                
+                Console.WriteLine("Got response");
             }
             else
             {
@@ -83,9 +83,52 @@ namespace SNHU_Search.Models
             {
                 Console.WriteLine("Failed - {0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
             }
-           
+
             client.Dispose();
             return UrlKeywordsList;
+        }
+
+
+        public void removeData(string username, string website)
+        {
+            List<string> UrlKeywordsList = new List<string>();
+
+            HttpClient client = new HttpClient();
+
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(String.Format(elasticConnection + username + "/_search?q={0}", website)),
+                Content = new StringContent(@"{
+                    ""query"": {
+                        ""match_all"": { }
+                    }
+                }", System.Text.Encoding.UTF8, "application/json"),
+            };
+
+            HttpResponseMessage response = client.SendAsync(request).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Success");
+                using (HttpContent content = response.Content)
+                {
+                    var json = content.ReadAsStringAsync().Result;
+                    dynamic esResults = JsonConvert.DeserializeObject(json);
+                    int numHits = (int)esResults["hits"]["total"]["value"].Value;
+                    var hitsList = esResults["hits"]["hits"];
+                    for (int i = 0; i < numHits; i++)
+                    {
+                        // returns the id of the hit
+                        var id = hitsList[i]["_id"];
+                        var esTags = hitsList[i]["_source"]["mappings"]["properties"]["tags"];                   
+                        var Url = esTags["url"];                  
+                        if (Url == website)
+                        {
+                            client.DeleteAsync(elasticConnection + username + "/_doc/" + id);
+                        }
+                    }
+                }
+            }
         }
     }
 }

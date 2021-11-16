@@ -190,7 +190,7 @@ namespace SNHU_Search.Models
 				if (alreadyExists > 0)
                 {
 					// Already is on list
-					return true;
+					return false;
                 } 
 				else
                 {
@@ -200,8 +200,10 @@ namespace SNHU_Search.Models
 					newCount++;
 
 					// Add the website to the list with a new ID
-					term.Parameters.AddWithValue("@newCount", newCount);
-					term.CommandText = "INSERT INTO SNHUSearch.websites (url, urlID) VALUES (@websiteURL, @newCount)"; // Adds to global list
+					term.Parameters.AddWithValue("@userID", GetUserID(username));
+					term.Parameters.AddWithValue("@urlID", newCount);
+					
+					term.CommandText = "INSERT INTO SNHUSearch.websites (url, urlID, userID) VALUES (@websiteURL, @urlID, @userID)"; // Adds to global list
 
 					MySqlDataReader reader = term.ExecuteReader();
 					if (reader.Read()) // Successful insert into column
@@ -212,13 +214,41 @@ namespace SNHU_Search.Models
 					else
 					{
 						reader.Close();
-						SaveToUser(newCount, username);
+						//SaveToUser(newCount, username);
 						return true;
 					}
 				}
 			}
         }
 
+		public bool RemoveWebsite(string websiteURL, string username)
+		{
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				MySqlCommand term = conn.CreateCommand();
+
+				// Let's make sure the website doesn't already exist first
+				term.Parameters.AddWithValue("@websiteURL", websiteURL);
+				term.CommandText = "SELECT EXISTS(SELECT * FROM SNHUSearch.websites WHERE url = @websiteURL)";
+				int alreadyExists = Convert.ToInt32(term.ExecuteScalar());
+
+				if (alreadyExists > 0)
+				{					
+					term.CommandText = "Delete FROM SNHUSearch.websites WHERE url = @urlWeb AND userID = @userID";
+					term.Parameters.AddWithValue("@urlWeb", websiteURL);
+					term.Parameters.AddWithValue("@userID", GetUserID(username));
+					term.ExecuteNonQuery(); 
+					return true;
+				}
+				else
+				{
+					return false;					
+				}
+			}
+		}
+
+		/*
 		private bool SaveToUser(int newWebId, string username)
         {
 			using (MySqlConnection conn = GetConnection())
@@ -237,7 +267,6 @@ namespace SNHU_Search.Models
 					reader.GetValues(values);
 				}
 
-
 				string savedWebsites = values[0].ToString();
 				savedWebsites += (Convert.ToString(newWebId) + "/");
 				reader.Close();
@@ -248,14 +277,14 @@ namespace SNHU_Search.Models
 
 				return true;
 			}
-        }
+        }*/
 
 		public List<string> RetrieveUserWebsites(string username)
         {
 			using (MySqlConnection conn = GetConnection())
 			{
 				conn.Open();
-				MySqlCommand term = conn.CreateCommand();
+				/*MySqlCommand term = conn.CreateCommand();
 				term.Parameters.AddWithValue("@username", username);
 				term.CommandText = "select SavedWebsites FROM Accounts_tbl WHERE username=@username";
 				string savedWebsites = term.ExecuteScalar().ToString();
@@ -279,7 +308,42 @@ namespace SNHU_Search.Models
 						else
 							currentWebId += savedWebsites[i];
                     }
-                }
+                }*/
+
+
+
+
+
+				MySqlCommand term = conn.CreateCommand();
+				term.CommandText = "select url FROM SNHUSearch.websites WHERE userID=@userID";
+				term.Parameters.AddWithValue("@userID", GetUserID(username));
+				MySqlDataReader urlRead = term.ExecuteReader();
+
+				List<string> formattedList = new List<string>();
+				//string savedWebsites = term.ExecuteScalar().ToString();
+				while (urlRead.Read())
+				{
+					formattedList.Add(Convert.ToString(urlRead[0]));
+				}
+				urlRead.Close();
+
+
+				/*MySqlDataReader lRead = getContacts.ExecuteReader();
+				List<string> ContactsList = new List<string>();
+
+				while (lRead.Read())
+				{
+					ContactsList.Add(Convert.ToString(lRead[0]));
+				}
+				lRead.Close();
+
+				*/
+
+
+
+			
+
+
 				return formattedList;
 			}
 		}
