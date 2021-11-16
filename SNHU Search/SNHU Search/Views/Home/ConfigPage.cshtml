@@ -30,6 +30,8 @@
                         for (int i = 0; i < list.Count(); i++)
                         {
                             <label style="font-size: 17px;">@list[i]</label>
+                            <button type="button" dis onclick="location.href='@Url.Action("RemoveWebsites", "Home", new {website = list[i]})'">Delete</button>
+
                             @if (i % 1 == 0)
                             {
                                 <br>

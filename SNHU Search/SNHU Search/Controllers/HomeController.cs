@@ -28,8 +28,17 @@ namespace SNHU_Search.Controllers
         public IActionResult SearchElastic(SearchModel Sm)
         {
             List<string> elastiSearchKeywordsList = new List<string>();
+            string username;
             var CookieValue = Request.Cookies[cookieKey];
-            elastiSearchKeywordsList = _ManagerElastic.search(CookieValue.ToLower(), Sm.Keywords);
+            if (CookieValue == null)
+            {
+                username = "";  
+            }
+            else
+            {
+                username = CookieValue.ToLower();
+            }    
+            elastiSearchKeywordsList = _ManagerElastic.search(username, Sm.Keywords);
             ViewData["username"] = CookieValue;
             ViewData["elastiSearchKeywordsList"] = elastiSearchKeywordsList;
             return View("Index");
@@ -61,8 +70,20 @@ namespace SNHU_Search.Controllers
         public IActionResult UploadWebsites(ConfigPageModel cm)
         {
             var CookieValue = Request.Cookies[cookieKey];
-            _manager.SaveWebsite(cm.inputWebsite, CookieValue);
-            _ManagerElastic.addData(CookieValue.ToLower(), "test", cm.inputWebsite);
+            if (_manager.SaveWebsite(cm.inputWebsite, CookieValue))
+            {
+                _ManagerElastic.addData(CookieValue.ToLower(), "test", cm.inputWebsite);
+            }
+            return RedirectToAction("ConfigPage");
+        }
+        public ActionResult RemoveWebsites(string website)
+        {
+            var CookieValue = Request.Cookies[cookieKey];
+            if (_manager.RemoveWebsite(website, CookieValue))
+            {
+               _ManagerElastic.removeData(CookieValue.ToLower(), website);
+
+            }
             return RedirectToAction("ConfigPage");
         }
     }
