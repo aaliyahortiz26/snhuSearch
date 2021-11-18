@@ -1,0 +1,95 @@
+﻿body, html {
+    background-color: #d8e0ee;
+}
+
+p{
+    margin-top:15px;
+    text-align: center;
+    font-size: 24px;
+    font: bold;
+    color:white;
+}
+
+.searchButton {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    background-color: #607da2;
+    margin-top: 15px;
+    width: 180px;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+
+.searchButton:hover {
+    background-color: #003e85;
+}
+
+.searchButton:active {
+    background-color: #001E40;
+}
+
+.webConfigButton {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    background-color: #607da2;
+    margin-top: 20px;
+    width: 180px;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    float: right;
+    margin-right: 2%;
+}
+
+.webConfigButton:hover {
+    background-color: #003e85;
+}
+
+.webConfigButton:active {
+    background-color: #001E40;
+}
+.webConfigButtonDisabled {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    background-color: dimgray;
+    margin-top: 20px;
+    width: 180px;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    float: right;
+    margin-right: 2%;
+}
+
+.searchBarInput {
+    font-family: 'Segoe UI';
+    border-radius: 16px;
+    width: 600px;
+    height: 40px;
+    margin-top: 10px;
+    padding-left: 15px;
+    border: none;
+    margin-bottom: 15px;
+    margin-right: 5px;
+}
+
+.searchDiv {
+    text-align: center;
+    background-color: #313740;
+    height: 21%;
+    width: 100%;
+    margin-top: -17px;
+}
+
+form {
+    width: 100%;
+}

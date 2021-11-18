@@ -2,18 +2,25 @@
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
 @{
+    Layout = Layout;
 }
 
+<head>
+    <title>Login</title>
+    <link href='~/css/style.css' rel='stylesheet'>
+</head>
+
 <div style="text-align:center">
+    <img class="snhuSearchLogo" src="~/Images/snhusearchlogo.png" />
     <form asp-action="Login" method="post">
-        <h1>Login</h1>
-        <label for="username">Username</label>
-        <input type="text" id="username" asp-for="UserName" placeholder="Enter Username" required autocomplete="off" />
-        <label for="password">Password</label>
-        <input type="password" id="password" asp-for="Password" placeholder="Enter Password" required autocomplete="off" /><br />
-        <button type="submit">Login</button><br />
-        <button type="button" onclick=" location.href = '@Url.Action("SignUp", "Login")'">Sign Up</button>
+        <div class="loginCenter">
+            <input class="userLoginInputs" type="text" id="username" asp-for="UserName" placeholder="Username" required autocomplete="off" /><br />
+            <input class="userLoginInputs" type="password" id="password" asp-for="Password" placeholder="Password" required autocomplete="off" /><br />
+            <button class="loginSignUpButton leftButton" type="submit">Login</button>
+            <button class="loginSignUpButton rightButton" type="button" onclick=" location.href = '@Url.Action("SignUp", "Login")'">Sign Up</button>
+        </div>
     </form>
 </div>
 

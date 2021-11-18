@@ -1,16 +1,51 @@
-﻿@{
+﻿@model SNHU_Search.Models.SearchModel
+@{
     Layout = Layout;
 }
-<html>
+
 <head>
     <title>SNHU Search</title>
+    <link href='~/css/MainPage.css' rel='stylesheet'>
 </head>
-<div style="text-align:center">
-    <p>Welcome to SNHU Search! A search engine that allows you to customize your search to fit your needs!</p>
-    <input form="search" name="searchBar" placeholder="Enter your search here" style="width:700px" />
-    <button type="submit" name="searchButton">Search</button>
+<div class="searchDiv">
+    <form method="post" asp-controller="Home" asp-action="SearchElastic" enctype="multipart/form-data">
+        @{
+            string username;
+            username = ViewData["userName"] as string;
+            if (username != null)
+            {
+                <button class="webConfigButton" type="button" name="configButton" onclick=" location.href = '@Url.Action("ConfigPage", "Home")'">Configure Websites</button>
+            }
+            else
+            {
+                <button class="webConfigButtonDisabled" type="button" name="configButtonDisabled" onclick=" location.href = '@Url.Action("ConfigPage", "Home")'" disabled>Configure Websites</button>
+            }
+        }
+
+        <br />
+        <br />
+        <p>Welcome to SNHU Search! A search engine that allows you to customize your search to fit your needs!</p>
+        <input class="searchBarInput" asp-for="Keywords" placeholder="Enter your search here" />
+        <button class="searchButton" type="submit" name="searchButton">Search</button>
+    </form>
 </div>
 
+<div>
+    @{
+        List<ElasticManager.WebsiteDetails> list = new List<ElasticManager.WebsiteDetails>();
+        list = ViewData["elastiSearchKeywordsList"] as List<ElasticManager.WebsiteDetails>;
+        @if (list != null)
+        {
+            for (int i = 0; i < list.Count(); i++)
+            {
+                <a href= @list[i].URL style="font-size: 17px;">@list[i].URL</a>
+                <br>
+                <label style="font-size: 17px;">@list[i].FirstTenWords</label>
+                <br>
+            }
+        }
+    }
+</div>
 
 
 <body>
@@ -20,4 +55,3 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
     <script src="@Url.Content("~/js/Tutorial.jsx")"></script>
 </body>
-</html>

@@ -1,0 +1,97 @@
+﻿body,html {
+    background-image:url(../Images/ceta.jpg);
+    height: 100%;
+    margin: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.userLoginInputs {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    width: 50%;
+    height: 40px;
+    margin-top: 15px;
+    border: none;
+    padding-left: 8px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.userSignUpInputs {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    width: 95%;
+    height: 40px;
+    margin-top: 2.5%;
+    border: none;
+    padding-left: 8px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 18px;
+}
+
+.loginSignUpButton {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    background-color: #001E60;
+    margin-top: 15px;
+    width: 20%;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    margin-top: 25px;
+}
+
+.loginSignUpButton:hover {
+    background-color: #003e85;
+}
+
+.loginSignUpButton:active {
+    background-color: #001E40;
+}
+
+.leftButton {
+    margin-right: 2%;
+}
+
+.rightButton {
+    margin-left: 2%;
+}
+
+.snhuSearchLogo{
+    position:center;
+    margin:0;
+    width: 30%;
+    margin-top: 5%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 25px;
+}
+
+.loginCenter {
+    margin: auto;
+    width: 50%;
+    padding: -35px;
+    margin-top: 1%;
+}
+
+.signUpCenter {
+    margin: auto;
+    width: 50%;
+    margin-top: 1%;
+    display: flex;
+}
+
+.leftColumn {
+    width: 60%;
+    float: left;
+}
+.rightColumn {
+    width: 60%;
+}
