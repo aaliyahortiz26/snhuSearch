@@ -32,17 +32,16 @@
 
 <div>
     @{
-        List<string> list = new List<string>();
-        list = ViewData["elastiSearchKeywordsList"] as List<string>;
+        List<ElasticManager.WebsiteDetails> list = new List<ElasticManager.WebsiteDetails>();
+        list = ViewData["elastiSearchKeywordsList"] as List<ElasticManager.WebsiteDetails>;
         @if (list != null)
         {
             for (int i = 0; i < list.Count(); i++)
             {
-                <label style="font-size: 17px;">@list[i]</label>
-                @if (i % 1 == 0)
-                 {
-                      <br>   
-                 }
+                <a href= @list[i].URL style="font-size: 17px;">@list[i].URL</a>
+                <br>
+                <label style="font-size: 17px;">@list[i].FirstTenWords</label>
+                <br>
             }
         }
     }
