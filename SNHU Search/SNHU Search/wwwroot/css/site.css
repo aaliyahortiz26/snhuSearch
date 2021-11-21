@@ -72,5 +72,19 @@ body {
 }
 
 .buttonFormat {
-    margin-left: 90%;
+    float: right;
+    margin-right: 2%;
+}
+
+.logo {
+    float: left;
+    margin-left: 2%;
+}
+
+.homeButton {
+    width: 90px;
+}
+
+.navContainer {
+    width: 100%;
 }
