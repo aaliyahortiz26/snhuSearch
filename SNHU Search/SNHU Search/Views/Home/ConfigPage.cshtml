@@ -3,7 +3,7 @@
     Layout = "_Layout";
     <link rel="stylesheet" href="~/css/ConfigPageStyleSheet.css" />
 }
-
+<script src="https://kit.fontawesome.com/1e6384ea85.js" crossorigin="anonymous"></script>
 <!DOCTYPE html>
 
 <html>
@@ -20,7 +20,7 @@
     </form>
     <div class="centered">
         <div class="ListWebsites">
-            <br/>
+            
             <p>
                 @{
                     List<string> list = new List<string>();
@@ -29,8 +29,8 @@
                     {
                         for (int i = 0; i < list.Count(); i++)
                         {
-                            <label style="font-size: 17px;">@list[i]</label>
-                            <button type="button" dis onclick="location.href='@Url.Action("RemoveWebsites", "Home", new {website = list[i]})'">Delete</button>
+                            <label class="savedWebsiteList">@list[i]</label>
+                            <a onclick="location.href='@Url.Action("RemoveWebsites", "Home", new {website = list[i]})'"><i class="fas fa-trash"></i></a>
 
                             @if (i % 1 == 0)
                             {
