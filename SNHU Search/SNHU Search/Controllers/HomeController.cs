@@ -27,7 +27,7 @@ namespace SNHU_Search.Controllers
         }
         public IActionResult SearchElastic(SearchModel Sm)
         {
-            List<string> elastiSearchKeywordsList = new List<string>();
+            List<ElasticManager.WebsiteDetails> elastiSearchKeywordsList = new List<ElasticManager.WebsiteDetails>();
             string username;
             var CookieValue = Request.Cookies[cookieKey];
             if (CookieValue == null)
@@ -72,7 +72,7 @@ namespace SNHU_Search.Controllers
             var CookieValue = Request.Cookies[cookieKey];
             if (_manager.SaveWebsite(cm.inputWebsite, CookieValue))
             {
-                _ManagerElastic.addData(CookieValue.ToLower(), "test", cm.inputWebsite);
+                _ManagerElastic.addData(CookieValue.ToLower(), "test", cm.inputWebsite, "title", "display tenWords from website");
             }
             return RedirectToAction("ConfigPage");
         }
