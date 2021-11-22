@@ -28,7 +28,7 @@ print("Printed body below")
 var = driver.find_elements(By.XPATH, "/html/body")
 
 
-f = open("webscrape.txt", "a")
+f = open("webscrape.txt", "a", encoding="utf8")
 for element in var:
     print(element.text)
     f.write(element.text)
