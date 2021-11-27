@@ -10,27 +10,33 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img style="width:90px;" src="~/Images/snhusearchlogo.png" /></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <div class="navContainer">
+                <div class="logo">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img class="homeButton" src="~/Images/snhusearchlogo.png" /></a>
+                </div>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between buttonFormat">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
+                            @{
+                                string username;
+                                username = ViewData["userName"] as string;
+                                if (username != null)
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Logout</a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Login</a> 
+                                }
+                            }
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
             @RenderBody()
-        </main>
-    </div>
 
    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

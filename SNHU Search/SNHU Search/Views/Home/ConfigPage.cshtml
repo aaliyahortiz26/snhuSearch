@@ -3,7 +3,7 @@
     Layout = "_Layout";
     <link rel="stylesheet" href="~/css/ConfigPageStyleSheet.css" />
 }
-
+<script src="https://kit.fontawesome.com/1e6384ea85.js" crossorigin="anonymous"></script>
 <!DOCTYPE html>
 
 <html>
@@ -20,9 +20,25 @@
     </form>
     <div class="centered">
         <div class="ListWebsites">
-            <br/>
+            
             <p>
-                <label id="exampleWebsite">List of websites</label>
+                @{
+                    List<string> list = new List<string>();
+                    list = ViewData["userWebsitesList"] as List<string>;
+                    @if (list != null)
+                    {
+                        for (int i = 0; i < list.Count(); i++)
+                        {
+                            <label class="savedWebsiteList">@list[i]</label>
+                            <a onclick="location.href='@Url.Action("RemoveWebsites", "Home", new {website = list[i]})'"><i class="fas fa-trash"></i></a>
+
+                            @if (i % 1 == 0)
+                            {
+                                <br>
+                            }
+                        }
+                    }
+                }
             </p>
         </div>
     </div>

@@ -12,7 +12,6 @@ namespace SNHU_Search.Models
     public class DBManager
     {
         public string ConnectionString { get; set; }
-
         public DBManager(string connectionString)
         {
             this.ConnectionString = connectionString;
@@ -119,7 +118,6 @@ namespace SNHU_Search.Models
 						// Successfully retrieved the user from the DB:
 						userid = Convert.ToInt32(values[0]);
 						dbUser.Password = values[1].ToString();
-
 						bRet = true;
 					}
 					else
@@ -174,7 +172,9 @@ namespace SNHU_Search.Models
 			}
 			return bRet;
 		}
+		#endregion
 
+		#region Save/ Retrieve User's Websites
 		public bool SaveWebsite(string websiteURL, string username)
         {
 			using (MySqlConnection conn = GetConnection())
@@ -190,7 +190,7 @@ namespace SNHU_Search.Models
 				if (alreadyExists > 0)
                 {
 					// Already is on list
-					return true;
+					return false;
                 } 
 				else
                 {
@@ -200,8 +200,10 @@ namespace SNHU_Search.Models
 					newCount++;
 
 					// Add the website to the list with a new ID
-					term.Parameters.AddWithValue("@newCount", newCount);
-					term.CommandText = "INSERT INTO SNHUSearch.websites (url, urlID) VALUES (@websiteURL, @newCount)"; // Adds to global list
+					term.Parameters.AddWithValue("@userID", GetUserID(username));
+					term.Parameters.AddWithValue("@urlID", newCount);
+					
+					term.CommandText = "INSERT INTO SNHUSearch.websites (url, urlID, userID) VALUES (@websiteURL, @urlID, @userID)"; // Adds to global list
 
 					MySqlDataReader reader = term.ExecuteReader();
 					if (reader.Read()) // Successful insert into column
@@ -212,43 +214,39 @@ namespace SNHU_Search.Models
 					else
 					{
 						reader.Close();
-						SaveToUser(newCount, username);
+						//SaveToUser(newCount, username);
 						return true;
 					}
 				}
 			}
         }
 
-		private bool SaveToUser(int newWebId, string username)
-        {
+		public bool RemoveWebsite(string websiteURL, string username)
+		{
 			using (MySqlConnection conn = GetConnection())
 			{
 				conn.Open();
 				MySqlCommand term = conn.CreateCommand();
 
-				// Pull current websites, and then add
-				term.Parameters.AddWithValue("@username", username);
-				term.CommandText = "select SavedWebsites FROM SNHUSearch.Accounts_tbl WHERE username=@username";
-				MySqlDataReader reader = term.ExecuteReader();
-				
-				Object[] values = new object[2];
-				if (reader.Read()) // Will not run if there is a null user
-                {
-					reader.GetValues(values);
+				// Let's make sure the website doesn't already exist first
+				term.Parameters.AddWithValue("@websiteURL", websiteURL);
+				term.CommandText = "SELECT EXISTS(SELECT * FROM SNHUSearch.websites WHERE url = @websiteURL)";
+				int alreadyExists = Convert.ToInt32(term.ExecuteScalar());
+
+				if (alreadyExists > 0)
+				{					
+					term.CommandText = "Delete FROM SNHUSearch.websites WHERE url = @urlWeb AND userID = @userID";
+					term.Parameters.AddWithValue("@urlWeb", websiteURL);
+					term.Parameters.AddWithValue("@userID", GetUserID(username));
+					term.ExecuteNonQuery(); 
+					return true;
 				}
-
-
-				string savedWebsites = values[0].ToString();
-				savedWebsites += (Convert.ToString(newWebId) + "/");
-				reader.Close();
-
-				term.Parameters.AddWithValue("@SavedWebsites", savedWebsites);
-				term.CommandText = "UPDATE SNHUSearch.Accounts_tbl SET SavedWebsites = @SavedWebsites WHERE username=@username";
-				term.ExecuteReader();
-
-				return true;
+				else
+				{
+					return false;					
+				}
 			}
-        }
+		}
 
 		public List<string> RetrieveUserWebsites(string username)
         {
@@ -256,48 +254,19 @@ namespace SNHU_Search.Models
 			{
 				conn.Open();
 				MySqlCommand term = conn.CreateCommand();
-				term.Parameters.AddWithValue("@username", username);
-				term.CommandText = "select SavedWebsites FROM Accounts_tbl WHERE username=@username";
-				string savedWebsites = term.ExecuteScalar().ToString();
+				term.CommandText = "select url FROM SNHUSearch.websites WHERE userID=@userID";
+				term.Parameters.AddWithValue("@userID", GetUserID(username));
+				MySqlDataReader urlRead = term.ExecuteReader();
 
 				List<string> formattedList = new List<string>();
-				string currentWebId = "";
-				for (int i = 0; i < savedWebsites.Length - 1; i++)
-                {
-					if (savedWebsites[i + 1] == '/')
-                    {
-						// Add number to be converted
-						currentWebId += savedWebsites[i];
-						formattedList.Add(ConvertIdToName(currentWebId));
-						currentWebId = "";
-                    }
-					else
-                    {
-						// Keep going, not done
-						if (savedWebsites[i] == '/')
-							continue;
-						else
-							currentWebId += savedWebsites[i];
-                    }
-                }
+				//string savedWebsites = term.ExecuteScalar().ToString();
+				while (urlRead.Read())
+				{
+					formattedList.Add(Convert.ToString(urlRead[0]));
+				}
+				urlRead.Close();
+
 				return formattedList;
-			}
-		}
-
-		// Internal class to convert ID value to matching value on website table list and extract weblist name
-		private string ConvertIdToName(string IdValue)
-		{
-			// ID value will be something like '100' leading to the 100th index in the websites table, and we will return that value
-			using (MySqlConnection conn = GetConnection())
-			{
-				conn.Open();
-				MySqlCommand term = conn.CreateCommand();
-				// find matching ID in global web list:
-				term.Parameters.AddWithValue("@urlID", IdValue);
-				term.CommandText = "SELECT url FROM SNHUSearch.websites WHERE urlID = @urlID";
-				string fetchedWebsite = term.ExecuteScalar().ToString();
-
-				return fetchedWebsite;
 			}
 		}
 		#endregion

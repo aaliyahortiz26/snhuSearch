@@ -11,6 +11,7 @@ namespace SNHU_Search.Controllers
     public class LoginController : Controller
     {
         private readonly DBManager _manager;
+        private string Cookiekey = "LoginUserName";
         public LoginController(DBManager manager)
         {
             _manager = manager;
@@ -37,7 +38,15 @@ namespace SNHU_Search.Controllers
                 {
                     HttpContext.Session.SetString("userid", nUserID.ToString());
                     _manager.LoadUser(loginUser, ref nUserID, loginUser.UserName);
-                    return View("~/Views/Home/Index.cshtml");
+                                       
+                    string key = "LoginUserName";
+                    string value = loginUser.UserName;
+
+                    CookieOptions options = new CookieOptions();
+                    options.Expires = DateTime.Now.AddDays(7);
+                    Response.Cookies.Append(key, value, options);
+
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -52,7 +61,8 @@ namespace SNHU_Search.Controllers
         public IActionResult SignUp()
         {
             return View();
-        }
+        }       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddUser(SignupModel SignUpM)
@@ -80,6 +90,15 @@ namespace SNHU_Search.Controllers
                 }
             }
             return View("~/Views/Login/SignUp.cshtml");
+        }
+        public IActionResult Logout()
+        {
+
+            CookieOptions options = new CookieOptions();
+            options.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Append(Cookiekey, "ExpireCookie", options);
+
+            return View("~/Views/Home/Index.cshtml");
         }
     }
 }
