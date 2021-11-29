@@ -11,7 +11,7 @@ namespace SNHU_Search.Models
     public class PythonModel
     {
 
-        public void Scrape(/*string cmd, string args*/)
+        public void Scrape(string website/*string cmd, string args*/)
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
