@@ -85,7 +85,6 @@ namespace SNHU_Search.Controllers
             if (_manager.RemoveWebsite(website, CookieValue))
             {
                _ManagerElastic.removeData(CookieValue.ToLower(), website);
-
             }
             return RedirectToAction("ConfigPage");
         }
