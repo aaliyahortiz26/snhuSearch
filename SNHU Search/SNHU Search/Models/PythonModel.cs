@@ -13,6 +13,7 @@ namespace SNHU_Search.Models
 
         public void Scrape(string website/*string cmd, string args*/)
         {
+            Console.WriteLine(Directory.GetCurrentDirectory());
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
