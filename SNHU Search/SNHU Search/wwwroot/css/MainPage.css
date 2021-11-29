@@ -88,8 +88,17 @@ p{
     height: 21%;
     width: 100%;
     margin-top: -17px;
+    margin-bottom: 1%;
 }
 
 form {
     width: 100%;
+}
+
+.searchResults {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    background-color: white;
+    border-radius: 15px;
 }
