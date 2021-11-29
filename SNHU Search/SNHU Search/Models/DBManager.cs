@@ -184,7 +184,8 @@ namespace SNHU_Search.Models
 
 				// Let's make sure the website doesn't already exist first
 				term.Parameters.AddWithValue("@websiteURL", websiteURL);
-				term.CommandText = "SELECT EXISTS(SELECT * FROM SNHUSearch.websites WHERE url = @websiteURL)";
+				term.Parameters.AddWithValue("@userID1", GetUserID(username));
+				term.CommandText = "SELECT EXISTS(SELECT * FROM SNHUSearch.websites WHERE (url = @websiteURL and userID = @userID1));";
 				int alreadyExists = Convert.ToInt32(term.ExecuteScalar());
 
 				if (alreadyExists > 0)

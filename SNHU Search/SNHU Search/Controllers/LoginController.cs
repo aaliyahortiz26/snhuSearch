@@ -93,7 +93,6 @@ namespace SNHU_Search.Controllers
         }
         public IActionResult Logout()
         {
-
             CookieOptions options = new CookieOptions();
             options.Expires = DateTime.Now.AddDays(-1);
             Response.Cookies.Append(Cookiekey, "ExpireCookie", options);
