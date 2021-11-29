@@ -18,7 +18,7 @@ namespace SNHU_Search.Models
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
             startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = "/C python WebScrape.py";
+            startInfo.Arguments = "/C python WebScrape.py " + website;
             process.StartInfo = startInfo;
             process.Start();
         }

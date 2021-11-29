@@ -10,10 +10,10 @@ from selenium.webdriver.chrome.options import Options
 import sys
 import requests
 
-sys.path.append("C:\\Users\\Jesse\\AppData\\Local\\Programs\\Python\\Python310\\Lib")
+#sys.path.append("C:\\Users\\Jesse\\AppData\\Local\\Programs\\Python\\Python310\\Lib")
 import os
 
-url = 'https://www.snhu.edu/'
+url = str(sys.argv[1])
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
 print(soup.title)
