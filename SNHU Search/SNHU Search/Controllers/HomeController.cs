@@ -13,6 +13,7 @@ namespace SNHU_Search.Controllers
     {
         private readonly DBManager _manager;
         private readonly ElasticManager _ManagerElastic = new ElasticManager();
+        private readonly PythonModel pythonScraper = new PythonModel();
         private string cookieKey = "LoginUserName";
         public HomeController(DBManager manager)
         {        
@@ -70,8 +71,10 @@ namespace SNHU_Search.Controllers
         public IActionResult UploadWebsites(ConfigPageModel cm)
         {
             var CookieValue = Request.Cookies[cookieKey];
+
             if (_manager.SaveWebsite(cm.inputWebsite, CookieValue))
             {
+                pythonScraper.Scrape(cm.inputWebsite);
                 _ManagerElastic.addData(CookieValue.ToLower(), "test", cm.inputWebsite, "title", "display tenWords from website");
             }
             return RedirectToAction("ConfigPage");

@@ -1,0 +1,112 @@
+Contact MySQL  | 
+Login  |  Register
+The world's most popular open source database
+MYSQL.COM DOWNLOADS DOCUMENTATION DEVELOPER ZONE
+Products Cloud Services Partners Customers Why MySQL? News & Events How to Buy
+MySQL Database Service with HeatWave
+MySQL Database Service is a fully managed database service to deploy cloud-native applications. HeatWave, an integrated, high-performance query accelerator boosts MySQL performance by 5400x.
+Learn More »
+MySQL Enterprise Edition
+The most comprehensive set of advanced features, management tools and technical support to achieve the highest levels of MySQL scalability, security, reliability, and uptime.
+Learn More »
+MySQL for OEM/ISV
+Over 2000 ISVs, OEMs, and VARs rely on MySQL as their products' embedded database to make their applications, hardware and appliances more competitive, bring them to market faster, and lower their cost of goods sold.
+Learn More »
+MySQL Cluster CGE
+MySQL Cluster enables users to meet the database challenges of next generation web, cloud, and communications services with uncompromising scalability, uptime and agility.
+Learn More »
+Free Webinars
+Disaster Recovery with MySQL InnoDB ClusterSet - What is it and how do I use it?
+Thursday, December 02, 2021
+MySQL Database Architectures - Disaster Recovery Solutions
+Thursday, December 02, 2021
+Deploy and Run MySQL Applications on OKE and MySQL Database Service
+Tuesday, December 14, 2021
+More »
+White Papers
+HeatWave: Real-time Analytics for MySQL Database Service
+MySQL Database Service with HeatWave
+What's New in MySQL 8.0
+MySQL Enterprise Edition and GDPR
+Guide to MySQL High Availability
+More »
+Some of our customers
+
+
+Contact MySQL Sales
+USA/Canada: +1-866-221-0634   (More Countries »)
+
+PRODUCTS
+MySQL Database Service
+MySQL Enterprise Edition
+MySQL Standard Edition
+MySQL Classic Edition
+MySQL Cluster CGE
+MySQL Embedded (OEM/ISV)
+SERVICES
+Training
+Certification
+Consulting
+Support
+DOWNLOADS
+MySQL Community Server
+MySQL NDB Cluster
+MySQL Shell
+MySQL Router
+MySQL Workbench
+DOCUMENTATION
+MySQL Reference Manual
+MySQL Workbench
+MySQL NDB Cluster
+MySQL Connectors
+Topic Guides
+ABOUT MYSQL
+Contact Us
+Blogs
+How to Buy
+Partners
+Job Opportunities
+Site Map
+English   ( Deutsch | Français | Italiano | 日本 | 中文 )
+  © 2021, Oracle Corporation and/or its affiliates
+Legal Policies | Your Privacy Rights | Terms of Use | Trademark Policy | Contributor Agreement | Cookie PreferencesAbout
+Store
+GmailImages
+Sign in
+Advertising
+Business
+How Search works
+Carbon neutral since 2007
+Privacy
+Terms
+SettingsAbout
+Store
+GmailImages
+Sign in
+Advertising
+Business
+How Search works
+Carbon neutral since 2007
+Privacy
+Terms
+SettingsAbout
+Store
+GmailImages
+Sign in
+Advertising
+Business
+How Search works
+Carbon neutral since 2007
+Privacy
+Terms
+SettingsAbout
+Store
+GmailImages
+Sign in
+Advertising
+Business
+How Search works
+Carbon neutral since 2007
+Privacy
+Terms
+Settings
