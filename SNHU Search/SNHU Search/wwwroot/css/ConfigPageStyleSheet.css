@@ -14,8 +14,7 @@ p {
 
 .centered {
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    margin-top:2%;
 }
 
 .websiteInput {
@@ -59,7 +58,28 @@ p {
 }
 
 .ListWebsites {
-    width: 100%;
-    display: block;
-    margin-top: -2.5%;
+    width: 80%;
+    margin-top: -3%;
+    margin:auto;
+    text-align: center;
+    background-color:white;
+    border-radius: 15px;
+}
+
+.savedWebsiteList {
+    margin-top: -3%;
+    font-size: 17px;
+}
+
+.fa-trash {
+    color: red;
+    position: absolute;
+    right: 0;
+    margin-right: 12%;
+    margin-top: .5%;
+    cursor: pointer;
+}
+
+.fa-trash:hover {
+    color: #f54242;
 }
