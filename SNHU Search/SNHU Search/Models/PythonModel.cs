@@ -29,6 +29,13 @@ namespace SNHU_Search.Models
                 process.StartInfo = startInfo;
                 process.Start();
 
+                string stdoutx = process.StandardOutput.ReadToEnd();
+                string stderrx = process.StandardError.ReadToEnd();
+                process.WaitForExit();
+
+                Debug.WriteLine("Exit code: {0}", process.ExitCode);
+                Debug.WriteLine("Stdout: {0}", stdoutx);
+                Debug.WriteLine("Stderr: {0}", stderrx);
                 /*
                 
                 
@@ -38,7 +45,7 @@ namespace SNHU_Search.Models
                 */
             } catch (Exception e)
             {
-                Console.WriteLine(e.Message.ToString());
+                Debug.WriteLine(e.Message.ToString());
             }
         }
 
