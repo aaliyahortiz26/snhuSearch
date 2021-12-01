@@ -13,14 +13,33 @@ namespace SNHU_Search.Models
 
         public void Scrape(string website/*string cmd, string args*/)
         {
-            Console.WriteLine(Directory.GetCurrentDirectory());
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = "/C python WebScrape.py " + website;
-            process.StartInfo = startInfo;
-            process.Start();
+            try
+            {
+                Console.WriteLine(Directory.GetCurrentDirectory());
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+
+                startInfo.ErrorDialog = false;
+                startInfo.RedirectStandardError = true;
+                startInfo.RedirectStandardOutput = true;
+                
+                startInfo.FileName = "cmd.exe";
+                startInfo.Arguments = "/C python WebScrape.py " + website;
+                process.StartInfo = startInfo;
+                process.Start();
+
+                /*
+                
+                
+                Do something with the file here and then delete it after 
+
+                
+                */
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message.ToString());
+            }
         }
 
     }
