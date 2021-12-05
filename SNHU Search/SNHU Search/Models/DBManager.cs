@@ -6,20 +6,22 @@ using MySql.Data.MySqlClient;
 using System.Linq;
 using System.IO;
 using System.Threading;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace SNHU_Search.Models
 {
-    public class DBManager
-    {
-        public string ConnectionString { get; set; }
-        public DBManager(string connectionString)
-        {
-            this.ConnectionString = connectionString;
-        }
-        private MySqlConnection GetConnection()
-        {
-            return new MySqlConnection(ConnectionString);
-        }
+	public class DBManager
+	{
+		public string ConnectionString { get; set; }
+		public DBManager(string connectionString)
+		{
+			this.ConnectionString = connectionString;
+		}
+		private MySqlConnection GetConnection()
+		{
+			return new MySqlConnection(ConnectionString);
+		}
 
 		#region Login/Create Account
 		public bool SaveUser(SignupModel SignUpM)
@@ -113,7 +115,7 @@ namespace SNHU_Search.Models
 					// Read the DB values:
 					Object[] values = new object[2];
 					int fieldCount = reader.GetValues(values);
-					if (2 == fieldCount) 
+					if (2 == fieldCount)
 					{
 						// Successfully retrieved the user from the DB:
 						userid = Convert.ToInt32(values[0]);
@@ -121,10 +123,10 @@ namespace SNHU_Search.Models
 						bRet = true;
 					}
 					else
-                    {
+					{
 						// User does not exist
 						bRet = false;
-                    }
+					}
 				}
 				reader.Close();
 			}
@@ -164,7 +166,7 @@ namespace SNHU_Search.Models
 						}
 					}
 					else
-                    {
+					{
 						bRet = false;
 					}
 				}
@@ -176,9 +178,9 @@ namespace SNHU_Search.Models
 
 		#region Save/ Retrieve User's Websites
 		public bool SaveWebsite(string websiteURL, string username)
-        {
+		{
 			using (MySqlConnection conn = GetConnection())
-            {
+			{
 				conn.Open();
 				MySqlCommand term = conn.CreateCommand();
 
@@ -189,22 +191,16 @@ namespace SNHU_Search.Models
 				int alreadyExists = Convert.ToInt32(term.ExecuteScalar());
 
 				if (alreadyExists > 0)
-                {
+				{
 					// Already is on list
 					return false;
-                } 
+				}
 				else
-                {
-					// Get current highest ID of website
-					term.CommandText = "SELECT MAX(urlID) FROM websites";
-					int newCount = Convert.ToInt32(term.ExecuteScalar());
-					newCount++;
-
+				{				
 					// Add the website to the list with a new ID
 					term.Parameters.AddWithValue("@userID", GetUserID(username));
-					term.Parameters.AddWithValue("@urlID", newCount);
-					
-					term.CommandText = "INSERT INTO SNHUSearch.websites (url, urlID, userID) VALUES (@websiteURL, @urlID, @userID)"; // Adds to global list
+
+					term.CommandText = "INSERT INTO SNHUSearch.websites (url, userID) VALUES (@websiteURL, @userID)"; // Adds to global list
 
 					MySqlDataReader reader = term.ExecuteReader();
 					if (reader.Read()) // Successful insert into column
@@ -220,7 +216,7 @@ namespace SNHU_Search.Models
 					}
 				}
 			}
-        }
+		}
 
 		public bool RemoveWebsite(string websiteURL, string username)
 		{
@@ -235,22 +231,22 @@ namespace SNHU_Search.Models
 				int alreadyExists = Convert.ToInt32(term.ExecuteScalar());
 
 				if (alreadyExists > 0)
-				{					
+				{
 					term.CommandText = "Delete FROM SNHUSearch.websites WHERE url = @urlWeb AND userID = @userID";
 					term.Parameters.AddWithValue("@urlWeb", websiteURL);
 					term.Parameters.AddWithValue("@userID", GetUserID(username));
-					term.ExecuteNonQuery(); 
+					term.ExecuteNonQuery();
 					return true;
 				}
 				else
 				{
-					return false;					
+					return false;
 				}
 			}
 		}
 
 		public List<string> RetrieveUserWebsites(string username)
-        {
+		{
 			using (MySqlConnection conn = GetConnection())
 			{
 				conn.Open();
@@ -260,7 +256,6 @@ namespace SNHU_Search.Models
 				MySqlDataReader urlRead = term.ExecuteReader();
 
 				List<string> formattedList = new List<string>();
-				//string savedWebsites = term.ExecuteScalar().ToString();
 				while (urlRead.Read())
 				{
 					formattedList.Add(Convert.ToString(urlRead[0]));
@@ -271,5 +266,70 @@ namespace SNHU_Search.Models
 			}
 		}
 		#endregion
+
+		public bool URLExist(string website)
+		{
+			Uri uriResult;
+			bool result = Uri.TryCreate(website, UriKind.Absolute, out uriResult)
+				&& (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+			return result;
+		}
+
+		public string getWebsiteTitle(string website)
+		{
+			string websiteTitle = "";
+
+			try
+			{
+				Uri uri = new Uri(website);
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+				request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+				using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+				using (Stream stream = response.GetResponseStream())
+				using (StreamReader reader = new StreamReader(stream))
+				{
+					var str = reader.ReadToEnd();
+					Regex reg = new Regex("<title>(.*)</title>");
+					MatchCollection m = reg.Matches(str);
+					// title of website exist
+					if (m.Count > 0)
+					{
+						websiteTitle = m[0].Value.Replace("<title>", "").Replace("</title>", "");
+					}
+					// no title
+					else
+						return "";
+				}
+			}
+			catch
+            {
+				websiteTitle = ""; 
+            }
+
+			return websiteTitle;
+		}
+
+
+		public string getTenWebsiteWords(string websiteText)
+		{
+			int words = 10;
+			string tenWebsiteWords = websiteText;
+			for (int i = 0; i < tenWebsiteWords.Length; i++)
+			{
+				// Increment words on a space.
+				if (tenWebsiteWords[i] == ' ')
+				{
+					words--;
+				}
+				// If we have no more words to display, return the substring.
+				if (words == 0)
+				{
+					return tenWebsiteWords.Substring(0, i);
+				}
+			}
+			return tenWebsiteWords;
+		}
 	}
 }

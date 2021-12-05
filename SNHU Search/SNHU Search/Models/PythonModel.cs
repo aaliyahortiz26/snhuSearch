@@ -4,15 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
-
+using System.Text;
+using System.Net.Http;
 
 namespace SNHU_Search.Models
 {
     public class PythonModel
     {
 
-        public void Scrape(string website/*string cmd, string args*/)
-        {
+        public string Scrape(string website)
+        {                      
             try
             {
                 Console.WriteLine(Directory.GetCurrentDirectory());
@@ -36,16 +37,33 @@ namespace SNHU_Search.Models
                 Debug.WriteLine("Exit code: {0}", process.ExitCode);
                 Debug.WriteLine("Stdout: {0}", stdoutx);
                 Debug.WriteLine("Stderr: {0}", stderrx);
-                /*
-                
-                
-                Do something with the file here and then delete it after 
 
-                
-                */
-            } catch (Exception e)
+                string textFromWebsite = "";            
+
+                var fileStream = new FileStream(@"webscrape.txt", FileMode.Open, FileAccess.Read);
+                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
+                {
+                    string line;
+                    while ((line = streamReader.ReadLine()) != null)
+                    {
+                        textFromWebsite += " " + line;
+                    }
+                }
+
+                // remove characters from website's text
+                List<char> charsToRemove = new List<char>() { ',', '/', '\\', '"' };
+
+                foreach (char c in charsToRemove)
+                {
+                    textFromWebsite = textFromWebsite.Replace(c.ToString(), String.Empty);
+                }
+                return textFromWebsite;
+            } 
+            
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message.ToString());
+                return "";
             }
         }
 

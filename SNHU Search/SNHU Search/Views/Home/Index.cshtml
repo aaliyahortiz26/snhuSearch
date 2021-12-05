@@ -38,9 +38,12 @@
         {
             for (int i = 0; i < list.Count(); i++)
             {
-                <a href= @list[i].URL style="font-size: 17px;">@list[i].URL</a>
+                <a href=@list[i].URL style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@list[i].URL</a>
+                <br>
+                <label style="font-size: 17px;">Title: @list[i].Title</label>
                 <br>
                 <label style="font-size: 17px;">@list[i].FirstTenWords</label>
+                <br>
                 <br>
             }
         }
