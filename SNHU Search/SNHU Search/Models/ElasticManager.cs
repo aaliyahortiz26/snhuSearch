@@ -10,7 +10,7 @@ namespace SNHU_Search.Models
 {
     public class ElasticManager
     {
-        private string elasticConnection = "http://3.87.194.54:9200/";
+        private string elasticConnection = "http://52.91.188.47:9200/";
         public struct WebsiteDetails
         {
             public string Keywords;
