@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="MySql.Data" Version="8.0.26" />
+    <PackageReference Include="python" Version="3.10.0" />
   </ItemGroup>
 
 </Project>

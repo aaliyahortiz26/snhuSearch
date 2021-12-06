@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace SNHU_Search.Models
 {
     public class ElasticManager
     {
-        private string elasticConnection = "http://20.115.112.182:9200/";
+        private string elasticConnection = "http://3.87.194.54:9200/";
         public struct WebsiteDetails
         {
             public string Keywords;
@@ -18,7 +19,7 @@ namespace SNHU_Search.Models
             public string FirstTenWords;
         };
         public void addData(string username, string keywords, string url, string title, string TenWords)
-        {
+        {           
             HttpClient client = new HttpClient();
 
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
@@ -43,6 +44,7 @@ namespace SNHU_Search.Models
             }
             else
             {
+                Debug.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
                 Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
             }
             client.Dispose();
@@ -98,7 +100,6 @@ namespace SNHU_Search.Models
             return UrlKeywordsList;
         }
 
-
         public void removeData(string username, string website)
         {
             List<string> UrlKeywordsList = new List<string>();
@@ -107,6 +108,10 @@ namespace SNHU_Search.Models
             if (website[website.Count()-1] == '/')
             {
                 website = website.TrimEnd(new[] { '/' });
+            }
+            else
+            {
+                website = website + '/' ;
             }
 
             HttpClient client = new HttpClient();
@@ -142,6 +147,10 @@ namespace SNHU_Search.Models
                         if (urlString[urlString.Count() - 1] == '/')
                         {
                             urlString = urlString.TrimEnd(new[] { '/' });
+                        }
+                        else
+                        {
+                            urlString = urlString + '/';
                         }
                         if (urlString == website)
                         {
