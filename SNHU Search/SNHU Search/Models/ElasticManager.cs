@@ -10,7 +10,10 @@ namespace SNHU_Search.Models
 {
     public class ElasticManager
     {
-        private string elasticConnection = "http://52.91.188.47:9200/";
+        private string elasticConnection = "https://c5a0e3b26c5648f3befe9ee1c0e28101.us-central1.gcp.cloud.es.io:9243/";
+        private string ElasticUsername = "elastic";
+        private string password = "0zmkDTqNkz0ZODVNmDvJV1Uy";
+
         public struct WebsiteDetails
         {
             public string Keywords;
@@ -22,7 +25,7 @@ namespace SNHU_Search.Models
         {           
             HttpClient client = new HttpClient();
 
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new BasicAuthenticationHeaderValue(ElasticUsername, password);
 
             var content = new StringContent(@"{
                     ""settings"" : {
@@ -56,6 +59,7 @@ namespace SNHU_Search.Models
             List<WebsiteDetails> UrlKeywordsList = new List<WebsiteDetails>();
 
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new BasicAuthenticationHeaderValue(ElasticUsername, password);
 
             var request = new HttpRequestMessage
             {
@@ -115,6 +119,7 @@ namespace SNHU_Search.Models
             }
 
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new BasicAuthenticationHeaderValue(ElasticUsername, password);
 
             var request = new HttpRequestMessage
             {
