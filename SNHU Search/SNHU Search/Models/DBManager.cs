@@ -184,7 +184,7 @@ namespace SNHU_Search.Models
 				conn.Open();
 				MySqlCommand term = conn.CreateCommand();
 
-				// Let's make sure the website doesn't already exist first
+				// make sure that the website doesn't already exist
 				term.Parameters.AddWithValue("@websiteURL", websiteURL);
 				term.Parameters.AddWithValue("@userID1", GetUserID(username));
 				term.CommandText = "SELECT EXISTS(SELECT * FROM SNHUSearch.websites WHERE (url = @websiteURL and userID = @userID1));";
@@ -211,7 +211,6 @@ namespace SNHU_Search.Models
 					else
 					{
 						reader.Close();
-						//SaveToUser(newCount, username);
 						return true;
 					}
 				}
@@ -283,6 +282,7 @@ namespace SNHU_Search.Models
 			try
 			{
 				Uri uri = new Uri(website);
+				// create a request to the website's url
 				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
 				request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
