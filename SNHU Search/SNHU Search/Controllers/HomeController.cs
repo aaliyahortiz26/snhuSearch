@@ -119,6 +119,8 @@ namespace SNHU_Search.Controllers
 
         public ActionResult ProfilePage()
         {
+            var CookieValue = Request.Cookies[cookieKey];
+            ViewData["username"] = CookieValue;
             return View();
         }
     }
