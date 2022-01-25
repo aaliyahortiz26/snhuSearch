@@ -16,12 +16,12 @@
         <div style="text-align:center" class="signUpCenter">
             <div class="leftColumn">
                 <input class="userSignUpInputs" type="text" id="userFName" asp-for="FirstName" placeholder="First Name" required />
-                <input class="userSignUpInputs" type="text" id="username" asp-for="UserName" placeholder="Username" required autocomplete="off" />
+                <input class="userSignUpInputs" autocomplete="off" type="text" id="username" asp-for="UserName" placeholder="Username" required />
                 <input class="userSignUpInputs" type="email" id="userEmail" asp-for="Email" placeholder="Email" required />
             </div>
             <div class="rightColumn">
                 <input class="userSignUpInputs" type="text" id="userLName" asp-for="LastName" placeholder="Last Name" required /><br />
-                <input class="userSignUpInputs" type="password" id="password" asp-for="Password" placeholder="Password" required autocomplete="off" /><br />
+                <input class="userSignUpInputs" autocomplete="off" type="password" id="password" asp-for="Password" placeholder="Password" required/><br />
                 <input class="userSignUpInputs" type="password" id="confirmpassword" asp-for="ConfirmPassword" placeholder="Confirm Password" required autocomplete="off" />
             </div>
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span><br />

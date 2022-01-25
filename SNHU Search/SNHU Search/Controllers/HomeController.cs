@@ -116,5 +116,10 @@ namespace SNHU_Search.Controllers
             }
             return RedirectToAction("ConfigPage");
         }
+
+        public ActionResult ProfilePage()
+        {
+            return View();
+        }
     }
 }
