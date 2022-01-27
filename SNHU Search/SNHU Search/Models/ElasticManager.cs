@@ -4,12 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace SNHU_Search.Models
 {
     public class ElasticManager
     {
-        private string elasticConnection = "http://20.115.112.182:9200/";
+        private string elasticConnection = "https://c5a0e3b26c5648f3befe9ee1c0e28101.us-central1.gcp.cloud.es.io:9243/";
+        private string ElasticUsername = "elastic";
+        private string password = "0zmkDTqNkz0ZODVNmDvJV1Uy";
+
         public struct WebsiteDetails
         {
             public string Keywords;
@@ -18,10 +22,10 @@ namespace SNHU_Search.Models
             public string FirstTenWords;
         };
         public void addData(string username, string keywords, string url, string title, string TenWords)
-        {
+        {           
             HttpClient client = new HttpClient();
 
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new BasicAuthenticationHeaderValue(ElasticUsername, password);
 
             var content = new StringContent(@"{
                     ""settings"" : {
@@ -43,6 +47,7 @@ namespace SNHU_Search.Models
             }
             else
             {
+                Debug.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
                 Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
             }
             client.Dispose();
@@ -54,6 +59,7 @@ namespace SNHU_Search.Models
             List<WebsiteDetails> UrlKeywordsList = new List<WebsiteDetails>();
 
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new BasicAuthenticationHeaderValue(ElasticUsername, password);
 
             var request = new HttpRequestMessage
             {
@@ -98,7 +104,6 @@ namespace SNHU_Search.Models
             return UrlKeywordsList;
         }
 
-
         public void removeData(string username, string website)
         {
             List<string> UrlKeywordsList = new List<string>();
@@ -108,8 +113,13 @@ namespace SNHU_Search.Models
             {
                 website = website.TrimEnd(new[] { '/' });
             }
+            else
+            {
+                website = website + '/' ;
+            }
 
             HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new BasicAuthenticationHeaderValue(ElasticUsername, password);
 
             var request = new HttpRequestMessage
             {
@@ -142,6 +152,10 @@ namespace SNHU_Search.Models
                         if (urlString[urlString.Count() - 1] == '/')
                         {
                             urlString = urlString.TrimEnd(new[] { '/' });
+                        }
+                        else
+                        {
+                            urlString = urlString + '/';
                         }
                         if (urlString == website)
                         {

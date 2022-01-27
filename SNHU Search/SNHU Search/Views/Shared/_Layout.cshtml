@@ -26,7 +26,20 @@
                                 }
                                 else
                                 {
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Login</a> 
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
+                                }
+                            }
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between buttonFormat">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            @{
+                                username = ViewData["userName"] as string;
+                                if (username != null)
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ProfilePage">Profile</a>
                                 }
                             }
                         </li>

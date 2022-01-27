@@ -57,6 +57,7 @@ button.accept-policy {
 html {
   position: relative;
   min-height: 100%;
+  overflow-y: hidden;
 }
 
 body {
@@ -72,8 +73,9 @@ body {
 }
 
 .buttonFormat {
-    float: right;
+    float:right;
     margin-right: 2%;
+    justify-content:flex-end;
 }
 
 .logo {
@@ -87,4 +89,9 @@ body {
 
 .navContainer {
     width: 100%;
+}
+
+.profileButtonFormat {
+    display: inline-block;
+    
 }
