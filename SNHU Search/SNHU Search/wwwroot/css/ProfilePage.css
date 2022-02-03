@@ -1,0 +1,11 @@
+﻿body {
+}
+
+.leftColumn {
+    width: 60%;
+    float: left;
+}
+
+.rightColumn {
+    width: 60%;
+}

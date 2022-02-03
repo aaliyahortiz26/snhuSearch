@@ -51,6 +51,10 @@ namespace SNHU_Search.Controllers
 
         public IActionResult ConfigPage()
         {
+            if (TempData["message"] != null)
+            {
+                ViewBag.Message = TempData["message"].ToString();
+            }
             List<string> userWebsitesList = new List<string>();
             var CookieValue = Request.Cookies[cookieKey];
 
@@ -71,12 +75,36 @@ namespace SNHU_Search.Controllers
         public IActionResult UploadWebsites(ConfigPageModel cm)
         {
             var CookieValue = Request.Cookies[cookieKey];
-
-            if (_manager.SaveWebsite(cm.inputWebsite, CookieValue))
+            string textFromFile, websiteTitle, tenWebsiteWords;
+            if (_manager.URLExist(cm.inputWebsite))
             {
-                pythonScraper.Scrape(cm.inputWebsite);
-                _ManagerElastic.addData(CookieValue.ToLower(), "test", cm.inputWebsite, "title", "display tenWords from website");
+                if (_manager.SaveWebsite(cm.inputWebsite, CookieValue))
+                {
+                    textFromFile = pythonScraper.Scrape(cm.inputWebsite);
+                    if (textFromFile != "")
+                    {
+                        websiteTitle = _manager.getWebsiteTitle(cm.inputWebsite);
+                        if (websiteTitle == "")
+                        {
+                            websiteTitle = "No title";
+                        }
+
+                        tenWebsiteWords = _manager.getTenWebsiteWords(textFromFile);
+
+                        _ManagerElastic.addData(CookieValue.ToLower(), textFromFile, cm.inputWebsite, websiteTitle, tenWebsiteWords);
+                        ViewBag.message = "Website was added";
+                    }
+                    else
+                    {
+                        _manager.RemoveWebsite(cm.inputWebsite, CookieValue);
+                    }
+                }
             }
+            else
+            {
+                TempData["message"] = "Not a valid website, try again";
+            }
+
             return RedirectToAction("ConfigPage");
         }
         public ActionResult RemoveWebsites(string website)
@@ -88,6 +116,26 @@ namespace SNHU_Search.Controllers
             }
             return RedirectToAction("ConfigPage");
         }
+
+        public ActionResult ProfilePage(ProfileModel profileMod)
+        {
+            var CookieValue = Request.Cookies[cookieKey];
+            string username;
+            ViewData["username"] = CookieValue;
+            List<string> userProfileData = new List<string>();
+
+            if (CookieValue == null)
+            {
+                username = "";
+            }
+            else
+            {
+                username = CookieValue;
+                userProfileData = _manager.RetrieveUserInfoFromDB(profileMod, username);
+                ViewData["userProfileData"] = userProfileData;
+            }
+
+            return View();
+        }
     }
 }
- 

@@ -20,7 +20,7 @@
     </form>
     <div class="centered">
         <div class="ListWebsites">
-            
+
             <p>
                 @{
                     List<string> list = new List<string>();
@@ -44,3 +44,12 @@
     </div>
 </body>
 </html>
+
+@if (ViewBag.message != null)
+{
+    <script type="text/javascript">
+    window.onload = function () {
+        alert("@ViewBag.message");
+    };
+    </script>
+}
