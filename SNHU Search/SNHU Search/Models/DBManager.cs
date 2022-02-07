@@ -266,6 +266,31 @@ namespace SNHU_Search.Models
 		}
 		#endregion
 
+		public List<string> RetrieveUserInfoFromDB(ProfileModel pm, string userNameS)
+        {
+			using(MySqlConnection DBconnection = GetConnection())
+            {
+				DBconnection.Open();
+				MySqlCommand CheckData = DBconnection.CreateCommand();
+				CheckData.Parameters.AddWithValue("@username", userNameS);
+				//grabbing information in the database to display on the profile page for the user
+				CheckData.CommandText = "SELECT email, firstName, lastName FROM SNHUSearch.Accounts_tbl where username = @username";
+
+				MySqlDataReader DBreader = CheckData.ExecuteReader();
+
+				List<string> currentUserList = new List<string>();
+
+				while(DBreader.Read())
+                {
+					currentUserList.Add(Convert.ToString(DBreader[0])); //email
+					currentUserList.Add(Convert.ToString(DBreader[1])); //first name
+					currentUserList.Add(Convert.ToString(DBreader[2])); //last name
+				}
+				DBreader.Close();
+				return currentUserList;
+			}
+        }
+
 		public bool URLExist(string website)
 		{
 			Uri uriResult;

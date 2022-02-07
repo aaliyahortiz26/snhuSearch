@@ -8,17 +8,26 @@
     <link href='~/css/ProfilePage.css' rel='stylesheet'>  @*Change to different style sheet when styling*@
 </head>
 
+
 <div style="text-align:center">
     <div class="leftColumn">
-        <label>First Name</label><br />
-        <label>Last Name</label><br />
-        <label>Username</label><br />
-        <label>Email</label><br />
+        <label>First Name: </label><br />
+        <label>Last Name: </label><br />
+        <label>Username: </label><br />
+        <label>Email: </label><br />
     </div>
     <div class="rightColumn">
-        <label>@*First name database call*@</label>
-        <label>@*Last name database call*@</label>
-        <label>@*Username database call*@</label>
-        <label>@*email database call*@</label>
+        @{
+            List<string> currentUserInformation = new List<string>();
+            currentUserInformation = ViewData["userProfileData"] as List<string>;
+
+            string username;
+            username = ViewData["userName"] as string;
+
+            <label>@currentUserInformation[1]</label> @*User's First Name*@
+            <label>@currentUserInformation[2]</label> @*User's Last Name*@
+            <label>@username</label> @*User's Username*@
+            <label>@currentUserInformation[0]</label> @*User's Email*@
+        }
     </div>
 </div>
