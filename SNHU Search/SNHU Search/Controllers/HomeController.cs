@@ -117,10 +117,24 @@ namespace SNHU_Search.Controllers
             return RedirectToAction("ConfigPage");
         }
 
-        public ActionResult ProfilePage()
+        public ActionResult ProfilePage(ProfileModel profileMod)
         {
             var CookieValue = Request.Cookies[cookieKey];
+            string username;
             ViewData["username"] = CookieValue;
+            List<string> userProfileData = new List<string>();
+
+            if (CookieValue == null)
+            {
+                username = "";
+            }
+            else
+            {
+                username = CookieValue;
+                userProfileData = _manager.RetrieveUserInfoFromDB(profileMod, username);
+                ViewData["userProfileData"] = userProfileData;
+            }
+
             return View();
         }
     }
