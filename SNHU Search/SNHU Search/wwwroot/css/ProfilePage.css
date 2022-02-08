@@ -2,10 +2,18 @@
 }
 
 .leftColumn {
-    width: 60%;
+    width: 30%;
     float: left;
 }
 
 .rightColumn {
-    width: 60%;
+    width: 30%;
+    float: right;
+}
+
+.profleCenter {
+    margin: auto;
+    width: 50%;
+    margin-top: 1%;
+    display: flex;
 }
