@@ -43,11 +43,40 @@
         </div>
     </div>
     <div>
-        <button class="addFileButton" type="submit">Upload File</button>
-        <input class="userFileInput" disabled="disabled" placeholder="File name here"/>
+        <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UploadDirectory">
+            <span>Select File:</span>
+
+            @{
+                string pathEnteredExist;
+                pathEnteredExist = ViewData["DirectoryPathExist"] as string;
+
+                string path;
+                path = ViewData["DirectoryPath"] as string;
+                if (pathEnteredExist == "false")
+                {
+                    <label>Enter a directory</label>
+                    <br>
+                    <input name="path" size="50" type="text"/>
+                    <input type="submit" value="Upload" />
+                }
+                else
+                {
+                    <label name="path" size="50">@path</label>                 
+                    // add a clear button
+                    <input type="submit" value="Clear Path" />
+                }
+            }
+        </form>
     </div>
 </body>
 </html>
+
+<script>
+    function browseResult(e) {
+        var fileselector = document.getElementById('fileselector');
+        console.log(fileselector.value);
+    }
+</script>
 
 @if (ViewBag.message != null)
 {

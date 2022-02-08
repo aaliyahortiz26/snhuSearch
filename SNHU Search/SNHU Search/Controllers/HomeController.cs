@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SNHU_Search.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SNHU_Search.Controllers
 {
@@ -15,6 +16,8 @@ namespace SNHU_Search.Controllers
         private readonly ElasticManager _ManagerElastic = new ElasticManager();
         private readonly PythonModel pythonScraper = new PythonModel();
         private string cookieKey = "LoginUserName";
+        private string DirectoryCookieKey = "DirectoryPathCookie";
+
         public HomeController(DBManager manager)
         {        
             _manager = manager;
@@ -49,7 +52,7 @@ namespace SNHU_Search.Controllers
             return View();
         }
 
-        public IActionResult ConfigPage()
+        public IActionResult ConfigPage(string sPathMessage, bool bIncorrectPath, bool bDeletedCookie)
         {
             if (TempData["message"] != null)
             {
@@ -62,6 +65,41 @@ namespace SNHU_Search.Controllers
             ViewData["userWebsitesList"] = userWebsitesList;
             // display logout button on config page
             ViewData["username"] = CookieValue;
+
+
+           // get cookie value for directory path cookie
+           CookieValue = Request.Cookies[DirectoryCookieKey];
+
+            // user submitted a directory
+            if (sPathMessage != null)
+            {
+                // delete cookie and remove path
+                if (bDeletedCookie == true)
+                {
+                    ViewData["DirectoryPathExist"] = "false";
+                    ViewBag.message = sPathMessage;
+                    return View();
+                }
+                // Path does not exist
+                else if(bIncorrectPath == true)
+                {
+                    ViewData["DirectoryPathExist"] = "false";
+                    ViewBag.message = sPathMessage;
+                    return View();
+                }              
+                // path does exist
+                else
+                {
+                    ViewData["DirectoryPathExist"] = "true";
+                    ViewData["DirectoryPath"] = CookieValue;
+                    ViewBag.message = sPathMessage;
+                    return View();
+                }
+            }
+            else
+            {
+                ViewData["DirectoryPathExist"] = "false";
+            }
             return View();
         }
 
@@ -122,6 +160,41 @@ namespace SNHU_Search.Controllers
             var CookieValue = Request.Cookies[cookieKey];
             ViewData["username"] = CookieValue;
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult UploadDirectory(string path)
+        {
+            string PathMessage = "";
+            bool DeletedCookie = false, incorrectPath = false;
+
+            // delete path
+            if (path == null)
+            {
+                CookieOptions options = new CookieOptions();
+                options.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Append(DirectoryCookieKey, "ExpireCookie", options);
+                PathMessage = "Erased Saved Path";
+                DeletedCookie = true;
+            }
+            // if directory does exist
+            else if (Directory.Exists(path))
+            {
+                string key = DirectoryCookieKey;
+                string value = path;
+
+                CookieOptions options = new CookieOptions();
+                options.Expires = DateTime.Now.AddDays(7);
+                Response.Cookies.Append(key, value, options);
+                PathMessage = "Path was entered, scanning files";
+            }
+            // path does not exist
+            else
+            {
+                PathMessage = "Try a different path, path does not exist";
+                incorrectPath = true;
+            }
+            return RedirectToAction("ConfigPage", new { sPathMessage = PathMessage, bIncorrectPath = incorrectPath, bDeletedCookie = DeletedCookie });
         }
     }
 }
