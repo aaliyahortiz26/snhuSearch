@@ -18,29 +18,66 @@
             <button class="addWebsiteButton" type="submit">Add Website</button>
         </div>
     </form>
-    <div class="centered">
+    <div class="searchResults">
         <div class="ListWebsites">
-
-            <p>
-                @{
-                    List<string> list = new List<string>();
-                    list = ViewData["userWebsitesList"] as List<string>;
-                    @if (list != null)
-                    {
-                        for (int i = 0; i < list.Count(); i++)
+                @*<table>*@
+                    @{
+                        List<string> list = new List<string>();
+                        list = ViewData["userWebsitesList"] as List<string>;
+                        @if (list != null)
                         {
-                            <label class="savedWebsiteList">@list[i]</label>
-                            <a onclick="location.href='@Url.Action("RemoveWebsites", "Home", new {website = list[i]})'"><i class="fas fa-trash"></i></a>
-
-                            @if (i % 1 == 0)
+                            for (int i = 0; i < list.Count(); i++)
                             {
-                                <br>
+                                @*<tr>
+                                    <td>
+                                        <label class="savedWebsiteList">@list[i]</label>
+                                    </td>
+                                    <td>
+                                        <a onclick="location.href='@Url.Action("RemoveWebsites", "Home", new { website = list[i] })'">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>*@
+                                <a onclick="location.href='@Url.Action("RemoveWebsites", "Home", new { website = list[i] })'">
+                                    <label class="savedWebsiteList">@list[i]<i class="fas fa-trash"></i></label>
+                                </a>
+
+
+                                @if (i % 1 == 0)
+                                {
+                                    <br>
+                                }
                             }
                         }
                     }
-                }
-            </p>
+                @*</table>*@
         </div>
+    </div>
+    <div>
+        <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UploadDirectory">
+            <span>Select File:</span>
+
+            @{
+                string pathEnteredExist;
+                pathEnteredExist = ViewData["DirectoryPathExist"] as string;
+
+                string path;
+                path = ViewData["DirectoryPath"] as string;
+                if (pathEnteredExist == "false")
+                {
+                    <label>Enter a directory</label>
+                    <br>
+                    <input name="path" size="50" type="text"/>
+                    <input type="submit" value="Upload" />
+                }
+                else
+                {
+                    <label name="path" size="50">@path</label>                 
+                    // add a clear button
+                    <input type="submit" value="Clear Path" />
+                }
+            }
+        </form>
     </div>
 </body>
 </html>

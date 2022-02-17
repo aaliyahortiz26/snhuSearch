@@ -196,7 +196,7 @@ namespace SNHU_Search.Models
 					return false;
 				}
 				else
-				{				
+				{
 					// Add the website to the list with a new ID
 					term.Parameters.AddWithValue("@userID", GetUserID(username));
 
@@ -267,9 +267,9 @@ namespace SNHU_Search.Models
 		#endregion
 
 		public List<string> RetrieveUserInfoFromDB(ProfileModel pm, string userNameS)
-        {
-			using(MySqlConnection DBconnection = GetConnection())
-            {
+		{
+			using (MySqlConnection DBconnection = GetConnection())
+			{
 				DBconnection.Open();
 				MySqlCommand CheckData = DBconnection.CreateCommand();
 				CheckData.Parameters.AddWithValue("@username", userNameS);
@@ -280,8 +280,8 @@ namespace SNHU_Search.Models
 
 				List<string> currentUserList = new List<string>();
 
-				while(DBreader.Read())
-                {
+				while (DBreader.Read())
+				{
 					currentUserList.Add(Convert.ToString(DBreader[0])); //email
 					currentUserList.Add(Convert.ToString(DBreader[1])); //first name
 					currentUserList.Add(Convert.ToString(DBreader[2])); //last name
@@ -289,7 +289,7 @@ namespace SNHU_Search.Models
 				DBreader.Close();
 				return currentUserList;
 			}
-        }
+		}
 
 		public bool URLExist(string website)
 		{
@@ -329,9 +329,9 @@ namespace SNHU_Search.Models
 				}
 			}
 			catch
-            {
-				websiteTitle = ""; 
-            }
+			{
+				websiteTitle = "";
+			}
 
 			return websiteTitle;
 		}
