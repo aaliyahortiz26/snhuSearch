@@ -63,6 +63,9 @@
 
                 string path;
                 path = ViewData["DirectoryPath"] as string;
+
+                string SkippedFiles = ViewData["SkippedFiles"] as string;
+
                 if (pathEnteredExist == "false")
                 {
                     <label>Enter a directory</label>
@@ -75,6 +78,8 @@
                     <label name="path" size="50">@path</label>                 
                     // add a clear button
                     <input type="submit" value="Clear Path" />
+                    <br>
+                    <label>Skipped files: @SkippedFiles</label>
                 }
             }
         </form>

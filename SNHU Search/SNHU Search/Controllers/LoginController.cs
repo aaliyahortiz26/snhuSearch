@@ -11,7 +11,11 @@ namespace SNHU_Search.Controllers
     public class LoginController : Controller
     {
         private readonly DBManager _manager;
-        private string Cookiekey = "LoginUserName";
+        private string cookiekey = "LoginUserName";
+        private string DirectoryCookieKey = "DirectoryPathCookie";
+        private readonly ElasticManager _ManagerElastic = new ElasticManager();
+        private readonly DirectoryManager _ManagerDirectory = new DirectoryManager();
+
         public LoginController(DBManager manager)
         {
             _manager = manager;
@@ -39,7 +43,7 @@ namespace SNHU_Search.Controllers
                     HttpContext.Session.SetString("userid", nUserID.ToString());
                     _manager.LoadUser(loginUser, ref nUserID, loginUser.UserName);
                                        
-                    string key = "LoginUserName";
+                    string key = cookiekey;
                     string value = loginUser.UserName;
 
                     CookieOptions options = new CookieOptions();
@@ -93,10 +97,27 @@ namespace SNHU_Search.Controllers
         }
         public IActionResult Logout()
         {
+            var CookieValue = Request.Cookies[cookiekey];
+            string username = "";
+            if (CookieValue != null)
+            {
+                username = CookieValue.ToLower();
+            }
+
+            // delete index from elasticsearch
+
+            // combine username with specific name in Directory Manager
+            string ElasticIndexName = _ManagerDirectory.getElasticSearchIndexName() + username;
+            _ManagerElastic.removeIndexDirectory(ElasticIndexName);
+
             CookieOptions options = new CookieOptions();
             options.Expires = DateTime.Now.AddDays(-1);
-            Response.Cookies.Append(Cookiekey, "ExpireCookie", options);
+            Response.Cookies.Append(cookiekey, "ExpireCookie", options);
 
+
+            CookieOptions cookie2 = new CookieOptions();
+            cookie2.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Append(DirectoryCookieKey, "ExpireCookie", options);
             return View("~/Views/Home/Index.cshtml");
         }
     }
