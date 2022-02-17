@@ -120,5 +120,15 @@ namespace SNHU_Search.Controllers
             Response.Cookies.Append(DirectoryCookieKey, "ExpireCookie", options);
             return View("~/Views/Home/Index.cshtml");
         }
+
+        public IActionResult ForgotPassword()
+        {
+            return View("~/Views/Login/ForgotPassword.cshtml");
+        }
+
+        public IActionResult ResetPassword()
+        {
+            return View("~/Views/Login/ResetPassword.cshtml");
+        }
     }
 }
