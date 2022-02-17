@@ -5,11 +5,11 @@
 }
 <head>
     <title>Profile Page</title>
-    <link href='~/css/ProfilePage.css' rel='stylesheet'>  @*Change to different style sheet when styling*@
+    <link href='~/css/ProfilePage.css' rel='stylesheet'>
 </head>
 
 
-<div class="profleCenter" style="text-align:center">
+<div class="profleCenter">
     <div class="leftColumn">
         <label>First Name: </label><br />
         <label>Last Name: </label><br />
@@ -31,3 +31,4 @@
         }
     </div>
 </div>
+<button class="changePasswordButton buttonCenter" type="button" onclick=" location.href = '@Url.Action("ChangePassword", "Login")'">Change Password</button>

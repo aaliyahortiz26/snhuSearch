@@ -1,4 +1,5 @@
 ﻿body {
+    background-color: #d8e0ee;
 }
 
 .leftColumn {
@@ -12,8 +13,40 @@
 }
 
 .profleCenter {
-    margin: auto;
     width: 50%;
-    margin-top: 1%;
-    display: flex;
+    margin-top: 7%;
+    display:flex;
+    margin-left:38%;
+}
+
+label {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.changePasswordButton {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    background-color: #001E60;
+    margin-top: 15px;
+    width: 20%;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    margin-top: 25px;
+}
+
+.changePasswordButton:hover {
+    background-color: #003e85;
+}
+
+.changePasswordButton:active {
+    background-color: #001E40;
+}
+
+.buttonCenter {
+    margin-left: 39%;
 }
