@@ -41,7 +41,6 @@ p {
     text-align: center;
     height: 40%;
     width: 100%;
-    /*margin-top: 0.5%;*/
 }
 
 .addWebsiteButton {
@@ -99,8 +98,9 @@ p {
 }
 
 .savedWebsiteList {
-    margin-top: -3%;
+    margin-top: 1%;
     font-size: 17px;
+    text-align:center;
 }
 
 .userFileInput {
