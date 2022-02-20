@@ -210,5 +210,10 @@ namespace SNHU_Search.Controllers
             }
             return RedirectToAction("ConfigPage", new { sPathMessage = PathMessage, bIncorrectPath = incorrectPath, bDeletedCookie = DeletedCookie });
         }
+
+        public IActionResult ChangePassword()
+        {
+            return View("~/Views/Login/ChangePassword.cshtml");
+        }
     }
 }
