@@ -13,6 +13,7 @@ namespace SNHU_Search.Controllers
         private readonly DBManager _manager;
         private string cookiekey = "LoginUserName";
         private string DirectoryCookieKey = "DirectoryPathCookie";
+        private string CookieSkippedDirFilesKey = "DirectorySkippedFilesCookie";
         private readonly ElasticManager _ManagerElastic = new ElasticManager();
         private readonly DirectoryManager _ManagerDirectory = new DirectoryManager();
 
@@ -113,11 +114,9 @@ namespace SNHU_Search.Controllers
             CookieOptions options = new CookieOptions();
             options.Expires = DateTime.Now.AddDays(-1);
             Response.Cookies.Append(cookiekey, "ExpireCookie", options);
-
-
-            CookieOptions cookie2 = new CookieOptions();
-            cookie2.Expires = DateTime.Now.AddDays(-1);
             Response.Cookies.Append(DirectoryCookieKey, "ExpireCookie", options);
+            Response.Cookies.Append(CookieSkippedDirFilesKey, "ExpireCookie", options);
+
             return View("~/Views/Home/Index.cshtml");
         }
     }

@@ -14,12 +14,12 @@ namespace SNHU_Search.Controllers
     {
 
         private string cookieKey = "LoginUserName";
-        private string DirectoryCookieKey = "DirectoryPathCookie";
+        private string DirectoryCookieKey = "DirectoryPathCookie";              
+        private string CookieSkippedDirFilesKey = "DirectorySkippedFilesCookie";                                  
         private readonly DBManager _manager;
         private readonly ElasticManager _ManagerElastic = new ElasticManager();
         private readonly DirectoryManager _ManagerDirectory = new DirectoryManager();
         private readonly PythonModel pythonScraper = new PythonModel();
-
 
         public HomeController(DBManager manager)
         {
@@ -61,7 +61,7 @@ namespace SNHU_Search.Controllers
             return View();
         }
 
-        public IActionResult ConfigPage(string sPathMessage, bool bIncorrectPath, bool bDeletedCookie, int iSkippedFiles)
+        public IActionResult ConfigPage(string sPathMessage, bool bIncorrectPath, bool bDeletedCookie)
         {
             if (TempData["message"] != null)
             {
@@ -79,12 +79,13 @@ namespace SNHU_Search.Controllers
             // get cookie value for directory path cookie
             CookieValue = Request.Cookies[DirectoryCookieKey];
 
+            // get cookie value for skipped files
+            var cookieSkippedFilesValue = Request.Cookies[CookieSkippedDirFilesKey];
 
             if (bDeletedCookie == true)
             {
                 ViewData["DirectoryPathExist"] = "false";
                 ViewBag.message = sPathMessage;
-
 
                 return View();
             }
@@ -101,13 +102,12 @@ namespace SNHU_Search.Controllers
                 ViewData["DirectoryPath"] = CookieValue;
                 ViewData["DirectoryPathExist"] = "false";
             }
-
             // path does exist
             else
             {
                 ViewData["DirectoryPathExist"] = "true";
                 ViewData["DirectoryPath"] = CookieValue;
-                ViewData["SkippedFiles"] = iSkippedFiles.ToString();
+                ViewData["SkippedFiles"] = cookieSkippedFilesValue;
                 ViewBag.message = sPathMessage;
                 return View();
             }
@@ -201,6 +201,7 @@ namespace SNHU_Search.Controllers
                 CookieOptions options = new CookieOptions();
                 options.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Append(DirectoryCookieKey, "ExpireCookie", options);
+                Response.Cookies.Append(CookieSkippedDirFilesKey, "ExpireCookie", options);
                 PathMessage = "Erased Saved Path";
                 DeletedCookie = true;
 
@@ -225,9 +226,14 @@ namespace SNHU_Search.Controllers
                 // begin scanning files on computer
                 scanDirectory(path);
 
-
+                // below saves number of skipped files in a cookie
+                string keySkippedFiles = CookieSkippedDirFilesKey;
                 skippedFiles = _ManagerDirectory.getFilesSkipped();
+                string numSkippedFiles = skippedFiles.ToString();
 
+                CookieOptions optionSkipped = new CookieOptions();
+                options.Expires = DateTime.Now.AddDays(7);
+                Response.Cookies.Append(keySkippedFiles, numSkippedFiles, optionSkipped);
 
             }
             // path does not exist
@@ -236,7 +242,7 @@ namespace SNHU_Search.Controllers
                 PathMessage = "Try a different path, path does not exist";
                 incorrectPath = true;
             }
-            return RedirectToAction("ConfigPage", new { sPathMessage = PathMessage, bIncorrectPath = incorrectPath, bDeletedCookie = DeletedCookie, iSkippedFiles = skippedFiles });
+            return RedirectToAction("ConfigPage", new { sPathMessage = PathMessage, bIncorrectPath = incorrectPath, bDeletedCookie = DeletedCookie});
         }
 
         string getCookieUsername()
@@ -248,6 +254,16 @@ namespace SNHU_Search.Controllers
                 username = CookieValue.ToLower();
             }
             return username;
+        }
+        string getCookieSkippedFiles()
+        {
+            string skippedFiles = "skipped";
+            var CookieValue = Request.Cookies[CookieSkippedDirFilesKey];
+            if (CookieValue != null)
+            {
+                skippedFiles = CookieValue.ToLower();
+            }
+            return skippedFiles;
         }
         void scanDirectory(string directoryPath)
         {
