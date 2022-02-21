@@ -273,5 +273,27 @@ namespace SNHU_Search.Controllers
             _ManagerDirectory.setUsername(username);
             _ManagerDirectory.scan();
         }
+
+        public IActionResult ChangePassword(ProfileModel profileMod)
+        {
+            var CookieValue = Request.Cookies[cookieKey];
+            string username;
+            ViewData["username"] = CookieValue;
+            List<string> userProfileData = new List<string>();
+
+            if (CookieValue == null)
+            {
+                username = "";
+            }
+            else
+            {
+                username = CookieValue;
+                userProfileData = _manager.RetrieveUserInfoFromDB(profileMod, username);
+                ViewData["userProfileData"] = userProfileData;
+            }
+
+
+            return View("~/Views/Login/ChangePassword.cshtml");
+        }
     }
 }
