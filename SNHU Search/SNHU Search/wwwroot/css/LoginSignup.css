@@ -48,6 +48,21 @@
     margin-top: 25px;
 }
 
+.forgotPasswordButton {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    background-color: #001E60;
+    margin-top: 12px;
+    width: 30%;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    margin-top: 25px;
+}
+
 .loginSignUpButton:hover {
     background-color: #003e85;
 }
@@ -68,7 +83,7 @@
     position:center;
     margin:0;
     width: 30%;
-    margin-top: 4%;
+    margin-top: 3%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
