@@ -28,6 +28,10 @@
             <label>@currentUserInformation[2]</label><br /> @*User's Last Name*@
             <label>@username</label><br /> @*User's Username*@
             <label>@currentUserInformation[0]</label><br /> @*User's Email*@
+
+            //<input class="profileToChangePassword" type="text" id="2" placeholder="3" required autocomplete="off" />
+            //<button class="gotoChangePassword" type="submit">Change Password</button>
+            <button class="gotoChangePassword" type="button" onclick="location.href = '@Url.Action("ChangePassword", "Home")'">Change Password</button>
         }
     </div>
 </div>

@@ -104,5 +104,10 @@ namespace SNHU_Search.Controllers
         {
             return View("~/Views/Login/ForgotPassword.cshtml");
         }
+
+        public IActionResult ResetPassword()
+        {
+            return View("~/Views/Login/ResetPassword.cshtml");
+        }
     }
 }
