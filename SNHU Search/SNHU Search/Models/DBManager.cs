@@ -264,9 +264,10 @@ namespace SNHU_Search.Models
 				return formattedList;
 			}
 		}
-		#endregion
+        #endregion
 
-		public List<string> RetrieveUserInfoFromDB(ProfileModel pm, string userNameS)
+        #region Manage User Account
+        public List<string> RetrieveUserInfoFromDB(ProfileModel pm, string userNameS)
 		{
 			using (MySqlConnection DBconnection = GetConnection())
 			{
@@ -290,8 +291,13 @@ namespace SNHU_Search.Models
 				return currentUserList;
 			}
 		}
+		public string UserForgetsPassword(ForgetPasswordModel fp, string email)
+        {
+			return ""; //change this to a different variable
+        }
+        #endregion
 
-		public bool URLExist(string website)
+        public bool URLExist(string website)
 		{
 			Uri uriResult;
 			bool result = Uri.TryCreate(website, UriKind.Absolute, out uriResult)
@@ -356,5 +362,6 @@ namespace SNHU_Search.Models
 			}
 			return tenWebsiteWords;
 		}
+
 	}
 }
