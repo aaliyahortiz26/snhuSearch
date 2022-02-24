@@ -20,10 +20,6 @@ p {
 .searchResults {
     width: 100%;
     margin-top: 1%;
-    height: 49vh;
-    overflow:hidden;
-    overflow-y: scroll;
-    scroll-behavior: smooth;
 }
 
 .websiteInput {
@@ -91,10 +87,14 @@ p {
 .ListWebsites {
     width: 80%;
     margin-top: -3%;
-    margin:auto;
+    margin: auto;
     text-align: center;
-    background-color:white;
+    background-color: white;
     border-radius: 15px;
+    overflow:hidden;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    height: 49vh;
 }
 
 .savedWebsiteList {
@@ -120,7 +120,7 @@ p {
     color: red;
     position: absolute;
     right: 0;
-    margin-right: 12%;
+    margin-right: 13%;
     margin-top: .5%;
     cursor: pointer;
 }
