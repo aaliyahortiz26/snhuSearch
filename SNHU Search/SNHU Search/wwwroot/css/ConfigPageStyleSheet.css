@@ -100,7 +100,7 @@ p {
 }
 
 .savedWebsiteList {
-    margin-top: 1%;
+    margin-top: 1.2%;
     font-size: 17px;
     text-align:center;
 }
@@ -125,8 +125,30 @@ p {
     margin-right: 13%;
     margin-top: .5%;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .fa-trash:hover {
     color: #f54242;
+    overflow:hidden;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 13px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #313740;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #313740;
 }
