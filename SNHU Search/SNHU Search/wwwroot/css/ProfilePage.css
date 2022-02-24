@@ -5,6 +5,7 @@
 .leftColumn {
     width: 30%;
     float: left;
+    margin-left: 10%
 }
 
 .rightColumn {
@@ -16,7 +17,7 @@
     width: 50%;
     margin-top: 7%;
     display:flex;
-    margin-left:38%;
+    margin-left:22%;
 }
 
 label {
@@ -47,6 +48,35 @@ label {
     background-color: #001E40;
 }
 
+.uploadImageButton {
+    font-family: 'Segoe UI';
+    border-radius: 15px;
+    background-color: #001E60;
+    margin-top: 15px;
+    width: 100%;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    margin-top: 25px;
+}
+
+.uploadImageButton:hover {
+    background-color: #003e85;
+
+}
+
+.uploadImageButton:active {
+    background-color: #001E40;
+}
+
 .buttonCenter {
     margin-left: 39%;
+}
+
+.profileImage {
+    width: 150px;
+    height: 150px;
 }
