@@ -18,31 +18,29 @@
             <button class="addWebsiteButton" type="submit">Add Website</button>
         </div>
     </form>
-        <div class="ListWebsites">
-                    @{
-                        List<string> list = new List<string>();
-                        list = ViewData["userWebsitesList"] as List<string>;
-                        @if (list != null)
-                        {
-                            for (int i = 0; i < list.Count(); i++)
-                            {
-                                
-                                
-                                <a onclick="location.href='@Url.Action("RemoveWebsites", "Home", new { website = list[i] })'">
-                                    <label class="savedWebsiteList">@list[i]<i class="fas fa-trash"></i></label>
-                                </a>
-                                @if (i % 1 == 0)
-                                {
-                                    <br>
-                                }
-                                //else if (list.Count() >= 6)
-                                //{
+    <div class="ListWebsites">
+         @{
+             List<string> list = new List<string>();
+             list = ViewData["userWebsitesList"] as List<string>;
+             @if (list != null)
+              {
+                    for (int i = 0; i < list.Count(); i++)
+                    {
+                          <a onclick="location.href='@Url.Action("RemoveWebsites", "Home", new { website = list[i] })'">
+                              <label class="savedWebsiteList">@list[i]<i class="fas fa-trash"></i></label>
+                          </a>
+                          @if (i % 1 == 0)
+                           {
+                              <br>
+                           }
+                           //else if (list.Count() >= 6)
+                           //{
 
-                                //}
-                            }
-                        }
+                           //}
                     }
-        </div>
+              }
+         }
+    </div>
     <div>
         <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UploadDirectory">
             <span>Select File:</span>

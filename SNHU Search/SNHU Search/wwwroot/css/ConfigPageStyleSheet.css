@@ -147,8 +147,3 @@ p {
 ::-webkit-scrollbar-thumb {
     background: #313740;
 }
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #313740;
-}
