@@ -10,6 +10,7 @@ p {
     font-size: 24px;
     font: bold;
     color: black;
+    margin-bottom: 0%;
 }
 
 .centered {
@@ -27,7 +28,7 @@ p {
     border-radius: 16px;
     width: 60%;
     height: 40px;
-    margin-top: 0.5%;
+    margin-top: -2%;
     padding-left: 15px;
     border: none;
     margin-right: 1%;
@@ -37,6 +38,7 @@ p {
     text-align: center;
     height: 40%;
     width: 100%;
+    margin-bottom: 1%;
 }
 
 .addWebsiteButton {
