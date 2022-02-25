@@ -1,15 +1,13 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<head>
+﻿<head>
     <title>Profile Page</title>
-    <link href='~/css/ProfilePage.css' rel='stylesheet'>  @*Change to different style sheet when styling*@
+    <link href='~/css/ProfilePage.css' rel='stylesheet'>
 </head>
 
-
-<div class="profleCenter" style="text-align:center">
+<div class="profleCenter">
+    <form>
+        <input class="profileImage" type="image" id="profileImage" name="profileImage" img src="~/Images/profilePicture.png" accept=".png .jpeg .jpg" /><br/>
+        <input class="uploadImageButton" type="submit" value="Upload" />
+    </form>
     <div class="leftColumn">
         <label>First Name: </label><br />
         <label>Last Name: </label><br />
@@ -28,10 +26,7 @@
             <label>@currentUserInformation[2]</label><br /> @*User's Last Name*@
             <label>@username</label><br /> @*User's Username*@
             <label>@currentUserInformation[0]</label><br /> @*User's Email*@
-
-            //<input class="profileToChangePassword" type="text" id="2" placeholder="3" required autocomplete="off" />
-            //<button class="gotoChangePassword" type="submit">Change Password</button>
-            <button class="gotoChangePassword" type="button" onclick="location.href = '@Url.Action("ChangePassword", "Home")'">Change Password</button>
         }
     </div>
 </div>
+<button class="changePasswordButton buttonCenter" type="button" onclick=" location.href = '@Url.Action("ChangePassword", "Home")'">Change Password</button>
