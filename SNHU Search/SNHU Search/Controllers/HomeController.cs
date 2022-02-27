@@ -12,14 +12,17 @@ namespace SNHU_Search.Controllers
 {
     public class HomeController : Controller
     {
+
+        private string cookieKey = "LoginUserName";
+        private string DirectoryCookieKey = "DirectoryPathCookie";              
+        private string CookieSkippedDirFilesKey = "DirectorySkippedFilesCookie";                                  
         private readonly DBManager _manager;
         private readonly ElasticManager _ManagerElastic = new ElasticManager();
+        private readonly DirectoryManager _ManagerDirectory = new DirectoryManager();
         private readonly PythonModel pythonScraper = new PythonModel();
-        private string cookieKey = "LoginUserName";
-        private string DirectoryCookieKey = "DirectoryPathCookie";
 
         public HomeController(DBManager manager)
-        {        
+        {
             _manager = manager;
         }
 
@@ -32,19 +35,25 @@ namespace SNHU_Search.Controllers
         public IActionResult SearchElastic(SearchModel Sm)
         {
             List<ElasticManager.WebsiteDetails> elastiSearchKeywordsList = new List<ElasticManager.WebsiteDetails>();
+            List<ElasticManager.WebsiteDetails> elastiSearchListDirectory = new List<ElasticManager.WebsiteDetails>();
             string username;
             var CookieValue = Request.Cookies[cookieKey];
             if (CookieValue == null)
             {
-                username = "";  
+                username = "";
             }
             else
             {
                 username = CookieValue.ToLower();
-            }    
+            }
             elastiSearchKeywordsList = _ManagerElastic.search(username, Sm.Keywords);
+            // search for keywords in directory instance
+            elastiSearchListDirectory = _ManagerElastic.search(_ManagerDirectory.getElasticSearchIndexName() + username, Sm.Keywords);
+
+            List<ElasticManager.WebsiteDetails> search = elastiSearchKeywordsList.Concat(elastiSearchListDirectory).ToList();
+
             ViewData["username"] = CookieValue;
-            ViewData["elastiSearchKeywordsList"] = elastiSearchKeywordsList;
+            ViewData["elastiSearchKeywordsList"] = search;
             return View("Index");
         }
         public IActionResult Privacy()
@@ -67,39 +76,42 @@ namespace SNHU_Search.Controllers
             ViewData["username"] = CookieValue;
 
 
-           // get cookie value for directory path cookie
-           CookieValue = Request.Cookies[DirectoryCookieKey];
+            // get cookie value for directory path cookie
+            CookieValue = Request.Cookies[DirectoryCookieKey];
 
-            // user submitted a directory
-            if (sPathMessage != null)
-            {
-                // delete cookie and remove path
-                if (bDeletedCookie == true)
-                {
-                    ViewData["DirectoryPathExist"] = "false";
-                    ViewBag.message = sPathMessage;
-                    return View();
-                }
-                // Path does not exist
-                else if(bIncorrectPath == true)
-                {
-                    ViewData["DirectoryPathExist"] = "false";
-                    ViewBag.message = sPathMessage;
-                    return View();
-                }              
-                // path does exist
-                else
-                {
-                    ViewData["DirectoryPathExist"] = "true";
-                    ViewData["DirectoryPath"] = CookieValue;
-                    ViewBag.message = sPathMessage;
-                    return View();
-                }
-            }
-            else
+            // get cookie value for skipped files
+            var cookieSkippedFilesValue = Request.Cookies[CookieSkippedDirFilesKey];
+
+            if (bDeletedCookie == true)
             {
                 ViewData["DirectoryPathExist"] = "false";
+                ViewBag.message = sPathMessage;
+
+                return View();
             }
+            // Path does not exist
+            if (bIncorrectPath == true)
+            {
+                ViewData["DirectoryPathExist"] = "false";
+                ViewBag.message = sPathMessage;
+                return View();
+            }
+            // cookie was deleted
+            else if (CookieValue == null)
+            {
+                ViewData["DirectoryPath"] = CookieValue;
+                ViewData["DirectoryPathExist"] = "false";
+            }
+            // path does exist
+            else
+            {
+                ViewData["DirectoryPathExist"] = "true";
+                ViewData["DirectoryPath"] = CookieValue;
+                ViewData["SkippedFiles"] = cookieSkippedFilesValue;
+                ViewBag.message = sPathMessage;
+                return View();
+            }
+
             return View();
         }
 
@@ -150,7 +162,7 @@ namespace SNHU_Search.Controllers
             var CookieValue = Request.Cookies[cookieKey];
             if (_manager.RemoveWebsite(website, CookieValue))
             {
-               _ManagerElastic.removeData(CookieValue.ToLower(), website);
+                _ManagerElastic.removeData(CookieValue.ToLower(), website);
             }
             return RedirectToAction("ConfigPage");
         }
@@ -181,26 +193,50 @@ namespace SNHU_Search.Controllers
         {
             string PathMessage = "";
             bool DeletedCookie = false, incorrectPath = false;
+            int skippedFiles = 0;
 
-            // delete path
+            // clear directory path, cookie and ElasticSearch
             if (path == null)
             {
                 CookieOptions options = new CookieOptions();
                 options.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Append(DirectoryCookieKey, "ExpireCookie", options);
+                Response.Cookies.Append(CookieSkippedDirFilesKey, "ExpireCookie", options);
                 PathMessage = "Erased Saved Path";
                 DeletedCookie = true;
+
+                // delete index from elasticsearch
+                string currentUsername = getCookieUsername();
+
+                // combine username with specific name in Directory Manager
+                string ElasticIndexName = _ManagerDirectory.getElasticSearchIndexName() + currentUsername;
+                _ManagerElastic.removeIndexDirectory(ElasticIndexName);
             }
             // if directory does exist
-            else if (Directory.Exists(path))
+            else if (System.IO.Directory.Exists(path))
             {
+                Startup.Progress = 0;
+
                 string key = DirectoryCookieKey;
                 string value = path;
 
                 CookieOptions options = new CookieOptions();
                 options.Expires = DateTime.Now.AddDays(7);
                 Response.Cookies.Append(key, value, options);
-                PathMessage = "Path was entered, scanning files";
+                PathMessage = "Path was entered.";
+
+                // begin scanning files on computer
+                scanDirectory(path);
+
+                // below saves number of skipped files in a cookie
+                string keySkippedFiles = CookieSkippedDirFilesKey;
+                skippedFiles = _ManagerDirectory.getFilesSkipped();
+                string numSkippedFiles = skippedFiles.ToString();
+
+                CookieOptions optionSkipped = new CookieOptions();
+                options.Expires = DateTime.Now.AddDays(7);
+                Response.Cookies.Append(keySkippedFiles, numSkippedFiles, optionSkipped);
+
             }
             // path does not exist
             else
@@ -208,7 +244,36 @@ namespace SNHU_Search.Controllers
                 PathMessage = "Try a different path, path does not exist";
                 incorrectPath = true;
             }
-            return RedirectToAction("ConfigPage", new { sPathMessage = PathMessage, bIncorrectPath = incorrectPath, bDeletedCookie = DeletedCookie });
+            return RedirectToAction("ConfigPage", new { sPathMessage = PathMessage, bIncorrectPath = incorrectPath, bDeletedCookie = DeletedCookie});
+        }
+
+        string getCookieUsername()
+        {
+            string username = "username";
+            var CookieValue = Request.Cookies[cookieKey];
+            if (CookieValue != null)
+            {
+                username = CookieValue.ToLower();
+            }
+            return username;
+        }
+        string getCookieSkippedFiles()
+        {
+            string skippedFiles = "skipped";
+            var CookieValue = Request.Cookies[CookieSkippedDirFilesKey];
+            if (CookieValue != null)
+            {
+                skippedFiles = CookieValue.ToLower();
+            }
+            return skippedFiles;
+        }
+        void scanDirectory(string directoryPath)
+        {
+            string username = getCookieUsername();
+
+            _ManagerDirectory.setPath(directoryPath);
+            _ManagerDirectory.setUsername(username);
+            _ManagerDirectory.scan();
         }
 
         public IActionResult ChangePassword(ProfileModel profileMod)
@@ -231,6 +296,11 @@ namespace SNHU_Search.Controllers
 
 
             return View("~/Views/Login/ChangePassword.cshtml");
+        }
+        [HttpPost]
+        public ActionResult Progress()
+        {
+            return this.Content(Startup.Progress.ToString());
         }
     }
 }
