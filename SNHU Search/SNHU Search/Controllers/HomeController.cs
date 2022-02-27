@@ -215,13 +215,15 @@ namespace SNHU_Search.Controllers
             // if directory does exist
             else if (System.IO.Directory.Exists(path))
             {
+                Startup.Progress = 0;
+
                 string key = DirectoryCookieKey;
                 string value = path;
 
                 CookieOptions options = new CookieOptions();
                 options.Expires = DateTime.Now.AddDays(7);
                 Response.Cookies.Append(key, value, options);
-                PathMessage = "Path was entered, scanning files, please leave the application open";
+                PathMessage = "Path was entered.";
 
                 // begin scanning files on computer
                 scanDirectory(path);
@@ -294,6 +296,11 @@ namespace SNHU_Search.Controllers
 
 
             return View("~/Views/Login/ChangePassword.cshtml");
+        }
+        [HttpPost]
+        public ActionResult Progress()
+        {
+            return this.Content(Startup.Progress.ToString());
         }
     }
 }

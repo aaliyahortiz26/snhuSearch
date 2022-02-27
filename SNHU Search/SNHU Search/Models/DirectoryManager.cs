@@ -12,7 +12,7 @@ namespace SNHU_Search.Models
         protected string m_path;
         private List<string> skippedFileList = new List<string>();
         private int countSkippedFiles = 0;
-
+        private int countNumFiles = 0;
         private string m_username = "";
         private string elasticIndexNameLocal = "local"; 
         public void setPath(string localPath)
@@ -30,6 +30,7 @@ namespace SNHU_Search.Models
         }          
         public void scan()
         {
+            Startup.Progress = 0;
             string[] entries = Directory.GetFileSystemEntries(m_path, "*", SearchOption.AllDirectories);
 
             for (int i = 0; i < entries.Length; i++)
@@ -38,8 +39,10 @@ namespace SNHU_Search.Models
                 string filename = Path.GetFileName(entries[i]);
 
                 readFile(fileExtension, entries[i], filename);
+                countNumFiles++;
 
-
+                Startup.Progress = (int)((float)countNumFiles / (float)entries.Count() * 100.0);
+               Task.Delay(100);               
                 Console.WriteLine(entries[i]);
             }
         }
@@ -49,9 +52,14 @@ namespace SNHU_Search.Models
             string text = "";
             string tenWords = "";
 
+            // directory 
+            if (fileType == "")
+            {
+                return;
+            }
             // text file
-            // if(fileType == ".txt")
-            // {
+            else if(fileType == ".txt")
+            {
                 try
                 {
                     // gets all of the text
@@ -64,11 +72,17 @@ namespace SNHU_Search.Models
                 }
                 catch
                 {
+
                     skippedFileList.Add(txtFilePath);
                     countSkippedFiles++;
                     return;
                 }
-            //}
+            }
+            // other types of document, skip file
+            else
+            {
+                countSkippedFiles++;
+            }
         }
         public string getTenWebsiteWords(string websiteText)
         {
