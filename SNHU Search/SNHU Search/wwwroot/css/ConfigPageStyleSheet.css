@@ -66,13 +66,13 @@ p {
     cursor: pointer;
 }
 
-    .addWebsiteButton:hover {
-        background-color: #003e85;
-    }
+.addWebsiteButton:hover {
+    background-color: #003e85;
+}
 
-    .addWebsiteButton:active {
-        background-color: #001E40;
-    }
+.addWebsiteButton:active {
+    background-color: #001E40;
+}
 
 .addFileButton {
     font-family: 'Segoe UI';
@@ -87,13 +87,13 @@ p {
     cursor: pointer;
 }
 
-    .addFileButton:hover {
-        background-color: #003e85;
-    }
+.addFileButton:hover {
+    background-color: #003e85;
+}
 
-    .addFileButton:active {
-        background-color: #001E40;
-    }
+.addFileButton:active {
+    background-color: #001E40;
+}
 
 .ListWebsites {
     width: 80%;
@@ -116,18 +116,22 @@ p {
 
 .fa-trash {
     color: red;
-    position: absolute;
+
     right: 0;
-    margin-right: 13%;
     margin-top: .5%;
     cursor: pointer;
     overflow: hidden;
 }
 
-    .fa-trash:hover {
-        color: #f54242;
-        overflow: hidden;
-    }
+.fa-trash:hover {
+    color: #f54242;
+    overflow: hidden;
+}
+
+.trashButton {
+    background-color: transparent;
+    border: none;
+}
 
 /* width */
 ::-webkit-scrollbar {
@@ -155,3 +159,4 @@ p {
     background-color: #607da2;
     padding-left:0.5%;
 }
+
