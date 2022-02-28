@@ -10,9 +10,9 @@ namespace SNHU_Search.Models
 {
     public class ElasticManager
     {
-        private string elasticConnection = "https://c5a0e3b26c5648f3befe9ee1c0e28101.us-central1.gcp.cloud.es.io:9243/";
-        private string ElasticUsername = "elastic";
-        private string password = "0zmkDTqNkz0ZODVNmDvJV1Uy";
+        protected private string elasticConnection = "https://c5a0e3b26c5648f3befe9ee1c0e28101.us-central1.gcp.cloud.es.io:9243/";
+        protected private string ElasticUsername = "elastic";
+        protected private string password = "0zmkDTqNkz0ZODVNmDvJV1Uy";
 
         public struct WebsiteDetails
         {
@@ -164,6 +164,14 @@ namespace SNHU_Search.Models
                     }
                 }
             }
+        }
+
+        public void removeIndexDirectory(string indexName)
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new BasicAuthenticationHeaderValue(ElasticUsername, password);
+
+            client.DeleteAsync(elasticConnection + indexName);
         }
     }
 }

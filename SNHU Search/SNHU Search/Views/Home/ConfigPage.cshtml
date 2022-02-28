@@ -19,50 +19,70 @@
         </div>
     </form>
     <div class="ListWebsites">
-         @{
-             List<string> list = new List<string>();
-             list = ViewData["userWebsitesList"] as List<string>;
-             @if (list != null)
-              {
+        <table style="width: 100%;">
+            @{
+                List<string> list = new List<string>();
+                list = ViewData["userWebsitesList"] as List<string>;
+                @if (list != null)
+                {
                     for (int i = 0; i < list.Count(); i++)
                     {
-                          <a onclick="location.href='@Url.Action("RemoveWebsites", "Home", new { website = list[i] })'">
-                              <label class="savedWebsiteList">@list[i]<i class="fas fa-trash"></i></label>
-                          </a>
-                          @if (i % 1 == 0)
-                           {
-                              <br>
-                           }
-                           //else if (list.Count() >= 6)
-                           //{
+                        <tr>
+                            <td>
+                                <label class="savedWebsiteList">@list[i]</label>
+                            </td>
+                            <td>
+                                <button class="trashButton" onclick="location.href='@Url.Action("RemoveWebsites", "Home", new { website = list[i] })'">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                            @*@if (i % 1 == 0)
+                            {
+                                <br>
+                            }*@
+                        //else if (list.Count() >= 6)
+                        //{
 
-                           //}
+                        //}
                     }
-              }
-         }
+                }
+            }
+        </table>
     </div>
-    <div>
+    <div class="centered">
         <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UploadDirectory">
-            <span>Select File:</span>
-
             @{
                 string pathEnteredExist;
                 pathEnteredExist = ViewData["DirectoryPathExist"] as string;
 
                 string path;
                 path = ViewData["DirectoryPath"] as string;
+
+                string SkippedFiles = ViewData["SkippedFiles"] as string;
+
                 if (pathEnteredExist == "false")
                 {
-                    <label>Enter a directory</label>
-                    <br>
-                    <input name="path" size="50" type="text"/>
-                    <input type="submit" value="Upload" />
+                    <p>
+                        Select File: Enter a directory
+                        <input class="fileFromDirectoryInput" name="path" size="50" type="text" />
+                        <button class="addFileButton" onclick="startUpdatingProgressIndicator()" size="50">Start Upload</button><br>
+                    </p>
+                    <div class="progress progressBarDiv progressBarSize" onload="startUpdatingProgressIndicator()">
+                        <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                            <div id="label" class="control-label">0%</div>
+                        </div>
+                    </div>
+                    
                 }
+                // If the directory exists
                 else
                 {
-                    <label name="path" size="50">@path</label>                 
+                    <label name="path" size="50">@path</label>
                     // add a clear button
                     <input type="submit" value="Clear Path" />
+                    <br>
+                    <label>Skipped files: @SkippedFiles</label>
                 }
             }
         </form>
@@ -78,3 +98,33 @@
     };
     </script>
 }
+
+<script type="text/javascript" charset="utf-8">
+    var intervalId;
+    function startUpdatingProgressIndicator() {
+        $("#progress").show();
+        intervalId = setInterval(
+            function () {
+                $.post(
+                    "/Home/Progress",
+                    function (progress) {
+                        $("#progress").css({ width: progress + "%" });
+                        $("#label").html(progress + "%");
+
+                        // displays progress in debug mode
+                        console.log(progress);
+
+                        // all files scanned and added to ElasticCloud
+                        // stop progress bar from updating
+                        if (progress == 100) {
+                            stopUpdatingProgressIndicator();
+                        }
+                    }                   
+                );
+            },
+        );
+    }
+    function stopUpdatingProgressIndicator() {
+        clearInterval(intervalId);
+    }
+</script>
