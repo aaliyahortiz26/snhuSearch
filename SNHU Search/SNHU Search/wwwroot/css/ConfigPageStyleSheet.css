@@ -2,6 +2,7 @@
     font: 18px;
     margin: 0;
     background-color: #d8e0ee;
+    color: black;
 }
 
 p {
@@ -10,12 +11,12 @@ p {
     font-size: 24px;
     font: bold;
     color: black;
-    margin-bottom: 0%;
 }
 
 .centered {
     width: 100%;
-    margin-top:2%;
+    margin-top: 2%;
+    text-align:center;
 }
 
 .searchResults {
@@ -29,6 +30,16 @@ p {
     width: 60%;
     height: 40px;
     margin-top: -2%;
+    padding-left: 15px;
+    border: none;
+    margin-right: 1%;
+}
+
+.fileFromDirectoryInput {
+    font-family: 'Segoe UI';
+    border-radius: 16px;
+    width: 40%;
+    height: 40px;
     padding-left: 15px;
     border: none;
     margin-right: 1%;
@@ -67,7 +78,6 @@ p {
     font-family: 'Segoe UI';
     border-radius: 15px;
     background-color: #607da2;
-    margin-top: 1%;
     width: 180px;
     height: 40px;
     color: white;
@@ -75,7 +85,6 @@ p {
     text-align: center;
     border: none;
     cursor: pointer;
-    margin-left:25%;
 }
 
 .addFileButton:hover {
@@ -93,7 +102,7 @@ p {
     text-align: center;
     background-color: white;
     border-radius: 15px;
-    overflow:hidden;
+    overflow: hidden;
     overflow-y: scroll;
     scroll-behavior: smooth;
     height: 49vh;
@@ -102,27 +111,13 @@ p {
 .savedWebsiteList {
     margin-top: 1.2%;
     font-size: 17px;
-    text-align:center;
-}
-
-.userFileInput {
-    font-family: 'Segoe UI';
-    border-radius: 15px;
-    width: 35%;
-    height: 40px;
-    margin-top: 15px;
-    border: none;
-    padding-left: 8px;
-    margin-left: 4px;
-    margin-right: 4px;
-    background-color: white;
+    text-align: center;
 }
 
 .fa-trash {
     color: red;
-    position: absolute;
+
     right: 0;
-    margin-right: 13%;
     margin-top: .5%;
     cursor: pointer;
     overflow: hidden;
@@ -130,20 +125,38 @@ p {
 
 .fa-trash:hover {
     color: #f54242;
-    overflow:hidden;
+    overflow: hidden;
+}
+
+.trashButton {
+    background-color: transparent;
+    border: none;
 }
 
 /* width */
 ::-webkit-scrollbar {
-  width: 13px;
+    width: 13px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+    background: #f1f1f1;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #313740;
 }
+
+.progressBarDiv {
+    text-align:center;
+    margin-left: 30%;
+}
+
+.progressBarSize {
+    width: 40%;
+    height: 2rem;
+    background-color: #607da2;
+    padding-left:0.5%;
+}
+
