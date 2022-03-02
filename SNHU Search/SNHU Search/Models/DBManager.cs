@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-using System.Linq;
 using System.IO;
 using System.Threading;
 using System.Net;
@@ -291,10 +290,37 @@ namespace SNHU_Search.Models
 				return currentUserList;
 			}
 		}
-		public string UserForgetsPassword(ForgetPasswordModel fp, string email)
+		public string UserForgetsPassword(ForgetPasswordModel fpM, string email)
         {
-			return ""; //change this to a different variable
+
+			using (MySqlConnection DBconnect = GetConnection())
+            {
+				DBconnect.Open();
+				MySqlCommand CheckData = DBconnect.CreateCommand();
+				//CheckData.Parameters.AddWithValue("@email", email);
+
+				return ""; //change this to a different variable
+			}
         }
+		public void UserChangesPassword(ChangePasswordModel cpM, string username)
+        {
+			using (MySqlConnection DBconnect = GetConnection())
+			{
+				DBconnect.Open();
+
+				cpM.userNewPassword = BCrypt.Net.BCrypt.HashPassword(cpM.userNewPassword);
+				cpM.userConfirmNewPassword = BCrypt.Net.BCrypt.HashPassword(cpM.userConfirmNewPassword);
+
+				MySqlCommand Query = DBconnect.CreateCommand();
+				Query.Parameters.AddWithValue("@newPassword", cpM.userNewPassword);
+				Query.Parameters.AddWithValue("@username", username);
+				Query.CommandText = "UPDATE SNHUSearch.Accounts_tbl SET password = @newPassword WHERE username = @username";
+
+				Query.ExecuteNonQuery();
+
+				DBconnect.Close();
+			}
+		}
         #endregion
 
         public bool URLExist(string website)
