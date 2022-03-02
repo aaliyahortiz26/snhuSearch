@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-using System.Linq;
 using System.IO;
 using System.Threading;
 using System.Net;
@@ -196,7 +195,7 @@ namespace SNHU_Search.Models
 					return false;
 				}
 				else
-				{				
+				{
 					// Add the website to the list with a new ID
 					term.Parameters.AddWithValue("@userID", GetUserID(username));
 
@@ -264,12 +263,13 @@ namespace SNHU_Search.Models
 				return formattedList;
 			}
 		}
-		#endregion
+        #endregion
 
-		public List<string> RetrieveUserInfoFromDB(ProfileModel pm, string userNameS)
-        {
-			using(MySqlConnection DBconnection = GetConnection())
-            {
+        #region Manage User Account
+        public List<string> RetrieveUserInfoFromDB(ProfileModel pm, string userNameS)
+		{
+			using (MySqlConnection DBconnection = GetConnection())
+			{
 				DBconnection.Open();
 				MySqlCommand CheckData = DBconnection.CreateCommand();
 				CheckData.Parameters.AddWithValue("@username", userNameS);
@@ -280,8 +280,8 @@ namespace SNHU_Search.Models
 
 				List<string> currentUserList = new List<string>();
 
-				while(DBreader.Read())
-                {
+				while (DBreader.Read())
+				{
 					currentUserList.Add(Convert.ToString(DBreader[0])); //email
 					currentUserList.Add(Convert.ToString(DBreader[1])); //first name
 					currentUserList.Add(Convert.ToString(DBreader[2])); //last name
@@ -289,9 +289,41 @@ namespace SNHU_Search.Models
 				DBreader.Close();
 				return currentUserList;
 			}
-        }
+		}
+		public string UserForgetsPassword(ForgetPasswordModel fpM, string email)
+        {
 
-		public bool URLExist(string website)
+			using (MySqlConnection DBconnect = GetConnection())
+            {
+				DBconnect.Open();
+				MySqlCommand CheckData = DBconnect.CreateCommand();
+				//CheckData.Parameters.AddWithValue("@email", email);
+
+				return ""; //change this to a different variable
+			}
+        }
+		public void UserChangesPassword(ChangePasswordModel cpM, string username)
+        {
+			using (MySqlConnection DBconnect = GetConnection())
+			{
+				DBconnect.Open();
+
+				cpM.userNewPassword = BCrypt.Net.BCrypt.HashPassword(cpM.userNewPassword);
+				cpM.userConfirmNewPassword = BCrypt.Net.BCrypt.HashPassword(cpM.userConfirmNewPassword);
+
+				MySqlCommand Query = DBconnect.CreateCommand();
+				Query.Parameters.AddWithValue("@newPassword", cpM.userNewPassword);
+				Query.Parameters.AddWithValue("@username", username);
+				Query.CommandText = "UPDATE SNHUSearch.Accounts_tbl SET password = @newPassword WHERE username = @username";
+
+				Query.ExecuteNonQuery();
+
+				DBconnect.Close();
+			}
+		}
+        #endregion
+
+        public bool URLExist(string website)
 		{
 			Uri uriResult;
 			bool result = Uri.TryCreate(website, UriKind.Absolute, out uriResult)
@@ -329,9 +361,9 @@ namespace SNHU_Search.Models
 				}
 			}
 			catch
-            {
-				websiteTitle = ""; 
-            }
+			{
+				websiteTitle = "";
+			}
 
 			return websiteTitle;
 		}
@@ -356,5 +388,6 @@ namespace SNHU_Search.Models
 			}
 			return tenWebsiteWords;
 		}
+
 	}
 }

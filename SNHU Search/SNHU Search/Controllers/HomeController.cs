@@ -276,25 +276,24 @@ namespace SNHU_Search.Controllers
             _ManagerDirectory.scan();
         }
 
-        public IActionResult ChangePassword(ProfileModel profileMod)
+        public IActionResult ChangePassword(ChangePasswordModel changePasswordMod)
         {
             var CookieValue = Request.Cookies[cookieKey];
             string username;
             ViewData["username"] = CookieValue;
-            List<string> userProfileData = new List<string>();
 
-            if (CookieValue == null)
+            // Checks if all required fields are met
+            if (ModelState.IsValid)
             {
-                username = "";
+                if (changePasswordMod.userNewPassword.Length < 4 && changePasswordMod.userConfirmNewPassword.Length < 4)
+                    ViewBag.message = "Password must be greater than 4 characters!";
+                else
+                {
+                    username = CookieValue;
+                    _manager.UserChangesPassword(changePasswordMod, username);
+                    ViewBag.message = "Password updated successfully!";
+                }
             }
-            else
-            {
-                username = CookieValue;
-                userProfileData = _manager.RetrieveUserInfoFromDB(profileMod, username);
-                ViewData["userProfileData"] = userProfileData;
-            }
-
-
             return View("~/Views/Login/ChangePassword.cshtml");
         }
         [HttpPost]
