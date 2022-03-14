@@ -91,7 +91,7 @@ namespace SNHU_Search.Models
                     Document document = new Document();
                     document.LoadFromFile(txtFilePath);
 
-                    //Extract Text from Word and Save to StringBuilder Instance
+                    // Extract text from Word document
                     foreach (Section section in document.Sections)
                     {
                         foreach (Paragraph paragraph in section.Paragraphs)
