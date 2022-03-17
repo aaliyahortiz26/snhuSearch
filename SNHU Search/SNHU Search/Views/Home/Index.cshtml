@@ -31,23 +31,31 @@
 </div>
 
 <div class="searchResults">
-    @{
-        List<ElasticManager.WebsiteDetails> list = new List<ElasticManager.WebsiteDetails>();
-        list = ViewData["elastiSearchKeywordsList"] as List<ElasticManager.WebsiteDetails>;
-        @if (list != null)
-        {
-            for (int i = 0; i < list.Count(); i++)
+    <table style="width: 100%;">      @*Outputs search results in a scrollable list*@
+        @{
+            List<ElasticManager.WebsiteDetails> list = new List<ElasticManager.WebsiteDetails>();
+            list = ViewData["elastiSearchKeywordsList"] as List<ElasticManager.WebsiteDetails>;
+            @if (list != null)
             {
-                <a href=@list[i].URL style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@list[i].URL</a>
-                <br>
-                <label style="font-size: 17px;">Title: @list[i].Title</label>
-                <br>
-                <label style="font-size: 17px;">@list[i].FirstTenWords</label>
-                <br>
-                <br>
+                for (int i = 0; i < list.Count(); i++)
+                {
+                        <tr>
+                            <a href=@list[i].URL style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@list[i].URL</a>
+                            <br />
+                        </tr>
+                        <tr>
+                            <label style="font-size: 17px;">Title: @list[i].Title</label>
+                            <br />
+                        </tr>
+                        <tr>
+                            <label style="font-size: 17px;">@list[i].FirstTenWords</label>
+                            <br />
+                        </tr>
+                        <br />
+                }
             }
         }
-    }
+    </table>
 </div>
 
 

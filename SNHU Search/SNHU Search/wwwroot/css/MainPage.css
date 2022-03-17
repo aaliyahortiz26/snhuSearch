@@ -10,6 +10,10 @@ p{
     color:white;
 }
 
+div:empty {
+    display: none;
+}
+
 .searchButton {
     font-family: 'Segoe UI';
     border-radius: 15px;
@@ -97,8 +101,28 @@ form {
 
 .searchResults {
     width: 80%;
+    margin-top: -3%;
     margin: auto;
     text-align: center;
     background-color: white;
     border-radius: 15px;
+    overflow: hidden;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    height: 59vh;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 13px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #313740;
 }

@@ -19,7 +19,7 @@
         </div>
     </form>
     <div class="ListWebsites">
-        <table style="width: 100%;">
+        <table style="width: 100%;">            @*outputs results in a scrollable list*@
             @{
                 List<string> list = new List<string>();
                 list = ViewData["userWebsitesList"] as List<string>;
@@ -37,14 +37,6 @@
                                 </button>
                             </td>
                         </tr>
-                            @*@if (i % 1 == 0)
-                            {
-                                <br>
-                            }*@
-                        //else if (list.Count() >= 6)
-                        //{
-
-                        //}
                     }
                 }
             }
