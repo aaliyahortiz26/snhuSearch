@@ -301,5 +301,12 @@ namespace SNHU_Search.Controllers
         {
             return this.Content(Startup.Progress.ToString());
         }
+
+        public IActionResult AnalyticsPage()
+        {
+            var CookieValue = Request.Cookies[cookieKey];
+            ViewData["username"] = CookieValue;
+            return View("~/Views/Home/AnalyticsPage.cshtml");
+        }
     }
 }
