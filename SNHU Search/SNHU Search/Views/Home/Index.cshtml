@@ -33,45 +33,59 @@
 
 
     <div class="searchResults">
-        @{
-            // List<ElasticManager.WebsiteDetails> list = new List<ElasticManager.WebsiteDetails>();
-            //list = ViewData["elasticSearchKeywordsList"] as List<ElasticManager.WebsiteDetails>;
+        <table style="width: 100%;">
+            @*Outputs search results in a scrollable list*@
+            @{
+                // List<ElasticManager.WebsiteDetails> list = new List<ElasticManager.WebsiteDetails>();
+                //list = ViewData["elasticSearchKeywordsList"] as List<ElasticManager.WebsiteDetails>;
 
-            List<ElasticManager.WebsiteDetails> Websiteslist = new List<ElasticManager.WebsiteDetails>();
-            Websiteslist = ViewData["elasticSearchKeywordsWebsitesList"] as List<ElasticManager.WebsiteDetails>;
+                List<ElasticManager.WebsiteDetails> Websiteslist = new List<ElasticManager.WebsiteDetails>();
+                Websiteslist = ViewData["elasticSearchKeywordsWebsitesList"] as List<ElasticManager.WebsiteDetails>;
 
-            List<ElasticManager.WebsiteDetails> Fileslist = new List<ElasticManager.WebsiteDetails>();
-            Fileslist = ViewData["elasticSearchKeywordsFileLocationList"] as List<ElasticManager.WebsiteDetails>;
-            @if (Websiteslist != null)
-            {
-                @for (int i = 0; i < Websiteslist.Count(); i++)
+                List<ElasticManager.WebsiteDetails> Fileslist = new List<ElasticManager.WebsiteDetails>();
+                Fileslist = ViewData["elasticSearchKeywordsFileLocationList"] as List<ElasticManager.WebsiteDetails>;
+                @if (Websiteslist != null)
                 {
-                    <a href=@Websiteslist[i].URL style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@Websiteslist[i].URL</a>
-                    <br>
-                    <label style="font-size: 17px;">Title: @Websiteslist[i].Title</label>
-                    <br>
-                    <label style="font-size: 17px;">@Websiteslist[i].FirstTenWords</label>
-                    <br>
-                    <br>
+                    @for (int i = 0; i < Websiteslist.Count(); i++)
+                    {
+                        <tr>
+                            <a href=@Websiteslist[i].URL style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@Websiteslist[i].URL</a>
+                            <br />
+                        </tr>
+                        <tr>
+                            <label style="font-size: 17px;">Title: @Websiteslist[i].Title</label>
+                            <br />
+                        </tr>
+                        <tr>
+                            <label style="font-size: 17px;">@Websiteslist[i].FirstTenWords</label>
+                            <br />
+                        </tr>
+                        <br />
+                    }
                 }
-            }
-            @if (Fileslist != null)
-            {             
-                @for (int i = 0; i < Fileslist.Count(); i++)
+                @if (Fileslist != null)
                 {
-                    <form method="post" asp-controller="Home" asp-action="SearchElastic" enctype="multipart/form-data">
-                        <!--<a href=@Fileslist[i].URL onclick="$(this).closest('form').submit()" style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@Fileslist[i].URL</a>-->
-                        <a href=@Fileslist[i].URL onclick="yourFunction('@Fileslist[i].Keywords')" style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@Fileslist[i].URL</a>
+                    @for (int i = 0; i < Fileslist.Count(); i++)
+                    {
+                            <!--<a href=@Fileslist[i].URL onclick="$(this).closest('form').submit()" style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@Fileslist[i].URL</a>-->
+                        <tr>
+                            <a href=@Fileslist[i].URL onclick="yourFunction('@Fileslist[i].Keywords')" style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@Fileslist[i].URL</a>
+                            <br>
+                        </tr>
+                        <tr>
+                            <label style="font-size: 17px;">Title: @Fileslist[i].Title</label>
+                            <br>
+                        </tr>
+                        <tr>
+                            <label style="font-size: 17px;">@Fileslist[i].FirstTenWords</label>
+                            <br>
+                        </tr>
                         <br>
-                        <label style="font-size: 17px;">Title: @Fileslist[i].Title</label>
-                        <br>
-                        <label style="font-size: 17px;">@Fileslist[i].FirstTenWords</label>
-                        <br>
-                        <br>
-                    </form>
+
+                    }
                 }
-            }
-        }
+                }
+        </table>
     </div>
 
 
