@@ -34,8 +34,11 @@ namespace SNHU_Search.Controllers
         }
         public IActionResult SearchElastic(SearchModel Sm)
         {
-            List<ElasticManager.WebsiteDetails> elastiSearchKeywordsList = new List<ElasticManager.WebsiteDetails>();
-            List<ElasticManager.WebsiteDetails> elastiSearchListDirectory = new List<ElasticManager.WebsiteDetails>();
+            List<ElasticManager.WebsiteDetails> elasticSearchKeywordsList = new List<ElasticManager.WebsiteDetails>();
+            List<ElasticManager.WebsiteDetails> elasticSearchListDirectory = new List<ElasticManager.WebsiteDetails>();
+            List<ElasticManager.WebsiteDetails> elasticSearchListWebsites = new List<ElasticManager.WebsiteDetails>();
+            List<ElasticManager.WebsiteDetails> elasticSearchListFileLocation = new List<ElasticManager.WebsiteDetails>();
+
             string username;
             var CookieValue = Request.Cookies[cookieKey];
             if (CookieValue == null)
@@ -46,16 +49,33 @@ namespace SNHU_Search.Controllers
             {
                 username = CookieValue.ToLower();
             }
-            elastiSearchKeywordsList = _ManagerElastic.search(username, Sm.Keywords);
+            elasticSearchKeywordsList = _ManagerElastic.search(username, Sm.Keywords);
             // search for keywords in directory instance
-            elastiSearchListDirectory = _ManagerElastic.search(_ManagerDirectory.getElasticSearchIndexName() + username, Sm.Keywords);
+            elasticSearchListDirectory = _ManagerElastic.search(_ManagerDirectory.getElasticSearchIndexName() + username, Sm.Keywords);
+            List<ElasticManager.WebsiteDetails> search = elasticSearchKeywordsList.Concat(elasticSearchListDirectory).ToList();
 
-            List<ElasticManager.WebsiteDetails> search = elastiSearchKeywordsList.Concat(elastiSearchListDirectory).ToList();
+            for (int i = 0; i < search.Count(); i++)
+            {
+                bool isUri = Uri.IsWellFormedUriString(search[i].URL, UriKind.RelativeOrAbsolute);
+                if (isUri)
+                {
+                    elasticSearchListWebsites.Add(search[i]);
+                }
+                else
+                {
+                    elasticSearchListFileLocation.Add(search[i]);
+                }
+            }
+
 
             ViewData["username"] = CookieValue;
-            ViewData["elastiSearchKeywordsList"] = search;
+            ViewData["elasticSearchKeywordsWebsitesList"] = elasticSearchListWebsites;
+            ViewData["elasticSearchKeywordsFileLocationList"] = elasticSearchListFileLocation;
+
             return View("Index");
         }
+
+
         public IActionResult Privacy()
         {
             return View();
@@ -301,5 +321,9 @@ namespace SNHU_Search.Controllers
         {
             return this.Content(Startup.Progress.ToString());
         }
+
+
+
+
     }
 }
