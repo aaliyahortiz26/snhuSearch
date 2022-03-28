@@ -55,8 +55,8 @@
     </form>
 
     <div id='websiteContainer'>
-        <p id="displayURL">
-        </p>
+       <!-- <p id="displayURL">
+        </p>-->
         <!-- Place holder to move for search results-->
     </div>
     <div class="searchResults">
@@ -143,16 +143,15 @@
     // iframe for websites
     function setIframe(url) {
         document.getElementById('websiteContainer').innerHTML = "";
-       //document.getElementById('displayURL').innerHTML = "Preview of \"" + url + "\": ";
+       // document.getElementById('displayURL').innerHTML = "Preview of \"" + url + "\": ";
         var iframe = document.createElement('iframe');
         iframe.frameBorder = 0;
         iframe.width = "100%";
         iframe.height = "100%";
         iframe.id = "randomid";
         iframe.setAttribute("src", url);
-        document.getElementById('websiteContainer').appendChild(iframe);       
+        document.getElementById('websiteContainer').appendChild(iframe);
     }
-
 </script>
 
 
