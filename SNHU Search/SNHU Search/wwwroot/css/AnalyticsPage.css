@@ -1,3 +1,10 @@
 ﻿body {
     background-color: #d8e0ee;
 }
+#pie {
+    height: 440px;
+}
+
+#pie * {
+    margin: 0 auto;
+}
