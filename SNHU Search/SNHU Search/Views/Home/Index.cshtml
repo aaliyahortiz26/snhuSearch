@@ -7,6 +7,30 @@
     <title>SNHU Search</title>
     <link href='~/css/MainPage.css' rel='stylesheet'>
 </head>
+<style>
+    .searchResults {
+        width: 60%;
+        float: left;
+        padding: 20px;
+    }
+
+    #websiteContainer {
+        width: 20%;
+        float: left;
+        padding: 20px;
+        background-color: #313740;
+        height: 59vh;   
+    }
+
+    .fileTextContainer {
+        width: 20%;
+        float: left;
+        padding: 20px;
+        background-color: #313740;
+        height: 59vh;
+        overflow-y: scroll;
+    }
+</style>
 
 <div class="searchDiv">
     <form method="post" asp-controller="Home" asp-action="SearchElastic" enctype="multipart/form-data">
@@ -30,15 +54,15 @@
         <button class="searchButton" type="submit" name="searchButton">Search</button>
     </form>
 
-
-
+    <div id='websiteContainer'>
+        <p id="displayURL">
+        </p>
+        <!-- Place holder to move for search results-->
+    </div>
     <div class="searchResults">
         <table style="width: 100%;">
             @*Outputs search results in a scrollable list*@
-            @{
-                // List<ElasticManager.WebsiteDetails> list = new List<ElasticManager.WebsiteDetails>();
-                //list = ViewData["elasticSearchKeywordsList"] as List<ElasticManager.WebsiteDetails>;
-
+            @{             
                 List<ElasticManager.WebsiteDetails> Websiteslist = new List<ElasticManager.WebsiteDetails>();
                 Websiteslist = ViewData["elasticSearchKeywordsWebsitesList"] as List<ElasticManager.WebsiteDetails>;
 
@@ -49,7 +73,10 @@
                     @for (int i = 0; i < Websiteslist.Count(); i++)
                     {
                         <tr>
-                            <a href=@Websiteslist[i].URL style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@Websiteslist[i].URL</a>
+                            <!--<a href=@Websiteslist[i].URL style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@Websiteslist[i].URL</a>-->
+                            <a href="@Websiteslist[i].URL" style="font-size: 17px;" target="_blank">Open page in @Websiteslist[i].URL new tab</a>
+                            <br />
+                            <a href="#" onclick="setIframe('@Websiteslist[i].URL')" style="font-size: 17px;" >See Preview of @Websiteslist[i].URL</a>
                             <br />
                         </tr>
                         <tr>
@@ -67,9 +94,9 @@
                 {
                     @for (int i = 0; i < Fileslist.Count(); i++)
                     {
-                            <!--<a href=@Fileslist[i].URL onclick="$(this).closest('form').submit()" style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@Fileslist[i].URL</a>-->
+                        <!--<a href=@Fileslist[i].URL onclick="$(this).closest('form').submit()" style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@Fileslist[i].URL</a>-->
                         <tr>
-                            <a href=@Fileslist[i].URL onclick="yourFunction('@Fileslist[i].Keywords')" style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@Fileslist[i].URL</a>
+                            <a href=@Fileslist[i].URL onclick="displayFileText('@Fileslist[i].Keywords', '@Fileslist[i].Title')" style="font-size: 17px;" target="_blank" rel="noopener noreferrer">@Fileslist[i].URL</a>
                             <br>
                         </tr>
                         <tr>
@@ -84,14 +111,15 @@
 
                     }
                 }
-                }
+            }
         </table>
     </div>
 
 
-    <div id='container'>
-        <p>
-            display text from file
+    <div class='fileTextContainer'>
+        <p id="displayFileName">
+        </p>
+        <p id="fileText" style="padding:0px; font-size:16px;">
         </p>
     </div>
 </div>
@@ -105,9 +133,26 @@
 </body>
 
 <script type="text/javascript">
-    function yourFunction(intValue) {
-        let ele = document.getElementById('container');
-        ele.innerHTML += intValue;
-        alert(intValue);
+    function displayFileText(FileText, fileTitle) {
+        document.getElementById('fileText').innerHTML = "";
+        document.getElementById('displayFileName').innerHTML = "Text from \"" + fileTitle + "\": ";
+        let containerParagraphID = document.getElementById('fileText');
+        containerParagraphID.innerHTML += FileText;
+
     }
+    // iframe for websites
+    function setIframe(url) {
+        document.getElementById('websiteContainer').innerHTML = "";
+       //document.getElementById('displayURL').innerHTML = "Preview of \"" + url + "\": ";
+        var iframe = document.createElement('iframe');
+        iframe.frameBorder = 0;
+        iframe.width = "100%";
+        iframe.height = "100%";
+        iframe.id = "randomid";
+        iframe.setAttribute("src", url);
+        document.getElementById('websiteContainer').appendChild(iframe);       
+    }
+
 </script>
+
+
