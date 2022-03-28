@@ -182,6 +182,7 @@ namespace SNHU_Search.Controllers
             {
                 username = CookieValue;
                 userProfileData = _manager.RetrieveUserInfoFromDB(profileMod, username);
+                _manager.uploadProfileImage(profileMod, username);
                 ViewData["userProfileData"] = userProfileData;
             }
 
