@@ -13,7 +13,10 @@ namespace SNHU_Search.Models
 	public class DBManager
 	{
 		public string ConnectionString { get; set; }
-		public DBManager(string connectionString)
+        public string WebRootPath { get; internal set; }
+        public string ContentRootPath { get; internal set; }
+
+        public DBManager(string connectionString)
 		{
 			this.ConnectionString = connectionString;
 		}
@@ -388,23 +391,7 @@ namespace SNHU_Search.Models
 					return tenWebsiteWords.Substring(0, i);
 				}
 			}
-			return tenWebsiteWords;
-		}
-
-		public void uploadProfileImage(ProfileModel profileImage, string username)
-        {
-			using (MySqlConnection conn = GetConnection())
-			{
-				conn.Open();
-				MySqlCommand Query = conn.CreateCommand();
-				Query.Parameters.AddWithValue("@ProfileImageData", profileImage.ProfileImageData);
-				Query.Parameters.AddWithValue("@username", username);
-				Query.CommandText = "UPDATE SNHUSearch.Accounts_tbl SET ProfileImageData = @ProfileImageData WHERE username = @username";
-				
-				Query.ExecuteNonQuery();
-
-				conn.Close();
-			}			
+			return tenWebsiteWords;	
 		}
 	}
 }

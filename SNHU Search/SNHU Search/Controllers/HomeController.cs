@@ -3,10 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SNHU_Search.Models;
 using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Microsoft.AspNetCore.Hosting;
+using System.Threading.Tasks;
 
 namespace SNHU_Search.Controllers
 {
@@ -20,12 +24,12 @@ namespace SNHU_Search.Controllers
         private readonly ElasticManager _ManagerElastic = new ElasticManager();
         private readonly DirectoryManager _ManagerDirectory = new DirectoryManager();
         private readonly PythonModel pythonScraper = new PythonModel();
-
-        public HomeController(DBManager manager)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public HomeController(DBManager manager, IWebHostEnvironment hostEnvironment)
         {
             _manager = manager;
+            webHostEnvironment = hostEnvironment;
         }
-
         public IActionResult Index()
         {
             var CookieValue = Request.Cookies[cookieKey];
@@ -202,7 +206,6 @@ namespace SNHU_Search.Controllers
             {
                 username = CookieValue;
                 userProfileData = _manager.RetrieveUserInfoFromDB(profileMod, username);
-                _manager.uploadProfileImage(profileMod, username);
                 ViewData["userProfileData"] = userProfileData;
             }
 
@@ -328,6 +331,23 @@ namespace SNHU_Search.Controllers
             var CookieValue = Request.Cookies[cookieKey];
             ViewData["username"] = CookieValue;
             return View("~/Views/Home/AnalyticsPage.cshtml");
+        }
+        [HttpPost]
+        public async Task<IActionResult> UploadFile(ProfileModel image)
+        {
+            string uniqueFileName = null;
+
+            if (image.ProfileImage != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "Images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + image.ProfileImage.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    image.ProfileImage.CopyTo(fileStream);
+                }
+            }
+            return RedirectToAction("ProfilePage", new { ProfileImage = uniqueFileName });
         }
     }
 }

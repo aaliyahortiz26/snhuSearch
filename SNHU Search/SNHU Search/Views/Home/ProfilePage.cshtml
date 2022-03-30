@@ -6,12 +6,21 @@
     <link rel="icon" href="~/favicon.ico"/>
 </head>
 
-<form id="formid" asp-action="ProfilePage" method="post" autocomplete="off">
+<form id="formid" enctype="multipart/form-data" asp-controller="Home" asp-action="ProfilePage" method="post" autocomplete="off">
     <div class="profleCenter">
         <div class="profilePictureDiv">
-            <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)" asp-for="ProfileImageData" style="display: none;">
-            <label for="file" style="cursor: pointer;">Edit Profile Image</label>
-            <img id="output" width="200" height="200" />
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ProfileImage" class="control-label"></label>
+                    <div class="custom-file">
+                        <input asp-for="ProfileImage" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+                </div>
+            </div>
+            <!--<input type="file" accept="image/*" name="file">
+    <input type="submit" value="Upload" />-->
+            @*<img id="output" width="200" height="200" />*@
         </div>
         <div class="leftColumn">
             <label>First Name: </label><br />
