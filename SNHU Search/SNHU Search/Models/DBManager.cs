@@ -13,10 +13,7 @@ namespace SNHU_Search.Models
 	public class DBManager
 	{
 		public string ConnectionString { get; set; }
-        public string WebRootPath { get; internal set; }
-        public string ContentRootPath { get; internal set; }
-
-        public DBManager(string connectionString)
+		public DBManager(string connectionString)
 		{
 			this.ConnectionString = connectionString;
 		}
@@ -391,7 +388,7 @@ namespace SNHU_Search.Models
 					return tenWebsiteWords.Substring(0, i);
 				}
 			}
-			return tenWebsiteWords;	
+			return tenWebsiteWords;
 		}
 	}
 }

@@ -332,22 +332,5 @@ namespace SNHU_Search.Controllers
             ViewData["username"] = CookieValue;
             return View("~/Views/Home/AnalyticsPage.cshtml");
         }
-        [HttpPost]
-        public async Task<IActionResult> UploadFile(ProfileModel image)
-        {
-            string uniqueFileName = null;
-
-            if (image.ProfileImage != null)
-            {
-                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "Images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + image.ProfileImage.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    image.ProfileImage.CopyTo(fileStream);
-                }
-            }
-            return RedirectToAction("ProfilePage", new { ProfileImage = uniqueFileName });
-        }
     }
 }
