@@ -202,7 +202,6 @@ namespace SNHU_Search.Controllers
             {
                 username = CookieValue;
                 userProfileData = _manager.RetrieveUserInfoFromDB(profileMod, username);
-                _manager.uploadProfileImage(profileMod, username);
                 ViewData["userProfileData"] = userProfileData;
             }
 
@@ -323,11 +322,17 @@ namespace SNHU_Search.Controllers
             return this.Content(Startup.Progress.ToString());
         }
 
+<<<<<<< HEAD
+
+
+
+=======
         public IActionResult AnalyticsPage()
         {
             var CookieValue = Request.Cookies[cookieKey];
             ViewData["username"] = CookieValue;
             return View("~/Views/Home/AnalyticsPage.cshtml");
         }
+>>>>>>> main
     }
 }

@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Spire.Doc;
+using System.Text;
+using Spire.Doc.Documents;
+using Spire.Pdf;
 
 namespace SNHU_Search.Models
 {
@@ -64,6 +68,61 @@ namespace SNHU_Search.Models
                 {
                     // gets all of the text
                     text = File.ReadAllText(txtFilePath);
+                    text = text.Replace("\r\n", " ");
+
+                    tenWords = getTenWebsiteWords(text);
+                    txtFilePath = txtFilePath.Replace("\\", "/");
+                    addData(elasticIndexNameLocal + m_username.ToLower(), text, txtFilePath, fileName, tenWords);
+                }
+                catch
+                {
+
+                    skippedFileList.Add(txtFilePath);
+                    countSkippedFiles++;
+                    return;
+                }
+            }
+            // Word Documents
+            else if(fileType == ".docx")
+            {
+                try
+                {
+                    //Load Document
+                    Document document = new Document();
+                    document.LoadFromFile(txtFilePath);
+
+                    // Extract text from Word document
+                    foreach (Section section in document.Sections)
+                    {
+                        foreach (Paragraph paragraph in section.Paragraphs)
+                        {
+                            text += paragraph.Text + " ";
+                        }
+                    }
+                    tenWords = getTenWebsiteWords(text);
+                    txtFilePath = txtFilePath.Replace("\\", "/");
+                    addData(elasticIndexNameLocal + m_username.ToLower(), text, txtFilePath, fileName, tenWords);
+                }
+                catch
+                {
+
+                    skippedFileList.Add(txtFilePath);
+                    countSkippedFiles++;
+                    return;
+                }
+            }
+            // PDF Documents
+            else if (fileType == ".pdf")
+            {
+                try
+                {
+                    PdfDocument document = new PdfDocument();
+                    document.LoadFromFile(txtFilePath);
+
+                    foreach (PdfPageBase page in document.Pages)
+                    {
+                        text += page.ExtractText();
+                    }
                     text = text.Replace("\r\n", " ");
 
                     tenWords = getTenWebsiteWords(text);

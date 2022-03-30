@@ -10,6 +10,9 @@ from selenium.webdriver.chrome.options import Options
 import sys
 import requests
 
+
+
+from webdriver_manager.chrome import ChromeDriverManager
 #sys.path.append("C:\\Users\\Jesse\\AppData\\Local\\Programs\\Python\\Python310\\Lib")
 import os
 
@@ -33,7 +36,9 @@ tree = html.fromstring(response.text)
 options = Options()
 options.headless = True
 CHROMEDRIVER_PATH = os.getcwd() + "\\chromedriver.exe"
-driver = webdriver.Chrome(CHROMEDRIVER_PATH, options=options)
+#driver = webdriver.Chrome(CHROMEDRIVER_PATH, options=options)
+driver = webdriver.Chrome(ChromeDriverManager().install())
+
 
 driver.get(url)
 print("Printed body below")

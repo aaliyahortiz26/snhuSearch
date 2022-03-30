@@ -22,6 +22,8 @@
     <PackageReference Include="MySql.Data" Version="8.0.28" />
     <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
     <PackageReference Include="python" Version="3.10.2" />
+    <PackageReference Include="Spire.Doc" Version="10.2.11" />
+    <PackageReference Include="Spire.PDF" Version="8.2.2" />
   </ItemGroup>
 
 </Project>
