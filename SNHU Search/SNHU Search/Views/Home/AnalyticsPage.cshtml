@@ -1,4 +1,6 @@
-﻿<head>
+﻿@using Newtonsoft.Json
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -7,7 +9,10 @@
 
     <style type="text/css">
         .chartBox {
-            width: 400px;
+            width: 800px;
+            margin: auto;
+            border: 3px solid green;
+            padding: 10px;
         }    
     </style>
 </head>
@@ -19,16 +24,20 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    @{
+        string jsonConv = JsonConvert.SerializeObject(ViewBag.Words);
+    }
 
     <script>
+    var temp = @(Html.Raw(jsonConv));
     const ctx = document.getElementById('myChart').getContext('2d');
     const myChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'pie',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: [@ViewBag.Words[0], @ViewBag.Words[1], @ViewBag.Words[2], @ViewBag.Words[3], @ViewBag.Words[4], @ViewBag.Words[5]],
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                label: 'Most searched words',
+                data:   [@ViewBag.Counts[0], @ViewBag.Counts[1], @ViewBag.Counts[2], @ViewBag.Counts[3], @ViewBag.Counts[4], @ViewBag.Counts[5]],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -45,7 +54,7 @@
                     'rgba(153, 102, 255, 1)',
                     'rgba(255, 159, 64, 1)'
                 ],
-                borderWidth: 1
+                borderWidth: 2
             }]
         },
         options: {

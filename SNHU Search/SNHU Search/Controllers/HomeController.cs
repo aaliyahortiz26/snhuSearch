@@ -329,6 +329,13 @@ namespace SNHU_Search.Controllers
 
         public IActionResult AnalyticsPage()
         {
+            _manager.AnalyticKeywordsForUser(getCookieUsername());
+            int[] counts = { 1, 1, 1, 1, 1, 1}; // Default initialization for effect, 0's for words, 1's for repeats
+            ViewBag.Counts = counts;
+
+            string[] terms = { "0", "0", "0", "0", "0", "0" };
+            ViewBag.Words = terms;
+
             var CookieValue = Request.Cookies[cookieKey];
             ViewData["username"] = CookieValue;
             return View("~/Views/Home/AnalyticsPage.cshtml");
