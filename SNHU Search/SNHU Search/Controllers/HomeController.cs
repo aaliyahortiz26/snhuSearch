@@ -45,6 +45,7 @@ namespace SNHU_Search.Controllers
             else
             {
                 username = CookieValue.ToLower();
+                _manager.UploadKeywordForAnalytics(Sm.Keywords, username); //to add keyword to global list
             }
             elastiSearchKeywordsList = _ManagerElastic.search(username, Sm.Keywords);
             // search for keywords in directory instance
