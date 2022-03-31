@@ -404,30 +404,52 @@ namespace SNHU_Search.Models
 			}
 		}
 
-		public void AnalyticKeywordsForUser(string username)
+		public List<string> AnalyticKeywordsForUser(string username)
 		{
 			using (MySqlConnection DBconn = GetConnection())
             {
 				DBconn.Open();
 				MySqlCommand Query = DBconn.CreateCommand();
 				Query.Parameters.AddWithValue("@userID3", GetUserID(username));
-				Query.CommandText = "SELECT keyword FROM SNHUSearch.Analytics_tbl WHERE userID = @userID3 GROUP BY keyword";
+				Query.CommandText = "SELECT keyword FROM SNHUSearch.Analytics_tbl WHERE userID = @userID3 GROUP BY keyword"; 
 
-				Query.ExecuteNonQuery();
+				MySqlDataReader DBreader = Query.ExecuteReader();
+				List<string> topKeywordsPerUser = new List<string>();
+
+				while (DBreader.Read())
+				{
+					for(int i = 0; i < 10; i++)
+                    {
+						topKeywordsPerUser.Add(Convert.ToString(DBreader[i]));
+					}
+				}
+
 				DBconn.Close();
+				return topKeywordsPerUser;
 			}
 		}
 
-		public void AnalyticKeywordsGlobally()
+		public List<string> AnalyticKeywordsGlobally()
         {
 			using (MySqlConnection DBconn = GetConnection())
 			{
 				DBconn.Open();
 				MySqlCommand Query = DBconn.CreateCommand();
-				Query.CommandText = "SELECT keyword FROM SNHUSearch.Analytics_tbl GROUP BY keyword";
+				Query.CommandText = "SELECT keyword FROM SNHUSearch.Analytics_tbl GROUP BY keyword"; 
 
-				Query.ExecuteNonQuery();
+				MySqlDataReader DBreader = Query.ExecuteReader();
+				List<string> topKeywordsGlobally = new List<string>();
+
+				while (DBreader.Read())
+				{
+					for (int i = 0; i < 10; i++)
+					{
+						topKeywordsGlobally.Add(Convert.ToString(DBreader[i]));
+					}
+				}
+
 				DBconn.Close();
+				return topKeywordsGlobally;
 			}
 		}
         #endregion
