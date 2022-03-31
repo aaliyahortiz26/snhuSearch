@@ -274,7 +274,7 @@ namespace SNHU_Search.Models
 				MySqlCommand CheckData = DBconnection.CreateCommand();
 				CheckData.Parameters.AddWithValue("@username", userNameS);
 				//grabbing information in the database to display on the profile page for the user
-				CheckData.CommandText = "SELECT email, firstName, lastName, ProfileImageData FROM SNHUSearch.Accounts_tbl where username = @username";
+				CheckData.CommandText = "SELECT email, firstName, lastName FROM SNHUSearch.Accounts_tbl where username = @username";
 
 				MySqlDataReader DBreader = CheckData.ExecuteReader();
 
@@ -285,7 +285,6 @@ namespace SNHU_Search.Models
 					currentUserList.Add(Convert.ToString(DBreader[0])); //email
 					currentUserList.Add(Convert.ToString(DBreader[1])); //first name
 					currentUserList.Add(Convert.ToString(DBreader[2])); //last name
-					currentUserList.Add(Convert.ToString(DBreader[3])); //profile pic
 				}
 
 				DBreader.Close();

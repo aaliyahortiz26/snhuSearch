@@ -15,7 +15,7 @@
 
 .profleCenter {
     width: 80%;
-    margin-top: 7%;
+    margin-top: 2%;
     display:flex;
     margin-left:20%;
 }
@@ -24,7 +24,7 @@
     font-family: 'Segoe UI';
     border-radius: 15px;
     background-color: #001E60;
-    margin-top: 15px;
+    margin-top: 30px;
     width: 20%;
     height: 40px;
     color: white;
@@ -32,7 +32,6 @@
     text-align: center;
     border: none;
     cursor: pointer;
-    margin-top: 25px;
 }
 
 .changePasswordButton:hover {
@@ -43,52 +42,34 @@
     background-color: #001E40;
 }
 
-.uploadImageButton {
-    font-family: 'Segoe UI';
-    border-radius: 15px;
-    background-color: #001E60;
-    margin-top: 15px;
-    width: 100%;
-    height: 40px;
-    color: white;
-    font-size: 16px;
-    text-align: center;
-    border: none;
-    cursor: pointer;
-    margin-top: 25px;
-}
-
-.uploadImageButton:hover {
-    background-color: #003e85;
-
-}
-
-.uploadImageButton:active {
-    background-color: #001E40;
-}
-
 .buttonCenter {
-    margin-left: 39%;
+    margin-left: 40%;
 }
 
 .profileImage {
-    width: 70%;
-    height: 70%;
-    margin-left: 14%;
-    margin-top: 10%;
+    width: 300px;
+    height: 300px;
+    margin-top: 8%;
 }
 
 .profilePictureDiv {
-    background-color:#313740;
-    width: 29%;
-    height: 23rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: #313740;
+    width: 75%;
+    height: 40rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 8);
+    text-align: center;
 }
 
-label {
-    font-size: 20px;
-    text-align: center;
-    margin-top: 5%;
-    margin-bottom: 5%;
+.userInfoLabel {
+    font-size: 24px;
     cursor: pointer;
+    color:white;
+    margin-top:2%;
+}
+.userInfoNameLabel {
+    font-size: 32px;
+    margin-left: 0.5%;
+    cursor: pointer;
+    color: white;
+    margin-top:1%;
 }

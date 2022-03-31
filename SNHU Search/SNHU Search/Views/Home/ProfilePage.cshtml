@@ -6,17 +6,10 @@
     <link rel="icon" href="~/favicon.ico"/>
 </head>
 
-<form id="formid" enctype="multipart/form-data" asp-controller="Home" asp-action="ProfilePage" method="post" autocomplete="off">
     <div class="profleCenter">
         <div class="profilePictureDiv">
-            <label asp-for="ProfileImage" class="control-label"></label>
-            <div class="custom-file">
-                 <input asp-for="ProfileImage" class="custom-file-input" id="customFile">
-                 <label class="custom-file-label" for="customFile">Choose file</label>
-                 <img style="width:300px; height:300px"src="~/Images/snhu logoo.png" />
-             </div>
-        </div>
-        <div class="rightColumn">
+            <img class="profileImage" src="~/Images/snhu logoo.png" /><br/>
+
             @{
                 List<string> currentUserInformation = new List<string>();
                 currentUserInformation = ViewData["userProfileData"] as List<string>;
@@ -24,15 +17,14 @@
                 string username;
                 username = ViewData["userName"] as string;
 
-                <label>@currentUserInformation[1]</label><br /> @*User's First Name*@
-                <label>@currentUserInformation[2]</label><br /> @*User's Last Name*@
-                <label>@username</label><br /> @*User's Username*@
-                <label>@currentUserInformation[0]</label><br /> @*User's Email*@
+                <label class="userInfoNameLabel">@currentUserInformation[1]</label> @*User's First Name*@
+                <label class="userInfoNameLabel">@currentUserInformation[2]</label><br /> @*User's Last Name*@
+                <label class="userInfoLabel">&#64;@username</label><br /> @*User's Username*@
+                <label class="userInfoLabel">@currentUserInformation[0]</label><br /> @*User's Email*@
             }
         </div>
     </div>
     <button class="changePasswordButton buttonCenter" type="button" onclick=" location.href = '@Url.Action("ChangePassword", "Home")'">Change Password</button>
-</form>
 <script>
     var loadFile = function (event) {
         var image = document.getElementById('output');

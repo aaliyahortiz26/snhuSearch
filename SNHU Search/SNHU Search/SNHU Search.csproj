@@ -27,4 +27,8 @@
     <PackageReference Include="Spire.PDF" Version="8.2.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\ProfileImages\" />
+  </ItemGroup>
+
 </Project>

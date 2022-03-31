@@ -10,10 +10,6 @@ namespace SNHU_Search.Models
 {
     public class ProfileModel
     {
-        [DataType(DataType.Upload)]
-        [Display(Name = "Upload File")]
-
-        public IFormFile ProfileImage { get; set; }
         public string FileName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
