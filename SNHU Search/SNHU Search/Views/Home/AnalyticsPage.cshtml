@@ -28,13 +28,23 @@
         string jsonConv = JsonConvert.SerializeObject(ViewBag.Words);
     }
 
+    <!--Some temp code below-->
+
+
+    <!--End temp code-->
+
+    @{
+        List<string> terms = new List<string>();
+        terms = ViewData["terms"] as List<string>;
+    }
+
     <script>
         var temp = @(Html.Raw(jsonConv));
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: [@ViewBag.Words[0], @ViewBag.Words[1], @ViewBag.Words[2], @ViewBag.Words[3], @ViewBag.Words[4], @ViewBag.Words[5]],
+                labels: ["label1", "label2", "label3", "label4", "label5", "label6"],
                 datasets: [{
                     label: 'Most searched words',
                     data: [@ViewBag.Counts[0], @ViewBag.Counts[1], @ViewBag.Counts[2], @ViewBag.Counts[3], @ViewBag.Counts[4], @ViewBag.Counts[5]],

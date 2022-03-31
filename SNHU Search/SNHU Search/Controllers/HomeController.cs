@@ -329,12 +329,46 @@ namespace SNHU_Search.Controllers
 
         public IActionResult AnalyticsPage()
         {
-            _manager.AnalyticKeywordsForUser(getCookieUsername());
-            int[] counts = { 1, 1, 1, 1, 1, 1}; // Default initialization for effect, 0's for words, 1's for repeats
-            ViewBag.Counts = counts;
+            // Pulls the list of strings from database, formatted ["term1", "1", "term2", "2"], where any int = #times of searched term
+            List<string> data = new List<string>();
+            data = _manager.AnalyticKeywordsForUser(getCookieUsername());
 
-            string[] terms = { "0", "0", "0", "0", "0", "0" };
-            ViewBag.Words = terms;
+            List<string> terms = new List<string>();
+            // Let's split that info up now
+            for (int i = 0; i < data.Count - 1; i+= 2) {
+                // Words
+                terms.Add(data[i]);
+            }
+
+            List<int> counts = new List<int>();
+            for (int i = 1; i < data.Count; i+= 2) {
+                //counts.Add(ToInt32(data[i]));
+                int x = 0;
+                Int32.TryParse(data[i], out x);
+                counts.Add(x);
+            }
+
+            // temporary data just to make sure we have 6 points of data to work with
+            while (true) {
+                if (counts.Count == 6) break;
+
+                counts.Add(1);
+            }
+
+            ViewBag.Counts = counts;
+            ViewData["terms"] = terms;
+
+
+
+
+            // Temp data just to fill chart, replace with actual
+            //int[] counts = { 1, 1, 1, 1, 1, 1}; // Default initialization for effect, 0's for words, 1's for repeats
+            //ViewBag.Counts = counts;
+
+            //string[] terms = { "0", "0", "0", "0", "0", "0" };
+            //ViewBag.Words = terms;
+
+            //ViewData["terms"] = "string";
 
             var CookieValue = Request.Cookies[cookieKey];
             ViewData["username"] = CookieValue;
