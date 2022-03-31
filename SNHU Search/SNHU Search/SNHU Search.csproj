@@ -11,7 +11,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
-    <PackageReference Include="DevExtreme.AspNet.Data" Version="2.8.6" />
     <PackageReference Include="IdentityModel" Version="6.0.0" />
     <PackageReference Include="MailKit" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
@@ -21,6 +20,5 @@
     <PackageReference Include="python" Version="3.10.2" />
     <PackageReference Include="Spire.Doc" Version="10.2.11" />
     <PackageReference Include="Spire.PDF" Version="8.2.2" />
-    <PackageReference Include="DevExtreme.AspNet.Core" Version="21.2.6" />
   </ItemGroup>
 </Project>

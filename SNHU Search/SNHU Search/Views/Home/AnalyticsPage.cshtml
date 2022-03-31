@@ -1,58 +1,61 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    Layout = "_Layout";
-    <link rel="stylesheet" href="~/css/AnalyticsPage.css" />
-}
-@(Html.DevExtreme().PieChart()
-    .ID("pie")
-    .Size(s => s.Width(500))
-    .Palette(VizPalette.Bright)
-    .Series(s => s
-        .Add()
-        .ArgumentField("Country")
-        .ValueField("Area")
-        .Label(l => l
-            .Visible(true)
-            .Connector(c => c
-                .Visible(true)
-                .Width(1)
-            )
-        )
-    )
-    .Title("Area of Countries")
-    .Export(e => e.Enabled(true))
-    .OnPointClick(@<text>
-        function (e) {
-            var point = e.target;
-            toggleVisibility(point);
-        }
-    </text>)
-    .OnLegendClick(@<text>
-        function (e) {
-            var arg = e.target;
-            toggleVisibility(this.getAllSeries()[0].getPointsByArg(arg)[0]);
-        }
-    </text>)
-    .DataSource(new[] {
-        new { Country = "Russia", Area = 12 },
-        new { Country = "Canada", Area = 7 },
-        new { Country = "USA", Area = 7 },
-        new { Country = "China", Area = 7 },
-        new { Country = "Brazil", Area = 6 },
-        new { Country = "Australia", Area = 5 },
-        new { Country = "India", Area = 2 },
-        new { Country = "Others", Area = 55 }
-    })
-)
+﻿<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<script>
-    function toggleVisibility(item) {
-        if(item.isVisible()) {
-            item.hide();
-        } else {
-            item.show();
+    <title>Profile Page</title>
+    <link href='~/css/AnalyticsPage.css' rel='stylesheet'>
+
+    <style type="text/css">
+        .chartBox {
+            width: 400px;
+        }    
+    </style>
+</head>
+
+<body>
+    <div class="chartBox">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
         }
-    }
+    });
 </script>
+
+</body>

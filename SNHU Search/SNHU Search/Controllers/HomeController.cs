@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using DevExtreme.AspNet.Data;
-using DevExtreme.AspNet.Mvc;
 
 namespace SNHU_Search.Controllers
 {
