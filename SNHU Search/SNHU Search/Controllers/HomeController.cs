@@ -3,10 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SNHU_Search.Models;
 using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Microsoft.AspNetCore.Hosting;
+using System.Threading.Tasks;
 
 namespace SNHU_Search.Controllers
 {
@@ -20,12 +24,12 @@ namespace SNHU_Search.Controllers
         private readonly ElasticManager _ManagerElastic = new ElasticManager();
         private readonly DirectoryManager _ManagerDirectory = new DirectoryManager();
         private readonly PythonModel pythonScraper = new PythonModel();
-
-        public HomeController(DBManager manager)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public HomeController(DBManager manager, IWebHostEnvironment hostEnvironment)
         {
             _manager = manager;
+            webHostEnvironment = hostEnvironment;
         }
-
         public IActionResult Index()
         {
             var CookieValue = Request.Cookies[cookieKey];

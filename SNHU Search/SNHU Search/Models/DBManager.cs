@@ -286,6 +286,7 @@ namespace SNHU_Search.Models
 					currentUserList.Add(Convert.ToString(DBreader[1])); //first name
 					currentUserList.Add(Convert.ToString(DBreader[2])); //last name
 				}
+
 				DBreader.Close();
 				return currentUserList;
 			}
@@ -388,6 +389,5 @@ namespace SNHU_Search.Models
 			}
 			return tenWebsiteWords;
 		}
-
 	}
 }
