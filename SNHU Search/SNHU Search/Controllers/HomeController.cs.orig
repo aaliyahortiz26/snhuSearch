@@ -3,14 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SNHU_Search.Models;
 using System;
-using System.Web;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Microsoft.AspNetCore.Hosting;
-using System.Threading.Tasks;
 
 namespace SNHU_Search.Controllers
 {
@@ -24,12 +20,12 @@ namespace SNHU_Search.Controllers
         private readonly ElasticManager _ManagerElastic = new ElasticManager();
         private readonly DirectoryManager _ManagerDirectory = new DirectoryManager();
         private readonly PythonModel pythonScraper = new PythonModel();
-        private readonly IWebHostEnvironment webHostEnvironment;
-        public HomeController(DBManager manager, IWebHostEnvironment hostEnvironment)
+
+        public HomeController(DBManager manager)
         {
             _manager = manager;
-            webHostEnvironment = hostEnvironment;
         }
+
         public IActionResult Index()
         {
             var CookieValue = Request.Cookies[cookieKey];
@@ -52,7 +48,6 @@ namespace SNHU_Search.Controllers
             else
             {
                 username = CookieValue.ToLower();
-                _manager.UploadKeywordForAnalytics(Sm.Keywords, username); //to add keyword to global list
             }
             elasticSearchKeywordsList = _ManagerElastic.search(username, Sm.Keywords);
             // search for keywords in directory instance
@@ -327,11 +322,17 @@ namespace SNHU_Search.Controllers
             return this.Content(Startup.Progress.ToString());
         }
 
+<<<<<<< HEAD
+
+
+
+=======
         public IActionResult AnalyticsPage()
         {
             var CookieValue = Request.Cookies[cookieKey];
             ViewData["username"] = CookieValue;
             return View("~/Views/Home/AnalyticsPage.cshtml");
         }
+>>>>>>> main
     }
 }
