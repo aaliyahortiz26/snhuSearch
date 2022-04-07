@@ -1,17 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>SNHU_Search</RootNamespace>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="Images\**" />
     <Content Remove="Images\**" />
     <EmbeddedResource Remove="Images\**" />
     <None Remove="Images\**" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
     <PackageReference Include="Grpc.Core" Version="2.45.0" />
@@ -22,6 +19,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="MySql.Data" Version="8.0.28" />
     <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="python" Version="3.10.2" />
     <PackageReference Include="Spire.Doc" Version="10.2.11" />
     <PackageReference Include="Spire.PDF" Version="8.2.2" />
