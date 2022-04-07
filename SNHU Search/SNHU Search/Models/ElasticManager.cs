@@ -26,6 +26,15 @@ namespace SNHU_Search.Models
             HttpClient client = new HttpClient();
 
             client.DefaultRequestHeaders.Authorization = new BasicAuthenticationHeaderValue(ElasticUsername, password);
+         
+            if (url.Contains("-"))
+            {
+                url = url + '/';
+            }
+            else if (url[url.Count() - 1] == '/')
+            {
+                url = url.TrimEnd(new[] { '/' });
+            }
 
             var content = new StringContent(@"{
                     ""settings"" : {
@@ -109,15 +118,16 @@ namespace SNHU_Search.Models
             List<string> UrlKeywordsList = new List<string>();
             string urlString;
 
-            if (website[website.Count()-1] == '/')
+            if (website.Contains('-'))
+            {
+                website = website + '/';
+                
+            }
+            else if (website[website.Count() - 1] == '/')
             {
                 website = website.TrimEnd(new[] { '/' });
             }
-            else
-            {
-                website = website + '/' ;
-            }
-
+      
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new BasicAuthenticationHeaderValue(ElasticUsername, password);
 
@@ -149,14 +159,7 @@ namespace SNHU_Search.Models
                         var esTags = hitsList[i]["_source"]["mappings"]["properties"]["tags"];                   
                         var Url = esTags["url"];
                         urlString = Url;                
-                        if (urlString[urlString.Count() - 1] == '/')
-                        {
-                            urlString = urlString.TrimEnd(new[] { '/' });
-                        }
-                        else
-                        {
-                            urlString = urlString + '/';
-                        }
+
                         if (urlString == website)
                         {
                             client.DeleteAsync(elasticConnection + username + "/_doc/" + id);
