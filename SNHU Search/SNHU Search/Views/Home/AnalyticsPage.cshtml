@@ -9,8 +9,15 @@
 
     <style type="text/css">
         .chartBox {
-            width: 800px;
-            margin: auto;
+            width: 400px;
+            margin-right: auto;
+            border: 3px solid green;
+            padding: 10px;
+        }
+
+        .chartBox2 {
+            width: 400px;
+            margin-left: auto;
             border: 3px solid green;
             padding: 10px;
         }
@@ -22,6 +29,13 @@
         <canvas id="myChart"></canvas>
     </div>
 
+    <div class = "chartBox2">
+        <canvas id="myChart2"></canvas>
+    </div>
+
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     @{
@@ -32,22 +46,55 @@
 
 
     <!--End temp code-->
-
-    @{
-        List<string> terms = new List<string>();
-        terms = ViewData["terms"] as List<string>;
-    }
+ 
 
     <script>
-        var temp = @(Html.Raw(jsonConv));
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ["label1", "label2", "label3", "label4", "label5", "label6"],
+                labels: ["#1 Searched", "#2 Searched", "#3 Searched", "#4 Searched", "#5 Searched", "#6 Searched"],
                 datasets: [{
-                    label: 'Most searched words',
+                    label: 'Most searched words for you',
                     data: [@ViewBag.Counts[0], @ViewBag.Counts[1], @ViewBag.Counts[2], @ViewBag.Counts[3], @ViewBag.Counts[4], @ViewBag.Counts[5]],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script>
+        const ctx = document.getElementById('myChart2').getContext('2d');
+        const myChart2 = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ["#1 Searched", "#2 Searched", "#3 Searched", "#4 Searched", "#5 Searched", "#6 Searched"],
+                datasets: [{
+                    label: 'Most searched words globally',
+                    data: [@ViewBag.Counts2[0], @ViewBag.Counts2[1], @ViewBag.Counts2[2], @ViewBag.Counts2[3], @ViewBag.Counts2[4], @ViewBag.Counts2[5]],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
