@@ -331,7 +331,11 @@ namespace SNHU_Search.Controllers
         {
             // Pulls the list of strings from database, formatted ["term1", "1", "term2", "2"], where any int = #times of searched term
             List<string> data = new List<string>();
-           // data = _manager.AnalyticKeywordsForUser(getCookieUsername());
+            /*
+             * Commented this out for the time being to make sure it was working
+             * 
+              data = _manager.AnalyticKeywordsForUser(getCookieUsername());
+             */
             data = _manager.AnalyticKeywordsForUser();
 
             List<string> terms = new List<string>();
