@@ -331,78 +331,35 @@ namespace SNHU_Search.Controllers
         {
             // Pulls the list of strings from database, formatted ["term1", "1", "term2", "2"], where any int = #times of searched term
             List<string> data = new List<string>();
-            /*
-             * Commented this out for the time being to make sure it was working
-             * 
-              data = _manager.AnalyticKeywordsForUser(getCookieUsername());
-             */
-            data = _manager.AnalyticKeywordsForUser();
+            data = _manager.AnalyticKeywordsGlobally();
 
             List<string> terms = new List<string>();
             // Let's split that info up now
-            for (int i = 0; i < data.Count - 1; i+= 2) {
+            for (int i = 0; i < data.Count - 1; i += 2)
+            {
                 // Words
                 terms.Add(data[i]);
             }
 
-            for (int i = 0; i < globalData.Count - 1; i+= 2)
+            List<int> counts = new List<int>();
+            for (int i = 1; i < data.Count; i += 2)
             {
-                globalTerms.Add(globalData[i]);
-            }
-
-
-            List<int> userCounts = new List<int>();
-            List<int> globalCounts = new List<int>();
-            for (int i = 1; i < userData.Count; i+= 2) {
                 //counts.Add(ToInt32(data[i]));
                 int x = 0;
-                Int32.TryParse(userData[i], out x);
-                userCounts.Add(x);
+                Int32.TryParse(data[i], out x);
+                counts.Add(x);
             }
 
-            for (int i = 1; i < globalData.Count; i+= 2)
-            {
-                int x = 0;
-                Int32.TryParse(globalData[i], out x);
-                globalCounts.Add(x);
-            }
-
-
-            // -------------------------------------------------------------------------
             // temporary data just to make sure we have 6 points of data to work with
-            while (true) {
-                if (userCounts.Count == 6) break;
+            while (true)
+            {
+                if (counts.Count == 6) break;
 
-                userCounts.Add(1);
+                counts.Add(1);
             }
 
-            //while (true)
-            //{
-            //    if (globalCounts.Count == 6) break;
-
-            //    globalCounts.Add(1);
-            //}
-            // -------------------------------------------------------------------------
-
-            // Chart 1
-            ViewBag.Counts = userCounts;
-            ViewData["terms"] = userTerms;
-
-            // Chart 2
-            ViewBag.Counts2 = globalCounts;
-            ViewData["GlobalTerms"] = globalTerms;
-
-
-
-
-            // Temp data just to fill chart, replace with actual
-            //int[] counts = { 1, 1, 1, 1, 1, 1}; // Default initialization for effect, 0's for words, 1's for repeats
-            //ViewBag.Counts = counts;
-
-            //string[] terms = { "0", "0", "0", "0", "0", "0" };
-            //ViewBag.Words = terms;
-
-            //ViewData["terms"] = "string";
+            ViewBag.Counts = counts;
+            ViewBag.Exponate = Newtonsoft.Json.JsonConvert.SerializeObject(terms); // The only way to pass strings correctly to javascript
 
             var CookieValue = Request.Cookies[cookieKey];
             ViewData["username"] = CookieValue;
