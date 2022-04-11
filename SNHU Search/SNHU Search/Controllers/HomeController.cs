@@ -52,6 +52,7 @@ namespace SNHU_Search.Controllers
             else
             {
                 username = CookieValue.ToLower();
+                _manager.UploadKeywordForAnalytics(Sm.Keywords); //to add keyword to global list
             }
             elasticSearchKeywordsList = _ManagerElastic.search(username, Sm.Keywords);
             // search for keywords in directory instance
@@ -328,6 +329,38 @@ namespace SNHU_Search.Controllers
 
         public IActionResult AnalyticsPage()
         {
+            // Pulls the list of strings from database, formatted ["term1", "1", "term2", "2"], where any int = #times of searched term
+            List<string> data = new List<string>();
+            data = _manager.AnalyticKeywordsGlobally();
+
+            List<string> terms = new List<string>();
+            // Let's split that info up now
+            for (int i = 0; i < data.Count - 1; i += 2)
+            {
+                // Words
+                terms.Add(data[i]);
+            }
+
+            List<int> counts = new List<int>();
+            for (int i = 1; i < data.Count; i += 2)
+            {
+                //counts.Add(ToInt32(data[i]));
+                int x = 0;
+                Int32.TryParse(data[i], out x);
+                counts.Add(x);
+            }
+
+            // temporary data just to make sure we have 6 points of data to work with
+            while (true)
+            {
+                if (counts.Count == 6) break;
+
+                counts.Add(1);
+            }
+
+            ViewBag.Counts = counts;
+            ViewBag.Exponate = Newtonsoft.Json.JsonConvert.SerializeObject(terms); // The only way to pass strings correctly to javascript
+
             var CookieValue = Request.Cookies[cookieKey];
             ViewData["username"] = CookieValue;
             return View("~/Views/Home/AnalyticsPage.cshtml");

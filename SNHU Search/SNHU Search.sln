@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31624.102
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SNHU Search", "SNHU Search\SNHU Search.csproj", "{F1BE838C-C428-4CAB-A8D2-F18ECC558AF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SNHU Search", "SNHU Search\SNHU Search.csproj", "{F1BE838C-C428-4CAB-A8D2-F18ECC558AF3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevExtreme NuGet.config", "DevExtreme NuGet.config", "{9CABA265-9C42-44AE-8217-AEBAE5B23602}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet.config = NuGet.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
