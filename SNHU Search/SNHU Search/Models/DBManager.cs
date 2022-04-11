@@ -392,6 +392,9 @@ namespace SNHU_Search.Models
         #region Keywords for Analytics
         public void UploadKeywordForAnalytics(string keyword)
 		{
+			if (keyword == null)
+				return;
+
 			using (MySqlConnection DBconnect = GetConnection())
 			{
 				DBconnect.Open();
@@ -422,15 +425,15 @@ namespace SNHU_Search.Models
 
 		public List<string> AnalyticKeywordsForUser()
 		{
-			using (MySqlConnection DBconn = GetConnection())
+            using (MySqlConnection DBconn = GetConnection())
             {
 				DBconn.Open();
 				MySqlCommand Query = DBconn.CreateCommand();
 				//Query.Parameters.AddWithValue("@userID3", GetUserID(username));
 				Query.CommandText = "SELECT keyword, max(count) FROM SNHUSearch.Analytics_tbl GROUP BY keyword ORDER BY count DESC LIMIT 6"; 
 
-				MySqlDataReader DBreader = Query.ExecuteReader();
-				List<string> topKeywordsPerUser = new List<string>();
+                MySqlDataReader DBreader = Query.ExecuteReader();
+                List<string> topKeywordsPerUser = new List<string>();
 
 				while (DBreader.Read())
 				{
@@ -442,10 +445,11 @@ namespace SNHU_Search.Models
 					topKeywordsPerUser.Add(Convert.ToString(DBreader[5]));
 				}
 
-				DBconn.Close();
-				return topKeywordsPerUser;
-			}
-		}
+                DBconn.Close();
+                return topKeywordsPerUser;
+            }
+
+        }
 
 		public List<string> AnalyticKeywordsGlobally()
         {
@@ -455,8 +459,8 @@ namespace SNHU_Search.Models
 				MySqlCommand Query = DBconn.CreateCommand();
 				Query.CommandText = "SELECT keyword, max(count) FROM SNHUSearch.Analytics_tbl GROUP BY keyword ORDER BY count DESC LIMIT 6"; 
 
-				MySqlDataReader DBreader = Query.ExecuteReader();
-				List<string> topKeywordsGlobally = new List<string>();
+                MySqlDataReader DBreader = Query.ExecuteReader();
+                List<string> topKeywordsGlobally = new List<string>();
 
 				while (DBreader.Read())
 				{
@@ -468,10 +472,11 @@ namespace SNHU_Search.Models
 					topKeywordsGlobally.Add(Convert.ToString(DBreader[5]));
 				}
 
-				DBconn.Close();
-				return topKeywordsGlobally;
-			}
-		}
+                DBconn.Close();
+                return topKeywordsGlobally;
+            }
+
+        }
         #endregion
     }
 }

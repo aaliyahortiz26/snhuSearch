@@ -1,5 +1,4 @@
-﻿@using Newtonsoft.Json
-
+﻿
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,11 +8,12 @@
 
     <style type="text/css">
         .chartBox {
+            width: 400px;
             width: 800px;
             margin: auto;
             border: 3px solid green;
             padding: 10px;
-        }
+        }    
     </style>
 </head>
 
@@ -21,32 +21,21 @@
     <div class="chartBox">
         <canvas id="myChart"></canvas>
     </div>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    @{
-        string jsonConv = JsonConvert.SerializeObject(ViewBag.Words);
-    }
-
-    <!--Some temp code below-->
+   
 
 
-    <!--End temp code-->
-
-    @{
-        List<string> terms = new List<string>();
-        terms = ViewData["terms"] as List<string>;
-    }
 
     <script>
-        var temp = @(Html.Raw(jsonConv));
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ["label1", "label2", "label3", "label4", "label5", "label6"],
+                labels: @Html.Raw(ViewBag.Exponate),
                 datasets: [{
-                    label: 'Most searched words',
+                    label: 'Most searched words for you',
                     data: [@ViewBag.Counts[0], @ViewBag.Counts[1], @ViewBag.Counts[2], @ViewBag.Counts[3], @ViewBag.Counts[4], @ViewBag.Counts[5]],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -76,5 +65,4 @@
             }
         });
     </script>
-
 </body>
