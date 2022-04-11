@@ -392,6 +392,9 @@ namespace SNHU_Search.Models
         #region Keywords for Analytics
         public void UploadKeywordForAnalytics(string keyword)
 		{
+			if (keyword == null)
+				return;
+
 			using (MySqlConnection DBconnect = GetConnection())
 			{
 				DBconnect.Open();
