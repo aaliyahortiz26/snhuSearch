@@ -52,7 +52,7 @@ namespace SNHU_Search.Controllers
             else
             {
                 username = CookieValue.ToLower();
-                _manager.UploadKeywordForAnalytics(Sm.Keywords, username); //to add keyword to global list
+                _manager.UploadKeywordForAnalytics(Sm.Keywords); //to add keyword to global list
             }
             elasticSearchKeywordsList = _ManagerElastic.search(username, Sm.Keywords);
             // search for keywords in directory instance
@@ -331,7 +331,8 @@ namespace SNHU_Search.Controllers
         {
             // Pulls the list of strings from database, formatted ["term1", "1", "term2", "2"], where any int = #times of searched term
             List<string> data = new List<string>();
-            data = _manager.AnalyticKeywordsForUser(getCookieUsername());
+           // data = _manager.AnalyticKeywordsForUser(getCookieUsername());
+            data = _manager.AnalyticKeywordsForUser();
 
             List<string> terms = new List<string>();
             // Let's split that info up now
