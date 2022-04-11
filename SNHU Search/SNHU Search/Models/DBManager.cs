@@ -435,6 +435,11 @@ namespace SNHU_Search.Models
 				while (DBreader.Read())
 				{
 					topKeywordsPerUser.Add(Convert.ToString(DBreader[0]));
+					topKeywordsPerUser.Add(Convert.ToString(DBreader[1]));
+					topKeywordsPerUser.Add(Convert.ToString(DBreader[2]));
+					topKeywordsPerUser.Add(Convert.ToString(DBreader[3]));
+					topKeywordsPerUser.Add(Convert.ToString(DBreader[4]));
+					topKeywordsPerUser.Add(Convert.ToString(DBreader[5]));
 				}
 
 				DBconn.Close();
@@ -457,6 +462,10 @@ namespace SNHU_Search.Models
 				{
 					topKeywordsGlobally.Add(Convert.ToString(DBreader[0]));
 					topKeywordsGlobally.Add(Convert.ToString(DBreader[1]));
+					topKeywordsGlobally.Add(Convert.ToString(DBreader[2]));
+					topKeywordsGlobally.Add(Convert.ToString(DBreader[3]));
+					topKeywordsGlobally.Add(Convert.ToString(DBreader[4]));
+					topKeywordsGlobally.Add(Convert.ToString(DBreader[5]));
 				}
 
 				DBconn.Close();
