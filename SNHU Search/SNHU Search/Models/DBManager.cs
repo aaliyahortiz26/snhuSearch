@@ -465,6 +465,7 @@ namespace SNHU_Search.Models
 				DBconn.Open();
 				MySqlCommand Query = DBconn.CreateCommand();
 				Query.Parameters.AddWithValue("@userID3", GetUserID(username)); 
+				//pull from user analytic tables
 				Query.CommandText = "SELECT userID, keyword, max(count) FROM SNHUSearch.AnalyticsUser_tbl WHERE userID = @userID3 GROUP BY keyword, count ORDER BY count DESC LIMIT 6;"; 
 
                 MySqlDataReader DBreader = Query.ExecuteReader();
