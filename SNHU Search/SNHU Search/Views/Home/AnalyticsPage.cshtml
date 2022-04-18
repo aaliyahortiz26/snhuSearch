@@ -1,42 +1,81 @@
-﻿
-<head>
+﻿<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Profile Page</title>
     <link href='~/css/AnalyticsPage.css' rel='stylesheet'>
 
-    <style type="text/css">
-        .chartBox {
-            width: 400px;
-            width: 800px;
-            margin: auto;
-            border: 3px solid green;
-            padding: 10px;
-        }    
-    </style>
+
 </head>
 
 <body>
-    <div class="chartBox">
-        <canvas id="myChart"></canvas>
+    <div class="container">
+        <div class="chartBox">
+            <label class="chartTitle">Global Chart</label>
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="chartBox2">
+            <label class="chartTitle">User Chart</label>
+            <canvas id="myChart2"></canvas>
+        </div>
     </div>
-    
+
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-   
+
 
 
 
     <script>
         const ctx = document.getElementById('myChart').getContext('2d');
+        var arr = @Html.Raw(ViewBag.Exponate);
+
+
+
         const myChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: @Html.Raw(ViewBag.Exponate),
+                labels: [arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]],
                 datasets: [{
-                    label: 'Most searched words for you',
+                
                     data: [@ViewBag.Counts[0], @ViewBag.Counts[1], @ViewBag.Counts[2], @ViewBag.Counts[3], @ViewBag.Counts[4], @ViewBag.Counts[5]],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const ctx2 = document.getElementById('myChart2').getContext('2d');
+        const myChart2 = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: [arr[6], arr[7], arr[8], arr[9], arr[10], arr[11]],
+                datasets: [{
+                    
+                    data: [@ViewBag.Counts[6], @ViewBag.Counts[7], @ViewBag.Counts[8], @ViewBag.Counts[9], @ViewBag.Counts[10], @ViewBag.Counts[11]],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',

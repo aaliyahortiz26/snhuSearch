@@ -392,6 +392,9 @@ namespace SNHU_Search.Models
         #region Keywords for Analytics
         public void UploadKeywordForAnalytics(string keyword)
 		{
+			if (keyword == null)
+				return;
+
 			using (MySqlConnection DBconnect = GetConnection())
 			{
 				DBconnect.Open();
@@ -420,14 +423,50 @@ namespace SNHU_Search.Models
 			}
 		}
 
-		public List<string> AnalyticKeywordsForUser()
+		public void UploadKeywordUserAnalytics(string keyword, string username)
+		{
+			if (keyword == null)
+				return;
+			using (MySqlConnection DBconnect = GetConnection())
+			{
+				DBconnect.Open();
+				MySqlCommand Query = DBconnect.CreateCommand();
+
+				//checks to see if keyword from user is in table
+				Query.Parameters.AddWithValue("@keyword1", keyword);
+				Query.Parameters.AddWithValue("@userID1", GetUserID(username));
+				Query.CommandText = "SELECT EXISTS(SELECT * FROM SNHUSearch.AnalyticsUser_tbl WHERE userID = @userID1 && keyword = @keyword1)";
+				int keywordExists = Convert.ToInt32(Query.ExecuteScalar());
+
+				if(keywordExists > 0)
+				{//increments the count of how many times the keyword is searched by the specific user
+					Query.Parameters.AddWithValue("@keyword2", keyword);
+					Query.Parameters.AddWithValue("@userID2", GetUserID(username));
+					Query.CommandText = "UPDATE SNHUSearch.AnalyticsUser_tbl SET count = count + " + 1 + " WHERE userID = @userID2 && keyword = @keyword2";
+				}
+				else
+                {
+					int countForKeyword = 1;
+					Query.Parameters.AddWithValue("@countForKeyword", countForKeyword);
+					Query.Parameters.AddWithValue("@keyword", keyword);
+					Query.Parameters.AddWithValue("@userID", GetUserID(username));
+					Query.CommandText = "INSERT INTO SNHUSearch.AnalyticsUser_tbl (userID, keyword, count) VALUES (@userID, @keyword, @countForKeyword)"; //adds to the user table
+				}
+
+				Query.ExecuteNonQuery();
+				DBconnect.Close();
+			}
+		}
+
+		public List<string> AnalyticKeywordsForUser(string username)
 		{
             using (MySqlConnection DBconn = GetConnection())
             {
 				DBconn.Open();
 				MySqlCommand Query = DBconn.CreateCommand();
-				//Query.Parameters.AddWithValue("@userID3", GetUserID(username));
-				Query.CommandText = "SELECT keyword, max(count) FROM SNHUSearch.Analytics_tbl GROUP BY keyword ORDER BY count DESC LIMIT 6"; 
+				Query.Parameters.AddWithValue("@userID3", GetUserID(username)); 
+				//pull from user analytic tables
+				Query.CommandText = "SELECT keyword, max(count) FROM SNHUSearch.AnalyticsUser_tbl WHERE userID = @userID3 GROUP BY keyword, count ORDER BY count DESC LIMIT 6;"; 
 
                 MySqlDataReader DBreader = Query.ExecuteReader();
                 List<string> topKeywordsPerUser = new List<string>();
@@ -435,12 +474,12 @@ namespace SNHU_Search.Models
 				while (DBreader.Read())
 				{
 					topKeywordsPerUser.Add(Convert.ToString(DBreader[0]));
+					topKeywordsPerUser.Add(Convert.ToString(DBreader[1]));
 				}
 
                 DBconn.Close();
                 return topKeywordsPerUser;
             }
-
         }
 
 		public List<string> AnalyticKeywordsGlobally()
@@ -463,7 +502,6 @@ namespace SNHU_Search.Models
                 DBconn.Close();
                 return topKeywordsGlobally;
             }
-
         }
         #endregion
     }

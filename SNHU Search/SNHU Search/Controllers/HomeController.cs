@@ -53,6 +53,7 @@ namespace SNHU_Search.Controllers
             {
                 username = CookieValue.ToLower();
                 _manager.UploadKeywordForAnalytics(Sm.Keywords); //to add keyword to global list
+                _manager.UploadKeywordUserAnalytics(Sm.Keywords, username); //to add keyword to user list
             }
             elasticSearchKeywordsList = _ManagerElastic.search(username, Sm.Keywords);
             // search for keywords in directory instance
@@ -329,37 +330,48 @@ namespace SNHU_Search.Controllers
 
         public IActionResult AnalyticsPage()
         {
-            // Pulls the list of strings from database, formatted ["term1", "1", "term2", "2"], where any int = #times of searched term
-            List<string> data = new List<string>();
-            data = _manager.AnalyticKeywordsGlobally();
+
+            // ["term", "count", ...]
+            List<string> globalData = new List<string>(); 
+            globalData = _manager.AnalyticKeywordsGlobally();
+
+            List<string> userData = new List<string>(); 
+            userData = _manager.AnalyticKeywordsForUser(getCookieUsername());
 
             List<string> terms = new List<string>();
-            // Let's split that info up now
-            for (int i = 0; i < data.Count - 1; i += 2)
-            {
-                // Words
-                terms.Add(data[i]);
+            List<int> termCounts = new List<int>();
+
+
+            // Splitting up data
+            for (int i = 0; i < globalData.Count - 1; i += 2) {
+                // Global terms
+                terms.Add(globalData[i]);
+
+                if (terms.Count == 6) break;
             }
 
-            List<int> counts = new List<int>();
-            for (int i = 1; i < data.Count; i += 2)
-            {
-                //counts.Add(ToInt32(data[i]));
+            for (int i = 1; i < globalData.Count; i += 2) {
                 int x = 0;
-                Int32.TryParse(data[i], out x);
-                counts.Add(x);
+                Int32.TryParse(globalData[i], out x);
+                termCounts.Add(x);
+
+                if (termCounts.Count == 6) break;
             }
 
-            // temporary data just to make sure we have 6 points of data to work with
-            while (true)
-            {
-                if (counts.Count == 6) break;
-
-                counts.Add(1);
+            // User data
+            for (int i = 0; i < userData.Count - 1; i += 2) {
+                terms.Add(userData[i]);
             }
 
-            ViewBag.Counts = counts;
+            for (int i = 1; i < userData.Count; i += 2) {
+                int x = 0;
+                Int32.TryParse(userData[i], out x);
+                termCounts.Add(x);
+            }
+
+            ViewBag.Counts = termCounts;
             ViewBag.Exponate = Newtonsoft.Json.JsonConvert.SerializeObject(terms); // The only way to pass strings correctly to javascript
+            
 
             var CookieValue = Request.Cookies[cookieKey];
             ViewData["username"] = CookieValue;
