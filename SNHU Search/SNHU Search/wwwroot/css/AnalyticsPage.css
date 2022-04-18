@@ -1,3 +1,27 @@
 ﻿body {
     background-color: #d8e0ee;
 }
+
+.chartBox {
+    width: 50%;
+    float: left;
+    border: 3% solid black;
+    border-radius: 20px;
+    padding: 2%;
+    background-color: white;
+}
+
+.chartBox2 {
+    width: 50%;
+    float: left;
+    border: 3% solid black;
+    border-radius: 20px;
+    padding: 2%;
+    background-color: white;
+}
+
+.container {
+    width: 100%;
+    margin: auto;
+    padding: 2%;
+}
