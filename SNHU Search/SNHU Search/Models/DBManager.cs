@@ -466,7 +466,7 @@ namespace SNHU_Search.Models
 				MySqlCommand Query = DBconn.CreateCommand();
 				Query.Parameters.AddWithValue("@userID3", GetUserID(username)); 
 				//pull from user analytic tables
-				Query.CommandText = "SELECT userID, keyword, max(count) FROM SNHUSearch.AnalyticsUser_tbl WHERE userID = @userID3 GROUP BY keyword, count ORDER BY count DESC LIMIT 6;"; 
+				Query.CommandText = "SELECT keyword, max(count) FROM SNHUSearch.AnalyticsUser_tbl WHERE userID = @userID3 GROUP BY keyword, count ORDER BY count DESC LIMIT 6;"; 
 
                 MySqlDataReader DBreader = Query.ExecuteReader();
                 List<string> topKeywordsPerUser = new List<string>();
@@ -475,7 +475,7 @@ namespace SNHU_Search.Models
 				{
 					topKeywordsPerUser.Add(Convert.ToString(DBreader[0]));
 					topKeywordsPerUser.Add(Convert.ToString(DBreader[1]));
-					topKeywordsPerUser.Add(Convert.ToString(DBreader[2]));
+					//topKeywordsPerUser.Add(Convert.ToString(DBreader[2]));
 				}
 
                 DBconn.Close();

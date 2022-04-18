@@ -330,6 +330,56 @@ namespace SNHU_Search.Controllers
 
         public IActionResult AnalyticsPage()
         {
+
+            // ["term", "count", ...]
+            List<string> globalData = new List<string>(); 
+            globalData = _manager.AnalyticKeywordsGlobally();
+
+            List<string> userData = new List<string>(); 
+            userData = _manager.AnalyticKeywordsForUser(getCookieUsername());
+
+            List<string> terms = new List<string>();
+            List<int> termCounts = new List<int>();
+
+
+            // Splitting up data
+            for (int i = 0; i < globalData.Count - 1; i += 2) {
+                // Global terms
+                terms.Add(globalData[i]);
+
+                if (terms.Count == 6) break;
+            }
+
+            for (int i = 1; i < globalData.Count; i += 2) {
+                int x = 0;
+                Int32.TryParse(globalData[i], out x);
+                termCounts.Add(x);
+
+                if (termCounts.Count == 6) break;
+            }
+
+            // User data
+            for (int i = 0; i < userData.Count - 1; i += 2) {
+                terms.Add(userData[i]);
+            }
+
+            for (int i = 1; i < userData.Count; i += 2) {
+                int x = 0;
+                Int32.TryParse(userData[i], out x);
+                termCounts.Add(x);
+            }
+
+
+
+
+
+
+
+
+
+
+
+            /*
             // Pulls the list of strings from database, formatted ["term1", "1", "term2", "2"], where any int = #times of searched term
             List<string> data = new List<string>(); // global table
             List<string> userData = new List<string>(); // user table
@@ -344,12 +394,29 @@ namespace SNHU_Search.Controllers
             {
                 // Words
                 terms.Add(data[i]);
+                if (i == 6) break; // first 6 will be global words
             }
+
+            if (terms.Count < 6) {
+                while (terms.Count < 6) {
+                    terms.Add("empty");
+                }
+            } // -- 6 terms added [ Global Terms ]
 
             for (int i = 0; i < userData.Count - 1; i += 2) {
                 terms.Add(userData[i]);
+
+                if (i == 6) break; // Second 6 will be global counts
             }
 
+            if (terms.Count < 12) {
+                while (terms.Count < 12) {
+                    terms.Add("empty");
+                }
+            } // -- 6 terms add [ User Terms ]
+
+
+            // Chart weights (#)
             List<int> counts = new List<int>();
             List<int> userCounts = new List<int>();
             for (int i = 1; i < data.Count; i += 2)
@@ -358,37 +425,40 @@ namespace SNHU_Search.Controllers
                 int x = 0;
                 Int32.TryParse(data[i], out x);
                 counts.Add(x);
+
+                if (i == 6) break;
             }
+
+            if (counts.Count < 6) {
+                while (counts.Count < 6) {
+                    counts.Add(0);
+                }
+            } // 6 counts added [ Global Counts ]
 
             for (int i = 1; i < userData.Count; i += 2) {
                 int x = 0;
                 Int32.TryParse(userData[i], out x);
                 userCounts.Add(x);
+
+                if (i == 6) break;
             }
 
-            // temporary data just to make sure we have 6 points of data to work with
-            //while (true)
-            //{
-            //    if (counts.Count == 6) break;
+            if (counts.Count < 12) {
+                while (counts.Count < 12) {
+                    counts.Add(0);
+                }
+            } // 6 counts add [ Global Counts ]
+            */
 
-            //    counts.Add(1);
-            //}
-            while (true)
-            {
-                if (userCounts.Count == 6) break;
+            ViewBag.Counts = termCounts;
+            //ViewBag.UserCounts = userCounts;
 
-                userCounts.Add(1);
-            }
-
-            ViewBag.Counts = counts;
-            ViewBag.UserCounts = userCounts;
-
-            List<string> combinedTerms = new List<string>();
-            combinedTerms.AddRange(terms);
-            combinedTerms.AddRange(userTerms);
+            //List<string> combinedTerms = new List<string>();
+            //combinedTerms.AddRange(terms);
+            //combinedTerms.AddRange(userTerms);
             //ViewBag.Exponate - Newtonsoft.Json.JsonConvert.SerializeObject(terms);
             
-            ViewBag.Exponate = Newtonsoft.Json.JsonConvert.SerializeObject(combinedTerms); // The only way to pass strings correctly to javascript
+            ViewBag.Exponate = Newtonsoft.Json.JsonConvert.SerializeObject(terms); // The only way to pass strings correctly to javascript
             
 
             var CookieValue = Request.Cookies[cookieKey];
