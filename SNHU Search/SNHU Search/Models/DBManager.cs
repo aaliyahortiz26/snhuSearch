@@ -475,7 +475,6 @@ namespace SNHU_Search.Models
 				{
 					topKeywordsPerUser.Add(Convert.ToString(DBreader[0]));
 					topKeywordsPerUser.Add(Convert.ToString(DBreader[1]));
-					//topKeywordsPerUser.Add(Convert.ToString(DBreader[2]));
 				}
 
                 DBconn.Close();
