@@ -2,8 +2,14 @@
     background-color: #d8e0ee;
 }
 
+.chartTitle {
+    text-align: center;
+    font-size: 24px;
+    margin-left: 40%;
+}
+
 .chartBox {
-    width: 50%;
+    width: 49%;
     float: left;
     border: 3% solid black;
     border-radius: 20px;
@@ -12,7 +18,8 @@
 }
 
 .chartBox2 {
-    width: 50%;
+    margin-left: 2%;
+    width: 49%;
     float: left;
     border: 3% solid black;
     border-radius: 20px;

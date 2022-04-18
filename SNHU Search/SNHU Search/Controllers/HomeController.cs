@@ -331,10 +331,14 @@ namespace SNHU_Search.Controllers
         public IActionResult AnalyticsPage()
         {
             // Pulls the list of strings from database, formatted ["term1", "1", "term2", "2"], where any int = #times of searched term
-            List<string> data = new List<string>();
+            List<string> data = new List<string>(); // global table
+            List<string> userData = new List<string>(); // user table
             data = _manager.AnalyticKeywordsGlobally();
+            userData = _manager.AnalyticKeywordsForUser(getCookieUsername());
+
 
             List<string> terms = new List<string>();
+            List<string> userTerms = new List<string>();
             // Let's split that info up now
             for (int i = 0; i < data.Count - 1; i += 2)
             {
@@ -342,7 +346,12 @@ namespace SNHU_Search.Controllers
                 terms.Add(data[i]);
             }
 
+            for (int i = 0; i < userData.Count - 1; i += 2) {
+                terms.Add(userData[i]);
+            }
+
             List<int> counts = new List<int>();
+            List<int> userCounts = new List<int>();
             for (int i = 1; i < data.Count; i += 2)
             {
                 //counts.Add(ToInt32(data[i]));
@@ -351,16 +360,36 @@ namespace SNHU_Search.Controllers
                 counts.Add(x);
             }
 
+            for (int i = 1; i < userData.Count; i += 2) {
+                int x = 0;
+                Int32.TryParse(userData[i], out x);
+                userCounts.Add(x);
+            }
+
             // temporary data just to make sure we have 6 points of data to work with
+            //while (true)
+            //{
+            //    if (counts.Count == 6) break;
+
+            //    counts.Add(1);
+            //}
             while (true)
             {
-                if (counts.Count == 6) break;
+                if (userCounts.Count == 6) break;
 
-                counts.Add(1);
+                userCounts.Add(1);
             }
 
             ViewBag.Counts = counts;
-            ViewBag.Exponate = Newtonsoft.Json.JsonConvert.SerializeObject(terms); // The only way to pass strings correctly to javascript
+            ViewBag.UserCounts = userCounts;
+
+            List<string> combinedTerms = new List<string>();
+            combinedTerms.AddRange(terms);
+            combinedTerms.AddRange(userTerms);
+            //ViewBag.Exponate - Newtonsoft.Json.JsonConvert.SerializeObject(terms);
+            
+            ViewBag.Exponate = Newtonsoft.Json.JsonConvert.SerializeObject(combinedTerms); // The only way to pass strings correctly to javascript
+            
 
             var CookieValue = Request.Cookies[cookieKey];
             ViewData["username"] = CookieValue;
